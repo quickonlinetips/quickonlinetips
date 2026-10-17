@@ -1,5 +1,5 @@
 <h1 align="center">Quick Online Tips</h1>
-<p align="center"><strong>Useful tech advice since 2004</strong></p>
+<p align="center"><strong>Tech help that works. Since 2004.</strong></p>
 
 <p align="center">
   <a href="https://www.quickonlinetips.com">Website</a> ·
@@ -8,12 +8,12 @@
 
 ---
 
-👋 Hi, this is the GitHub home of **[QuickOnlineTips.com](https://www.quickonlinetips.com)**, an independent tech blog from India publishing practical guides since 2004.
+👋 Hi, this is the GitHub home of **[QuickOnlineTips.com](https://www.quickonlinetips.com)**, an award-winning tech blog from India with over 20 years of clear, tested guides to apps, gadgets, online safety, SEO and blogging.
 
 ### What we write about
-- 💡 **Consumer tech tips:** how-tos for the apps, devices and services people use every day
-- ✍️ **Blogging & SEO:** WordPress, site speed and getting found in search
-- 🔒 **Online security & privacy:** staying safe on the web
+- 📱 **Apps & gadgets:** how-tos for the apps and devices people use every day
+- 🔒 **Online safety:** staying secure and private on the web
+- ✍️ **SEO & blogging:** WordPress, site speed and getting found in search
 
 ### What you'll find here
 - 🎨 Simple CSS and code snippets we use on the site

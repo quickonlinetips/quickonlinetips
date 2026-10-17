@@ -27,3 +27,8 @@
 ### 📫 Find us
 - Blog: [quickonlinetips.com](https://www.quickonlinetips.com)
 - Stickers & tees: [QOT Designs on Redbubble](https://www.redbubble.com/people/quickonlinetips)
+- X (Twitter): [@qot](https://twitter.com/qot)
+- Facebook: [quickonlinetips](https://www.facebook.com/quickonlinetips)
+- Pinterest: [quickonlinetips](https://www.pinterest.com/quickonlinetips/)
+- YouTube: [quickonlinetips](https://www.youtube.com/quickonlinetips)
+- RSS: [latest posts feed](https://www.quickonlinetips.com/archives/feed/)

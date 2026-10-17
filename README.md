@@ -1,16 +1,29 @@
-## Hi there 👋
+<h1 align="center">Quick Online Tips</h1>
+<p align="center"><strong>Useful tech advice since 2004</strong></p>
 
-<!--
-**quickonlinetips/quickonlinetips** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+<p align="center">
+  <a href="https://www.quickonlinetips.com">Website</a> ·
+  <a href="https://www.redbubble.com/people/quickonlinetips">QOT Designs shop</a>
+</p>
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+👋 Hi, this is the GitHub home of **[QuickOnlineTips.com](https://www.quickonlinetips.com)**, an independent tech blog from India publishing practical guides since 2004.
+
+### What we write about
+- 💡 **Consumer tech tips:** how-tos for the apps, devices and services people use every day
+- ✍️ **Blogging & SEO:** WordPress, site speed and getting found in search
+- 🔒 **Online security & privacy:** staying safe on the web
+
+### What you'll find here
+- 🎨 Simple CSS and code snippets we use on the site
+- 🧩 Small WordPress and front-end experiments
+- 📚 A few frameworks we've forked and learned from
+
+### A bit of history
+- Started in 2004 on Blogger, moved to WordPress in 2006
+- Made the free WordPress themes **QuickPress**, **QuickPic** and **QuickChic**
+
+### 📫 Find us
+- Blog: [quickonlinetips.com](https://www.quickonlinetips.com)
+- Stickers & tees: [QOT Designs on Redbubble](https://www.redbubble.com/people/quickonlinetips)

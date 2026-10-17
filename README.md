@@ -16,13 +16,22 @@
 - ✍️ **SEO & blogging:** WordPress, site speed and getting found in search
 
 ### What you'll find here
-- 🎨 Simple CSS and code snippets we use on the site
+- 🎨 The source code of our WordPress themes
 - 🧩 Small WordPress and front-end experiments
 - 📚 A few frameworks we've forked and learned from
 
 ### A bit of history
 - Started in 2004 on Blogger, moved to WordPress in 2006
-- Made the free WordPress themes **QuickPress**, **QuickPic** and **QuickChic**
+- Made four free WordPress themes, all listed on WordPress.org:
+
+| Theme | Download | About |
+|---|---|---|
+| **QuickPress** | [WordPress.org](https://wordpress.org/themes/quickpress/) | [Theme page](https://www.quickonlinetips.com/archives/quickpress-wordpress-theme/) |
+| **QuickChic** | [WordPress.org](https://wordpress.org/themes/quickchic/) | [Theme page](https://www.quickonlinetips.com/archives/quickchic-wordpress-theme/) |
+| **QuickStrap** | [WordPress.org](https://wordpress.org/themes/quickstrap/) | [Theme page](https://www.quickonlinetips.com/archives/quickstrap-wordpress-theme/) |
+| **QuickPic** | [WordPress.org](https://wordpress.org/themes/quickpic/) | [Theme page](https://www.quickonlinetips.com/archives/quickpic-wordpress-theme/) |
+
+🛠️ All four are being updated for 2026, and their code is moving here to GitHub.
 
 ### 📫 Find us
 - Blog: [quickonlinetips.com](https://www.quickonlinetips.com)

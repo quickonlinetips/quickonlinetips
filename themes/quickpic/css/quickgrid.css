@@ -1,0 +1,26 @@
+/* Customized from quickgrid.css v1.0 | quickonlinetips.com/projects/ */
+
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: -webkit-flex;
+  display: flex;
+}
+  
+.column {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 20px; 
+}
+
+
+/* Responsive */
+@media (max-width: 800px) {
+  .row {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}

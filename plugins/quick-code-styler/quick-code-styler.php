@@ -294,6 +294,54 @@ function quick_code_styler_body_class( $classes ) {
 add_filter( 'body_class', 'quick_code_styler_body_class' );
 
 /* ------------------------------------------------------------------ *
+ * Post summaries: leave code out
+ * ------------------------------------------------------------------ */
+
+/*
+ * Many themes show a short summary (excerpt) of each post on the home page
+ * and archives. WordPress makes it by stripping all tags from the post, so
+ * the code box disappears but the code itself spills into the summary as
+ * plain text. While WordPress builds an automatic summary, take code blocks
+ * out first. Summaries written by hand are never changed.
+ */
+
+/**
+ * Before WordPress builds an automatic summary, switch on code removal.
+ *
+ * @param string $excerpt The hand-written summary, if any.
+ * @return string
+ */
+function quick_code_styler_excerpt_start( $excerpt ) {
+	if ( '' === trim( (string) $excerpt ) ) {
+		add_filter( 'the_content', 'quick_code_styler_remove_code_blocks', 0 );
+	}
+	return $excerpt;
+}
+add_filter( 'get_the_excerpt', 'quick_code_styler_excerpt_start', 9 );
+
+/**
+ * After the summary is built, switch code removal off again.
+ *
+ * @param string $excerpt The finished summary.
+ * @return string
+ */
+function quick_code_styler_excerpt_end( $excerpt ) {
+	remove_filter( 'the_content', 'quick_code_styler_remove_code_blocks', 0 );
+	return $excerpt;
+}
+add_filter( 'get_the_excerpt', 'quick_code_styler_excerpt_end', 11 );
+
+/**
+ * Take every <pre> code block out of the text.
+ *
+ * @param string $content Post content.
+ * @return string
+ */
+function quick_code_styler_remove_code_blocks( $content ) {
+	return preg_replace( '#<pre[\s>].*?</pre>#is', ' ', $content );
+}
+
+/* ------------------------------------------------------------------ *
  * Settings page: Settings > Quick Code Styler
  * ------------------------------------------------------------------ */
 

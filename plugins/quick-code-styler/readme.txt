@@ -25,6 +25,7 @@ It works with the standard WordPress Code block and classic `<pre>` code, so the
 * **Your own colours.** Pick any of the 8 colours with the WordPress colour picker and watch a live preview as you go.
 * **Mobile friendly.** Long lines wrap on phones, or turn wrapping off to scroll sideways like a code editor.
 * **Inline code and keyboard keys.** A `file_name.php` inside a sentence gets a neat highlight, and `<kbd>Ctrl</kbd> + <kbd>C</kbd>` looks like real keys. Both blend in with any theme, light or dark.
+* **Clean post summaries.** On home pages and archives that show short post summaries, code is left out, so it never spills into the summary as messy text.
 * **Readable by everyone.** The built-in colours meet the WCAG AA contrast level.
 
 **Why it is light and fast**

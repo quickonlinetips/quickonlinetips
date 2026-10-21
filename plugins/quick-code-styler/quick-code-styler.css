@@ -1,0 +1,109 @@
+/*
+ * Quick Code Styler
+ * Clean, readable styling for code blocks, inline code and keyboard keys.
+ * From QuickOnlineTips.com - Tech help that works. Since 2004.
+ *
+ * Every rule starts with .qcs-on, a class the plugin adds to <body>.
+ * That keeps the styles to sites where the plugin is switched on,
+ * and is just strong enough to win over most theme defaults.
+ *
+ * To change the look, override these variables in your theme's
+ * Additional CSS, for example:  body { --qcs-accent: #c2410c; }
+ */
+
+.qcs-on {
+	/* Accent for the left border: uses the theme's main colour when it has one */
+	--qcs-accent: var(--wp--preset--color--primary, var(--global-palette1, #2b6cb0));
+	--qcs-bg: #f7fafc;
+	--qcs-border: #d5dee8;
+	--qcs-text: #1a202c;
+	--qcs-inline-bg: #edf2f7;
+	--qcs-inline-text: #9c4221;
+	--qcs-font: ui-monospace, SFMono-Regular, Consolas, Monaco, "Courier New", monospace;
+}
+
+/* Dark mode follows the visitor's system setting */
+@media (prefers-color-scheme: dark) {
+	.qcs-on {
+		--qcs-bg: #1a202c;
+		--qcs-border: #2d3748;
+		--qcs-text: #e2e8f0;
+		--qcs-inline-bg: #2d3748;
+		--qcs-inline-text: #fbd38d;
+	}
+}
+
+/* Code blocks: the core Code block and classic <pre> */
+.qcs-on pre {
+	background: var(--qcs-bg);
+	border: 1px solid var(--qcs-border);
+	border-left: 4px solid var(--qcs-accent);
+	border-radius: 6px;
+	padding: 14px 16px;
+	margin: 1.4em 0;
+	overflow-x: auto;
+	white-space: pre;
+	line-height: 1.55;
+	tab-size: 4;
+}
+
+.qcs-on pre,
+.qcs-on pre code {
+	font-family: var(--qcs-font);
+	font-size: 14px;
+	color: var(--qcs-text);
+	background: transparent;
+}
+
+/* The code inside a block must not pick up the inline-code look below */
+.qcs-on pre code {
+	border: 0;
+	padding: 0;
+}
+
+/* Inline code inside a sentence */
+.qcs-on :not(pre) > code {
+	background: var(--qcs-inline-bg);
+	border: 1px solid var(--qcs-border);
+	border-radius: 4px;
+	padding: 1px 6px;
+	font-family: var(--qcs-font);
+	font-size: 0.88em;
+	color: var(--qcs-inline-text);
+	overflow-wrap: anywhere;
+}
+
+/* Keyboard keys, e.g. <kbd>Ctrl</kbd> + <kbd>C</kbd> */
+.qcs-on kbd {
+	display: inline-block;
+	background: var(--qcs-bg);
+	border: 1px solid var(--qcs-border);
+	border-bottom-width: 3px;
+	border-radius: 5px;
+	padding: 1px 7px;
+	font-family: var(--qcs-font);
+	font-size: 0.85em;
+	line-height: 1.4;
+	color: var(--qcs-text);
+	white-space: nowrap;
+}
+
+/* Smaller text and padding on phones */
+@media (max-width: 600px) {
+	.qcs-on pre,
+	.qcs-on pre code {
+		font-size: 13px;
+	}
+
+	.qcs-on pre {
+		padding: 12px;
+	}
+}
+
+/* Printing: wrap long lines so no code is cut off the page */
+@media print {
+	.qcs-on pre {
+		white-space: pre-wrap;
+		overflow: visible;
+	}
+}

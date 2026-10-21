@@ -1,109 +1,245 @@
 /*
  * Quick Code Styler
- * Clean, readable styling for code blocks, inline code and keyboard keys.
+ * Code windows with syntax colours and a Copy button,
+ * plus clean inline code and keyboard keys.
  * From QuickOnlineTips.com - Tech help that works. Since 2004.
  *
- * Every rule starts with .qcs-on, a class the plugin adds to <body>.
- * That keeps the styles to sites where the plugin is switched on,
- * and is just strong enough to win over most theme defaults.
+ * Every rule starts with .qcs-on, a class the plugin adds to <body>
+ * on pages that show code. A second class picks the look:
+ *   (none)      Dark code window
+ *   .qcs-light  Light code window
+ *   .qcs-auto   Light or dark, following the visitor's device setting
+ *   .qcs-nowrap Long lines scroll sideways instead of wrapping
  *
- * To change the look, override these variables in your theme's
- * Additional CSS, for example:  body { --qcs-accent: #c2410c; }
+ * The colours are variables. The plugin's settings page
+ * (Settings > Quick Code Styler) changes them for you.
+ * Every colour pair meets the WCAG AA contrast level (4.5:1 or more).
  */
 
+/* ---------- Dark palette (the default) ---------- */
+
 .qcs-on {
-	/* Accent for the left border: uses the theme's main colour when it has one */
-	--qcs-accent: var(--wp--preset--color--primary, var(--global-palette1, #2b6cb0));
-	--qcs-bg: #f7fafc;
-	--qcs-border: #d5dee8;
-	--qcs-text: #1a202c;
-	--qcs-inline-bg: #edf2f7;
-	--qcs-inline-text: #9c4221;
-	--qcs-font: ui-monospace, SFMono-Regular, Consolas, Monaco, "Courier New", monospace;
+	--qcs-bg: #1e2433;
+	--qcs-text: #e6edf3;
+	--qcs-comment: #8b98ae;
+	--qcs-string: #a5d6ff;
+	--qcs-tag: #7ee787;
+	--qcs-attr: #79c0ff;
+	--qcs-keyword: #ff7b72;
+	--qcs-number: #f2cc60;
+	--qcs-shade: #000; /* the header bar is the background mixed with this */
+	--qcs-shade-amount: 28%;
+
+	--qcs-font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+	--qcs-ui-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Dark mode follows the visitor's system setting */
+/* ---------- Light palette ---------- */
+
+.qcs-light,
+.qcs-auto {
+	--qcs-bg: #f5f7fa;
+	--qcs-text: #1f2430;
+	--qcs-comment: #5f6b7a;
+	--qcs-string: #0b4f8a;
+	--qcs-tag: #17703a;
+	--qcs-attr: #1d5fbf;
+	--qcs-keyword: #c62a2f;
+	--qcs-number: #9a4a00;
+	--qcs-shade-amount: 5%;
+}
+
+/* ---------- Auto: dark palette when the visitor's device is in dark mode ---------- */
+
 @media (prefers-color-scheme: dark) {
-	.qcs-on {
-		--qcs-bg: #1a202c;
-		--qcs-border: #2d3748;
-		--qcs-text: #e2e8f0;
-		--qcs-inline-bg: #2d3748;
-		--qcs-inline-text: #fbd38d;
+	.qcs-auto {
+		--qcs-bg: #1e2433;
+		--qcs-text: #e6edf3;
+		--qcs-comment: #8b98ae;
+		--qcs-string: #a5d6ff;
+		--qcs-tag: #7ee787;
+		--qcs-attr: #79c0ff;
+		--qcs-keyword: #ff7b72;
+		--qcs-number: #f2cc60;
+		--qcs-shade-amount: 28%;
 	}
 }
 
-/* Code blocks: the core Code block and classic <pre> */
+/* ---------- Code window: the Code block and classic <pre> ---------- */
+
 .qcs-on pre {
+	position: relative;
+	margin: 1.6em 0;
+	padding: 48px 18px 18px;
 	background: var(--qcs-bg);
-	border: 1px solid var(--qcs-border);
-	border-left: 4px solid var(--qcs-accent);
-	border-radius: 6px;
-	padding: 14px 16px;
-	margin: 1.4em 0;
+	border: 1px solid color-mix(in srgb, var(--qcs-text) 10%, transparent);
+	border-radius: 10px;
+	box-shadow: 0 8px 20px -12px rgba(15, 23, 42, 0.45);
+	white-space: pre-wrap; /* long lines wrap, so no sideways scrolling on phones */
+	overflow-wrap: anywhere;
+	word-break: normal;
+	overflow: auto;
+	line-height: 1.65;
+	tab-size: 4;
+	text-align: left;
+}
+
+/* Wrapping switched off: long lines scroll sideways, like a code editor.
+   Only the code scrolls, so the header bar and Copy button stay in place. */
+.qcs-nowrap pre {
+	white-space: pre;
+	overflow-wrap: normal;
+	overflow-x: auto;
+}
+
+.qcs-nowrap pre code {
+	display: block;
 	overflow-x: auto;
 	white-space: pre;
-	line-height: 1.55;
-	tab-size: 4;
+}
+
+.qcs-nowrap pre:has(> code) {
+	overflow: hidden;
+}
+
+/* The header bar across the top */
+.qcs-on pre::before {
+	content: "Code";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 34px;
+	padding: 0 18px;
+	background: color-mix(in srgb, var(--qcs-bg), var(--qcs-shade) var(--qcs-shade-amount));
+	border-bottom: 1px solid color-mix(in srgb, var(--qcs-text) 8%, transparent);
+	border-radius: 10px 10px 0 0;
+	font: 700 11px/34px var(--qcs-ui-font);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--qcs-comment);
 }
 
 .qcs-on pre,
 .qcs-on pre code {
 	font-family: var(--qcs-font);
-	font-size: 14px;
+	font-size: 0.875rem; /* follows the reader's browser text size */
 	color: var(--qcs-text);
-	background: transparent;
 }
 
-/* The code inside a block must not pick up the inline-code look below */
 .qcs-on pre code {
+	background: transparent;
 	border: 0;
 	padding: 0;
+	color: inherit;
+	font-size: inherit;
 }
 
-/* Inline code inside a sentence */
+.qcs-on pre::selection,
+.qcs-on pre *::selection {
+	background: color-mix(in srgb, var(--qcs-attr) 35%, transparent);
+	color: inherit;
+}
+
+/* ---------- Syntax colours (added by the script) ---------- */
+
+.qcs-on pre .qcs-c { color: var(--qcs-comment); font-style: italic; } /* comments */
+.qcs-on pre .qcs-s { color: var(--qcs-string); }                      /* quoted text */
+.qcs-on pre .qcs-t { color: var(--qcs-tag); }                         /* HTML tags */
+.qcs-on pre .qcs-a { color: var(--qcs-attr); }                        /* attributes */
+.qcs-on pre .qcs-k { color: var(--qcs-keyword); }                     /* keywords */
+.qcs-on pre .qcs-n { color: var(--qcs-number); }                      /* numbers */
+
+/* ---------- Copy button (added by the script) ---------- */
+
+.qcs-on pre .qcs-copy {
+	position: absolute;
+	top: 5px;
+	right: 8px;
+	height: 24px;
+	min-height: 0;
+	margin: 0;
+	padding: 0 10px;
+	font: 600 12px/22px var(--qcs-ui-font);
+	letter-spacing: 0;
+	text-transform: none;
+	color: var(--qcs-text);
+	background: color-mix(in srgb, var(--qcs-text) 7%, transparent);
+	border: 1px solid color-mix(in srgb, var(--qcs-text) 18%, transparent);
+	border-radius: 6px;
+	box-shadow: none;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.qcs-on pre .qcs-copy:hover,
+.qcs-on pre .qcs-copy:focus-visible {
+	background: color-mix(in srgb, var(--qcs-text) 15%, transparent);
+}
+
+.qcs-on pre .qcs-copy.is-done {
+	color: var(--qcs-tag);
+	border-color: var(--qcs-tag);
+}
+
+/* ---------- Inline code and keyboard keys ----------
+ * These use see-through shades of the surrounding text colour,
+ * so they suit any theme, light or dark, with no extra settings.
+ */
+
 .qcs-on :not(pre) > code {
-	background: var(--qcs-inline-bg);
-	border: 1px solid var(--qcs-border);
+	background: color-mix(in srgb, currentColor 9%, transparent);
+	border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
 	border-radius: 4px;
 	padding: 1px 6px;
 	font-family: var(--qcs-font);
 	font-size: 0.88em;
-	color: var(--qcs-inline-text);
+	color: inherit;
 	overflow-wrap: anywhere;
 }
 
-/* Keyboard keys, e.g. <kbd>Ctrl</kbd> + <kbd>C</kbd> */
 .qcs-on kbd {
 	display: inline-block;
-	background: var(--qcs-bg);
-	border: 1px solid var(--qcs-border);
+	background: color-mix(in srgb, currentColor 6%, transparent);
+	border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
 	border-bottom-width: 3px;
 	border-radius: 5px;
 	padding: 1px 7px;
 	font-family: var(--qcs-font);
 	font-size: 0.85em;
 	line-height: 1.4;
-	color: var(--qcs-text);
+	color: inherit;
 	white-space: nowrap;
 }
 
-/* Smaller text and padding on phones */
+/* ---------- Phones ---------- */
+
 @media (max-width: 600px) {
-	.qcs-on pre,
-	.qcs-on pre code {
-		font-size: 13px;
+	.qcs-on pre {
+		padding: 46px 14px 14px;
+		border-radius: 8px;
 	}
 
-	.qcs-on pre {
-		padding: 12px;
+	.qcs-on pre::before {
+		padding: 0 14px;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.qcs-on pre,
+	.qcs-on pre code {
+		font-size: 0.8125rem;
 	}
 }
 
-/* Printing: wrap long lines so no code is cut off the page */
+/* ---------- Printing ---------- */
+
 @media print {
 	.qcs-on pre {
 		white-space: pre-wrap;
 		overflow: visible;
+	}
+
+	.qcs-on pre .qcs-copy {
+		display: none;
 	}
 }

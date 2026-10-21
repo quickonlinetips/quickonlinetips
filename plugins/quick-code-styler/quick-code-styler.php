@@ -348,12 +348,18 @@ function quick_code_styler_admin_assets() {
 	);
 	wp_add_inline_style(
 		'quick-code-styler',
-		'#qcs-preview{max-width:560px}#qcs-preview pre{margin:0}#qcs-preview .qcs-copy{cursor:default}' .
+		'#qcs-preview pre{margin:0}#qcs-preview .qcs-copy{cursor:default}' .
 		'#qcs-preview.no-color pre span{color:inherit;font-style:normal}#qcs-preview.no-copy .qcs-copy{display:none}' .
 		'.qcs-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}.qcs-wrap .form-table{width:auto}' .
-		'.qcs-wrap form{max-width:640px}' .
+		'.qcs-wrap form{max-width:640px;flex:1 1 480px}' .
+		// Each section is a white card with its heading in a bar across the top.
+		'.qcs-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
+		'.qcs-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
+		'.qcs-card .form-table{margin-top:4px}.qcs-card .form-table th{padding-left:0;width:150px}' .
+		'.qcs-card .qcs-intro{margin:14px 0 0;color:#50575e}.qcs-card .description{margin:0 0 12px}' .
+		'#qcs-auto-note{margin:14px 0 12px}.qcs-side.qcs-card{padding-bottom:20px;margin-bottom:0;flex:1 1 400px;max-width:640px}.qcs-side #qcs-preview{margin-top:20px}' .
 		// Keep the preview in view while picking: beside the colours on wide screens, above them otherwise.
-		'.qcs-side{position:sticky;top:46px}@media (max-width:1279px){.qcs-side{order:-1;position:static}}'
+		'.qcs-side{position:sticky;top:46px}@media (max-width:1279px){.qcs-wrap{gap:20px}.qcs-side{order:-1;position:static}}'
 	);
 
 	wp_enqueue_script( 'wp-color-picker' );
@@ -451,6 +457,7 @@ function quick_code_styler_render_page() {
 			<form method="post" action="options.php">
 				<?php settings_fields( 'quick_code_styler' ); ?>
 
+				<div class="qcs-card">
 				<h2><?php esc_html_e( 'Look', 'quick-code-styler' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
@@ -473,10 +480,12 @@ function quick_code_styler_render_page() {
 						</td>
 					</tr>
 				</table>
+				</div>
 
+				<div class="qcs-card">
+				<h2><?php esc_html_e( 'Colours', 'quick-code-styler' ); ?></h2>
 				<div id="qcs-colours">
-					<h2><?php esc_html_e( 'Colours', 'quick-code-styler' ); ?></h2>
-					<p><?php esc_html_e( 'Click Default under a colour to undo a change. Switching between Dark and Light starts from that look\'s own colours.', 'quick-code-styler' ); ?></p>
+					<p class="qcs-intro"><?php esc_html_e( 'Click Default under a colour to undo a change. Switching between Dark and Light starts from that look\'s own colours.', 'quick-code-styler' ); ?></p>
 					<table class="form-table" role="presentation">
 						<?php foreach ( quick_code_styler_colour_labels() as $key => $label ) : ?>
 							<tr>
@@ -493,7 +502,9 @@ function quick_code_styler_render_page() {
 					</table>
 				</div>
 				<p id="qcs-auto-note" class="description"><?php esc_html_e( 'Automatic uses the built-in light and dark colours. Choose Dark or Light to pick your own.', 'quick-code-styler' ); ?></p>
+				</div>
 
+				<div class="qcs-card">
 				<h2><?php esc_html_e( 'Extras', 'quick-code-styler' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
@@ -516,11 +527,12 @@ function quick_code_styler_render_page() {
 					</tr>
 				</table>
 				<p class="description"><?php esc_html_e( 'With both turned off, the plugin loads no JavaScript at all.', 'quick-code-styler' ); ?></p>
+				</div>
 
 				<?php submit_button(); ?>
 			</form>
 
-			<div class="qcs-side">
+			<div class="qcs-side qcs-card">
 				<h2><?php esc_html_e( 'Preview', 'quick-code-styler' ); ?></h2>
 				<div id="qcs-preview" class="qcs-on" style="<?php echo esc_attr( $style ); ?>">
 <pre><code><span class="qcs-c">&lt;!-- A link --&gt;</span>

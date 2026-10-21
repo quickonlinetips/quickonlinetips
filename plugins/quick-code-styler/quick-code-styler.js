@@ -32,12 +32,36 @@
 		return text.replace( /&/g, '&amp;' ).replace( /</g, '&lt;' ).replace( />/g, '&gt;' );
 	}
 
+	/*
+	 * Is the markup inside this code only leftover <span> tags, the kind that
+	 * come along when code is copied from another web page? Those are safe to
+	 * strip and colour again. Anything else is left alone: real highlighter
+	 * plugins (Prism's "token", highlight.js's "hljs-", Shiki's inline styles)
+	 * and tags an author added on purpose, like <strong>, <mark> or <a>.
+	 */
+	function onlyLeftoverSpans( code ) {
+		var elements = code.querySelectorAll( '*' );
+
+		for ( var i = 0; i < elements.length; i++ ) {
+			var element = elements[ i ];
+			if (
+				element.tagName !== 'SPAN' ||
+				element.hasAttribute( 'style' ) ||
+				/(^|\s)(token|hljs)/.test( element.className )
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	// Wrap each token in a <span> with its colour class.
 	function colourBlock( pre ) {
 		var code = pre.querySelector( 'code' ) || pre;
 
-		// Skip code that already has markup inside (another highlighter got there first).
-		if ( code.children.length ) {
+		// Markup already inside: colour again only if it is leftover spans.
+		if ( code.children.length && ! onlyLeftoverSpans( code ) ) {
 			return;
 		}
 

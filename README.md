@@ -1,4 +1,4 @@
-<h1 align="center">Quick Online Tips</h1>
+<h1 align="center">QuickOnlineTips</h1>
 <p align="center"><strong>Tech help that works. Since 2004.</strong></p>
 
 <p align="center">

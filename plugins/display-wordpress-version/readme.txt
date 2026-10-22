@@ -92,7 +92,7 @@ On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-v
 1. Settings show your installed and latest WordPress version, and what the line says, with a live preview.
 2. The line appears by itself at the bottom of every page. Optional other ways to add it are kept separate.
 3. Add text before and after the line, joined with a bullet or another mark.
-4. The line at the bottom of a site using the Twenty Twenty-Five theme.
+4. The line in the footer of a real site, under the copyright, using the QuickPress theme.
 
 == Changelog ==
 

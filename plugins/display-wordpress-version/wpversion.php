@@ -55,7 +55,10 @@ function quick_wp_version_show_choices() {
  * The line is added at the bottom of every page automatically,
  * centred, until the site owner turns that off.
  *
- * @return array{show: string, custom: string, link: bool, extra: string, footer: bool, align: string}
+ * While an update is waiting, the version number is hidden, so the line
+ * never advertises an out-of-date WordPress.
+ *
+ * @return array{show: string, custom: string, link: bool, extra: string, hide_old: bool, footer: bool, align: string}
  */
 function quick_wp_version_settings() {
 	$saved = get_option( QUICK_WP_VERSION_OPTION, array() );
@@ -66,6 +69,7 @@ function quick_wp_version_settings() {
 		'custom' => isset( $saved['custom'] ) ? (string) $saved['custom'] : '',
 		'link'   => isset( $saved['link'] ) ? (bool) $saved['link'] : true,
 		'extra'  => isset( $saved['extra'] ) ? (string) $saved['extra'] : '',
+		'hide_old' => isset( $saved['hide_old'] ) ? (bool) $saved['hide_old'] : true,
 		'footer' => isset( $saved['footer'] ) ? (bool) $saved['footer'] : true,
 		'align'  => isset( $saved['align'] ) && in_array( $saved['align'], array( 'left', 'center', 'right' ), true ) ? $saved['align'] : 'center',
 	);
@@ -87,6 +91,7 @@ function quick_wp_version_sanitize( $input ) {
 		'custom' => isset( $input['custom'] ) ? trim( wp_kses_post( wp_unslash( $input['custom'] ) ) ) : '',
 		'link'   => ! empty( $input['link'] ),
 		'extra'  => isset( $input['extra'] ) ? trim( wp_kses_post( wp_unslash( $input['extra'] ) ) ) : '',
+		'hide_old' => ! empty( $input['hide_old'] ),
 		'footer' => ! empty( $input['footer'] ),
 		'align'  => isset( $input['align'] ) && in_array( $input['align'], array( 'left', 'center', 'right' ), true ) ? $input['align'] : 'center',
 	);
@@ -95,6 +100,55 @@ function quick_wp_version_sanitize( $input ) {
 /* ------------------------------------------------------------------ *
  * The line itself
  * ------------------------------------------------------------------ */
+
+/**
+ * Is a newer WordPress waiting to be installed?
+ *
+ * Reads the answer WordPress saved at its last update check (it checks
+ * twice a day by itself). Never contacts WordPress.org, so it costs
+ * nothing on the front end.
+ *
+ * @return string The newer version, like 7.1.3, or empty when up to date or not known.
+ */
+function quick_wp_version_update_waiting() {
+	$check     = get_site_transient( 'update_core' );
+	$installed = (string) get_bloginfo( 'version' );
+	$newest    = '';
+
+	if ( is_object( $check ) && ! empty( $check->updates ) && is_array( $check->updates ) ) {
+		foreach ( $check->updates as $update ) {
+			if (
+				isset( $update->response, $update->current )
+				&& 'upgrade' === $update->response
+				&& version_compare( $update->current, $installed, '>' )
+				&& ( '' === $newest || version_compare( $update->current, $newest, '>' ) )
+			) {
+				$newest = $update->current;
+			}
+		}
+	}
+
+	return $newest;
+}
+
+/**
+ * Will the version number be hidden right now, because an update is waiting?
+ * Only matters for lines that show a number.
+ *
+ * @param array $settings Settings from quick_wp_version_settings().
+ * @return bool
+ */
+function quick_wp_version_number_hidden( $settings ) {
+	if ( ! $settings['hide_old'] || '' === quick_wp_version_update_waiting() ) {
+		return false;
+	}
+
+	if ( 'custom' === $settings['show'] ) {
+		return false !== strpos( $settings['custom'], '{version}' ) || false !== strpos( $settings['custom'], '{major}' );
+	}
+
+	return in_array( $settings['show'], array( 'major', 'full' ), true );
+}
 
 /**
  * Build the line from the settings, ready to print.
@@ -114,7 +168,11 @@ function quick_wp_version_line( $settings = null ) {
 		? '<a class="display-version" href="https://wordpress.org/">WordPress</a>'
 		: 'WordPress';
 
-	switch ( $settings['show'] ) {
+	// An update is waiting and the owner chose to hide the number meanwhile:
+	// show the plain line until WordPress is updated.
+	$show = quick_wp_version_number_hidden( $settings ) ? 'plain' : $settings['show'];
+
+	switch ( $show ) {
 		case 'major':
 			/* translators: 1: the word WordPress, 2: main version number, like 7 */
 			$line = sprintf( __( 'Powered by %1$s %2$s', 'display-wordpress-version' ), $wordpress, esc_html( $major ) );
@@ -419,6 +477,8 @@ function quick_wp_version_admin_assets() {
 		'.qwv-card .form-table td fieldset label{display:block;margin:0 0 10px;line-height:1.6}.qwv-card fieldset code{font-size:12px}' .
 		'#qwv-custom-text{margin:4px 0 0 24px;width:calc(100% - 24px)}#qwv-custom-wrap .description{margin-left:24px}' .
 		'.qwv-card .qwv-intro{margin:14px 0 0;color:#50575e}' .
+		'.qwv-other{margin-top:12px}.qwv-dev{font-weight:400;font-size:12px;color:#646970}' .
+		'.qwv-card .form-table td label code{font-size:12px}' .
 		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.
 		'.qwv-side{flex:1 1 400px;max-width:640px;position:sticky;top:46px;padding-bottom:20px;margin-bottom:0}' .
 		// The preview is a small website, with the line highlighted at the very bottom.
@@ -453,9 +513,15 @@ document.addEventListener( 'DOMContentLoaded', function () {
 
 	function update() {
 		var show = value( 'show' );
-		var wp = value( 'link' ) ? '<a href="https://wordpress.org/">WordPress</a>' : 'WordPress';
+		var wp = value( 'link' ) ? '<a class="display-version" href="https://wordpress.org/">WordPress</a>' : 'WordPress';
 		var custom = value( 'custom' ).trim();
 		var line = data.plain.replace( '%s', wp );
+
+		var hasNumber = show === 'major' || show === 'full' || ( show === 'custom' && /\{(version|major)\}/.test( custom ) );
+		var hidden = data.waiting && value( 'hide_old' ) && hasNumber;
+		if ( hidden ) {
+			show = 'plain';
+		}
 
 		if ( show === 'major' || show === 'full' ) {
 			line = data.number.replace( '%1$s', wp ).replace( '%2$s', show === 'major' ? data.major : data.version );
@@ -466,7 +532,16 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		var extra = value( 'extra' ).trim();
 		preview.innerHTML = line + ( extra ? ' ' + extra : '' );
 		preview.parentNode.style.textAlign = value( 'align' ) || 'center';
-		document.getElementById( 'qwv-where' ).textContent = value( 'footer' ) ? data.whereOn : data.whereOff;
+		var note = value( 'footer' ) ? data.whereOn : data.whereOff;
+		if ( hidden ) {
+			note += ' ' + data.hiddenNote;
+		} else if ( data.waiting && hasNumber ) {
+			note += ' ' + data.oldNote;
+		}
+		if ( value( 'link' ) && line.indexOf( wp ) !== -1 ) {
+			note += ' ' + data.linkNote;
+		}
+		document.getElementById( 'qwv-where' ).textContent = note;
 		document.getElementById( 'qwv-custom-wrap' ).style.opacity = show === 'custom' ? 1 : 0.6;
 	}
 
@@ -498,6 +573,12 @@ JS;
 				/* translators: 1: the word WordPress, 2: version number */
 				'number'  => __( 'Powered by %1$s %2$s', 'display-wordpress-version' ),
 				'whereOn' => __( 'This is how the line looks at the very bottom of every page.', 'display-wordpress-version' ),
+				'waiting'  => quick_wp_version_update_waiting(),
+				'linkNote' => __( 'The word WordPress links to https://wordpress.org/.', 'display-wordpress-version' ),
+				/* translators: %s: newest WordPress version */
+				'hiddenNote' => sprintf( __( 'WordPress %s is out, so the number is hidden until you update.', 'display-wordpress-version' ), quick_wp_version_update_waiting() ),
+				/* translators: %s: newest WordPress version */
+				'oldNote'  => sprintf( __( 'Careful: WordPress %s is out, and this line tells visitors your site has an older version.', 'display-wordpress-version' ), quick_wp_version_update_waiting() ),
 				'whereOff' => __( 'The automatic line is off. The line looks like this wherever you place the shortcode, widget or template tag.', 'display-wordpress-version' ),
 			)
 		) . ';' . $script
@@ -560,6 +641,9 @@ function quick_wp_version_render_page() {
 					<?php
 					/* translators: %s: newest WordPress version */
 					echo esc_html( sprintf( __( 'WordPress %s is out. Updating keeps your site safe.', 'display-wordpress-version' ), $latest ) );
+					if ( $settings['hide_old'] ) {
+						echo ' ' . esc_html__( 'Until you update, your line does not show a version number.', 'display-wordpress-version' );
+					}
 					?>
 					<?php if ( current_user_can( 'update_core' ) ) : ?>
 						<a href="<?php echo esc_url( admin_url( 'update-core.php' ) ); ?>"><?php esc_html_e( 'Update now', 'display-wordpress-version' ); ?></a>
@@ -609,13 +693,26 @@ function quick_wp_version_render_page() {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><?php esc_html_e( 'When WordPress is out of date', 'display-wordpress-version' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="<?php echo esc_attr( $name . '[hide_old]' ); ?>" value="1" <?php checked( $settings['hide_old'] ); ?>>
+								<?php esc_html_e( 'Hide the version number until WordPress is updated', 'display-wordpress-version' ); ?>
+							</label>
+							<p class="description"><?php esc_html_e( 'Older versions can have known security holes, so it is best not to show them. While an update is waiting, visitors see just Powered by WordPress. The number comes back by itself after you update.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><?php esc_html_e( 'Link', 'display-wordpress-version' ); ?></th>
 						<td>
 							<label>
 								<input type="checkbox" name="<?php echo esc_attr( $name . '[link]' ); ?>" value="1" <?php checked( $settings['link'] ); ?>>
-								<?php esc_html_e( 'Link the word WordPress to WordPress.org', 'display-wordpress-version' ); ?>
+								<?php
+								/* translators: %s: web address of WordPress.org */
+								printf( esc_html__( 'Link the word WordPress to %s', 'display-wordpress-version' ), '<code>https://wordpress.org/</code>' );
+								?>
 							</label>
-							<p class="description"><?php esc_html_e( 'For the three ready-made lines. In your own text, add any links you like.', 'display-wordpress-version' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Visitors who click WordPress in the line go to the official WordPress website. This is for the three ready-made lines; in your own text, add any links you like.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -629,7 +726,8 @@ function quick_wp_version_render_page() {
 			</div>
 
 			<div class="qwv-card qwv-c3">
-				<h2><?php esc_html_e( 'Where to show it', 'display-wordpress-version' ); ?></h2>
+				<h2><?php esc_html_e( 'Where it appears', 'display-wordpress-version' ); ?></h2>
+				<p class="qwv-intro"><?php esc_html_e( 'This is all most sites need. The line appears by itself at the very bottom of every page.', 'display-wordpress-version' ); ?></p>
 				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Bottom of every page', 'display-wordpress-version' ); ?></th>
@@ -651,40 +749,44 @@ function quick_wp_version_render_page() {
 							</select>
 						</td>
 					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Shortcode', 'display-wordpress-version' ); ?></th>
-						<td>
-							<code>[quick_wp_version]</code>
-							<p class="description"><?php esc_html_e( 'Put the line anywhere: a post, a page, or a Shortcode block in your footer.', 'display-wordpress-version' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Widget', 'display-wordpress-version' ); ?></th>
-						<td>
-							<p style="margin-top:0">
-								<?php
-								printf(
-									/* translators: %s: link to Appearance > Widgets */
-									esc_html__( 'If your theme has widget areas, add the Quick WordPress Version widget to a footer or sidebar in %s.', 'display-wordpress-version' ),
-									'<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . esc_html__( 'Appearance > Widgets', 'display-wordpress-version' ) . '</a>'
-								);
-								?>
-							</p>
-							<p class="description"><?php esc_html_e( 'If you place the line yourself, you can untick the automatic line above.', 'display-wordpress-version' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Theme template', 'display-wordpress-version' ); ?></th>
-						<td>
-							<code>&lt;?php quickversion(); ?&gt;</code>
-							<p class="description"><?php esc_html_e( 'For theme builders: prints the line exactly where you put it. Pages that use it skip the automatic line.', 'display-wordpress-version' ); ?></p>
-						</td>
-					</tr>
 				</table>
 			</div>
 
 			<?php submit_button(); ?>
 		</form>
+
+		<div class="qwv-card qwv-c4 qwv-other">
+			<h2><?php esc_html_e( 'Other ways to add the line (optional)', 'display-wordpress-version' ); ?></h2>
+			<p class="qwv-intro"><?php esc_html_e( 'You do not need these. Use one only if you want the line in a different place, such as a sidebar. They show the same line you chose above. If you use one, you can untick the automatic line.', 'display-wordpress-version' ); ?></p>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Widget', 'display-wordpress-version' ); ?></th>
+					<td>
+						<?php
+						printf(
+							/* translators: %s: link to Appearance > Widgets */
+							esc_html__( 'If your theme has widget areas, add the Quick WordPress Version widget to a footer or sidebar in %s.', 'display-wordpress-version' ),
+							'<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . esc_html__( 'Appearance > Widgets', 'display-wordpress-version' ) . '</a>'
+						);
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Shortcode', 'display-wordpress-version' ); ?></th>
+					<td>
+						<code>[quick_wp_version]</code>
+						<p class="description"><?php esc_html_e( 'Paste it into a post, a page, or a Shortcode block, and the line shows there.', 'display-wordpress-version' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Theme template', 'display-wordpress-version' ); ?><br><span class="qwv-dev"><?php esc_html_e( 'For theme developers', 'display-wordpress-version' ); ?></span></th>
+					<td>
+						<code>&lt;?php quickversion(); ?&gt;</code>
+						<p class="description"><?php esc_html_e( 'Prints the line exactly where it is placed in a theme file. Pages that use it skip the automatic line.', 'display-wordpress-version' ); ?></p>
+					</td>
+				</tr>
+			</table>
+		</div>
 		</div>
 
 		<div class="qwv-side qwv-card qwv-preview">

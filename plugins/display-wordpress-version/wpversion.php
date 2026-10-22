@@ -512,14 +512,14 @@ function quick_wp_version_admin_assets() {
 		// then round again (qwv-c1 to qwv-c5, in page order). The preview card is always teal.
 		'.qwv-c1>h2{background:#f0f6fc}.qwv-c2>h2{background:#edfaef}.qwv-c3>h2{background:#fcf9e8}' .
 		'.qwv-c4>h2{background:#fcf0f1}.qwv-c5>h2{background:#f5f0fc}.qwv-preview>h2{background:#e8f6f5}' .
-		// The preview is a live window, not a settings card: a dark teal frame with a faint dotted
+		// The preview is a live window, not a settings card: a teal frame with a faint dotted
 		// background, an eye icon and a Live badge, with the preview itself sitting on top like a screen.
-		'.qwv-preview{background:#134e4a radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.5px) 0 0/16px 16px;border-color:#0b2f2d;box-shadow:0 2px 8px rgba(0,0,0,.18)}' .
-		'.qwv-preview>h2{display:flex;align-items:center;gap:8px;background:#0d3b38;color:#f0fdfa;border-bottom-color:#1f6660}' .
-		'.qwv-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#5eead4}' .
-		'.qwv-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #5eead4;border-radius:10px;background:rgba(94,234,212,.12);color:#99f6e4;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
-		'.qwv-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#5eead4}' .
-		'.qwv-preview>.description,.qwv-preview>p{color:#cde9e5}.qwv-preview>.description a,.qwv-preview>p a{color:#9ad8ff}' .
+		'.qwv-preview{background:#1d6b65 radial-gradient(rgba(255,255,255,.12) 1px,transparent 1.5px) 0 0/16px 16px;border-color:#11433f;box-shadow:0 2px 8px rgba(0,0,0,.18)}' .
+		'.qwv-preview>h2{display:flex;align-items:center;gap:8px;background:#155550;color:#f0fdfa;border-bottom-color:#2a8a82}' .
+		'.qwv-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#99f6e4}' .
+		'.qwv-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #99f6e4;border-radius:10px;background:rgba(153,246,228,.14);color:#ccfbf1;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
+		'.qwv-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#99f6e4}' .
+		'.qwv-preview>.description,.qwv-preview>p{color:#e6f7f5}.qwv-preview>.description a,.qwv-preview>p a{color:#cfe9ff}.qwv-card.qwv-preview>.description{margin:12px 0 0}' .
 		'.qwv-card .form-table{margin-top:4px}.qwv-card .form-table th{padding-left:0;width:170px}' .
 		'.qwv-versions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 12px}' .
 		'.qwv-versions div{flex:1 1 150px;border:1px solid #dcdcde;border-radius:4px;padding:10px 14px}' .

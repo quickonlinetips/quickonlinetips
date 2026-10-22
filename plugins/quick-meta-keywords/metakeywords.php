@@ -275,14 +275,14 @@ function quick_meta_keywords_admin_assets() {
 		// then round again (qmk-c1 to qmk-c5, in page order). The preview card is always teal.
 		'.qmk-c1>h2{background:#f0f6fc}.qmk-c2>h2{background:#edfaef}.qmk-c3>h2{background:#fcf9e8}' .
 		'.qmk-c4>h2{background:#fcf0f1}.qmk-c5>h2{background:#f5f0fc}.qmk-preview>h2{background:#e8f6f5}' .
-		// The preview is a live window, not a settings card: a dark teal frame with a faint dotted
+		// The preview is a live window, not a settings card: a teal frame with a faint dotted
 		// background, an eye icon and a Live badge, with the preview itself sitting on top like a screen.
-		'.qmk-preview{background:#134e4a radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.5px) 0 0/16px 16px;border-color:#0b2f2d;box-shadow:0 2px 8px rgba(0,0,0,.18)}' .
-		'.qmk-preview>h2{display:flex;align-items:center;gap:8px;background:#0d3b38;color:#f0fdfa;border-bottom-color:#1f6660}' .
-		'.qmk-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#5eead4}' .
-		'.qmk-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #5eead4;border-radius:10px;background:rgba(94,234,212,.12);color:#99f6e4;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
-		'.qmk-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#5eead4}' .
-		'.qmk-preview>.description,.qmk-preview>p{color:#cde9e5}.qmk-preview>.description a,.qmk-preview>p a{color:#9ad8ff}' .
+		'.qmk-preview{background:#1d6b65 radial-gradient(rgba(255,255,255,.12) 1px,transparent 1.5px) 0 0/16px 16px;border-color:#11433f;box-shadow:0 2px 8px rgba(0,0,0,.18)}' .
+		'.qmk-preview>h2{display:flex;align-items:center;gap:8px;background:#155550;color:#f0fdfa;border-bottom-color:#2a8a82}' .
+		'.qmk-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#99f6e4}' .
+		'.qmk-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #99f6e4;border-radius:10px;background:rgba(153,246,228,.14);color:#ccfbf1;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
+		'.qmk-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#99f6e4}' .
+		'.qmk-preview>.description,.qmk-preview>p{color:#e6f7f5}.qmk-preview>.description a,.qmk-preview>p a{color:#cfe9ff}.qmk-card.qmk-preview>.description{margin:12px 0 0}' .
 		'.qmk-card .form-table{margin-top:4px}.qmk-card .form-table th{padding-left:0;width:150px}' .
 		'.qmk-card .qmk-intro{margin:14px 0 0;color:#50575e}.qmk-card .description{margin:6px 0 0}' .
 		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.

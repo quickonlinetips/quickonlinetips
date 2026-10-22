@@ -43,7 +43,7 @@ The tag uses the plugin's WordPress.org address, which never changes, even when 
 
 - **The plugin's code** (PHP, CSS, JS, `readme.txt`, `uninstall.php`) goes to WordPress.org's `trunk` and to `tags/<version>`.
 - **The images** for the plugin page (everything in the plugin's `assets` folder, plus the `screenshot-1.png` files) go to WordPress.org's separate `assets` folder. They are not inside the plugin users download, so the download stays small.
-- **Images are only sent when the plugin has an `assets` folder** with its banner and icon. WordPress.org's image folder is replaced as a whole, so sending only screenshots would delete the banner and icon there. A plugin without an `assets` folder (Quick Feed Copyright, for now) keeps its current page images, and the run shows a yellow warning saying so. To update its images, add an `assets` folder with the banner and icon first.
+- **Images are only sent when the plugin has an `assets` folder** with its banner and icon. WordPress.org's image folder is replaced as a whole, so sending only screenshots would delete the banner and icon there. All four plugins have one. A plugin added later without an `assets` folder keeps its current page images, and the run shows a yellow warning saying so. `design/plugin-assets/render.py` makes a new banner and icon in the same style.
 
 ## If something goes wrong
 

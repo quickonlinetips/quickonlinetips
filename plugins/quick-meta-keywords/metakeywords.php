@@ -266,18 +266,23 @@ function quick_meta_keywords_admin_assets() {
 	wp_enqueue_style( 'quick-meta-keywords-admin' );
 	wp_add_inline_style(
 		'quick-meta-keywords-admin',
-		'.qmk-wrap{max-width:760px}' .
+		'.qmk-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}' .
+		'.qmk-wrap form{max-width:640px;flex:1 1 480px}' .
 		// Each section is a white card with its heading in a bar across the top.
-		'.qmk-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 14px}' .
+		'.qmk-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
 		'.qmk-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
 		// Heading colours change from card to card in a fixed order: blue, green, yellow, pink, purple,
 		// then round again (qmk-c1 to qmk-c5, in page order). The preview card is always teal.
 		'.qmk-c1>h2{background:#f0f6fc}.qmk-c2>h2{background:#edfaef}.qmk-c3>h2{background:#fcf9e8}' .
 		'.qmk-c4>h2{background:#fcf0f1}.qmk-c5>h2{background:#f5f0fc}.qmk-preview>h2{background:#e8f6f5}' .
 		'.qmk-card .form-table{margin-top:4px}.qmk-card .form-table th{padding-left:0;width:150px}' .
-		'.qmk-card .qmk-intro{margin:14px 0 0;color:#50575e}' .
+		'.qmk-card .qmk-intro{margin:14px 0 0;color:#50575e}.qmk-card .description{margin:6px 0 0}' .
+		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.
+		'.qmk-side{flex:1 1 400px;max-width:640px;position:sticky;top:46px;padding-bottom:20px;margin-bottom:0}' .
+		'@media (max-width:1279px){.qmk-wrap{gap:20px}.qmk-side{order:-1;position:static}}' .
+		'.qmk-box{margin-top:20px}' .
 		'#qmk-extra{width:100%}' .
-		'.qmk-pick{margin:14px 0 12px}.qmk-pick select{max-width:100%}' .
+		'.qmk-pick{margin:0 0 10px}.qmk-pick label{display:block;margin:0 0 6px;font-weight:600}.qmk-pick select{width:100%;max-width:100%}.qmk-legend{margin:0 0 10px;color:#50575e}' .
 		'.qmk-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;padding:0;list-style:none}' .
 		'.qmk-chips li{margin:0;padding:3px 10px;border-radius:12px;font-size:12px;line-height:18px;border:1px solid}' .
 		'.qmk-chips .qmk-cat{background:#f0f6fc;border-color:#9ec2e6;color:#0a4b78}' .
@@ -286,7 +291,7 @@ function quick_meta_keywords_admin_assets() {
 		'.qmk-code{margin:0;padding:14px 16px;background:#1e2433;color:#e6edf3;border-radius:4px;font:13px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;word-break:break-word}' .
 		'.qmk-code .t{color:#7ee787}.qmk-code .a{color:#79c0ff}.qmk-code .s{color:#a5d6ff}' .
 		'.qmk-count{margin:10px 0 6px;color:#50575e}.qmk-empty{color:#f2cc60}' .
-		'.qmk-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px;border:1px solid}' .
+		'.qmk-legend .qmk-key:first-child{margin-left:0}.qmk-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 12px;vertical-align:-1px;border:1px solid}' .
 		'.qmk-key.qmk-cat{background:#f0f6fc;border-color:#9ec2e6}.qmk-key.qmk-tag{background:#edfaef;border-color:#8fd19e}.qmk-key.qmk-extra{background:#fcf9e8;border-color:#e6d58a}'
 	);
 
@@ -412,9 +417,9 @@ function quick_meta_keywords_render_page() {
 	$name     = QUICK_META_KEYWORDS_OPTION;
 	$seo      = quick_meta_keywords_seo_plugin();
 	?>
-	<div class="wrap qmk-wrap">
+	<div class="wrap">
 		<h1><?php esc_html_e( 'Quick META Keywords', 'quick-meta-keywords' ); ?></h1>
-		<p><?php esc_html_e( 'Choose what goes into the META keywords tag on your posts. The preview at the bottom updates as you go.', 'quick-meta-keywords' ); ?></p>
+		<p><?php esc_html_e( 'Choose what goes into the META keywords tag on your posts. The preview updates as you go.', 'quick-meta-keywords' ); ?></p>
 
 		<?php if ( $seo ) : ?>
 			<div class="notice notice-info inline">
@@ -430,6 +435,7 @@ function quick_meta_keywords_render_page() {
 			</div>
 		<?php endif; ?>
 
+		<div class="qmk-wrap">
 		<form method="post" action="options.php">
 			<?php settings_fields( 'quick_meta_keywords' ); ?>
 
@@ -465,8 +471,12 @@ function quick_meta_keywords_render_page() {
 				</p>
 			</div>
 
-			<div class="qmk-card qmk-preview">
-				<h2><?php esc_html_e( 'Preview', 'quick-meta-keywords' ); ?></h2>
+			<?php submit_button(); ?>
+		</form>
+
+		<div class="qmk-side qmk-card qmk-preview">
+			<h2><?php esc_html_e( 'Preview', 'quick-meta-keywords' ); ?></h2>
+			<div class="qmk-box">
 				<p class="qmk-pick">
 					<label for="qmk-post"><?php esc_html_e( 'Show the tag for', 'quick-meta-keywords' ); ?></label>
 					<select id="qmk-post">
@@ -474,20 +484,19 @@ function quick_meta_keywords_render_page() {
 							<option value="<?php echo esc_attr( $index ); ?>"><?php echo esc_html( $post['title'] ); ?></option>
 						<?php endforeach; ?>
 					</select>
-					<span aria-hidden="true">
-						<span class="qmk-key qmk-cat"></span><?php esc_html_e( 'Category', 'quick-meta-keywords' ); ?>
-						<span class="qmk-key qmk-tag"></span><?php esc_html_e( 'Tag', 'quick-meta-keywords' ); ?>
-						<span class="qmk-key qmk-extra"></span><?php esc_html_e( 'Extra', 'quick-meta-keywords' ); ?>
-					</span>
+				</p>
+				<p class="qmk-legend" aria-hidden="true">
+					<span class="qmk-key qmk-cat"></span><?php esc_html_e( 'Category', 'quick-meta-keywords' ); ?>
+					<span class="qmk-key qmk-tag"></span><?php esc_html_e( 'Tag', 'quick-meta-keywords' ); ?>
+					<span class="qmk-key qmk-extra"></span><?php esc_html_e( 'Extra', 'quick-meta-keywords' ); ?>
 				</p>
 				<ul id="qmk-chips" class="qmk-chips"></ul>
 				<p class="qmk-code" id="qmk-code" aria-live="polite"></p>
 				<p class="qmk-count" id="qmk-count"></p>
 				<p class="description"><?php esc_html_e( 'This is the tag added to the post\'s page head. Repeated words appear once. The catch-all "Uncategorized" category is left out.', 'quick-meta-keywords' ); ?></p>
 			</div>
-
-			<?php submit_button(); ?>
-		</form>
+		</div>
+		</div>
 	</div>
 	<?php
 }

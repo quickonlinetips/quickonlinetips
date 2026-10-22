@@ -269,7 +269,11 @@ function quick_meta_keywords_admin_assets() {
 		'.qmk-wrap{max-width:760px}' .
 		// Each section is a white card with its heading in a bar across the top.
 		'.qmk-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 14px}' .
-		'.qmk-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
+		'.qmk-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
+		// Heading colours change from card to card in a fixed order: blue, green, yellow, pink, purple,
+		// then round again (qmk-c1 to qmk-c5, in page order). The preview card is always teal.
+		'.qmk-c1>h2{background:#f0f6fc}.qmk-c2>h2{background:#edfaef}.qmk-c3>h2{background:#fcf9e8}' .
+		'.qmk-c4>h2{background:#fcf0f1}.qmk-c5>h2{background:#f5f0fc}.qmk-preview>h2{background:#e8f6f5}' .
 		'.qmk-card .form-table{margin-top:4px}.qmk-card .form-table th{padding-left:0;width:150px}' .
 		'.qmk-card .qmk-intro{margin:14px 0 0;color:#50575e}' .
 		'#qmk-extra{width:100%}' .
@@ -429,7 +433,7 @@ function quick_meta_keywords_render_page() {
 		<form method="post" action="options.php">
 			<?php settings_fields( 'quick_meta_keywords' ); ?>
 
-			<div class="qmk-card">
+			<div class="qmk-card qmk-c1">
 				<h2><?php esc_html_e( 'Keywords from each post', 'quick-meta-keywords' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
@@ -453,7 +457,7 @@ function quick_meta_keywords_render_page() {
 				</table>
 			</div>
 
-			<div class="qmk-card">
+			<div class="qmk-card qmk-c2">
 				<h2><?php esc_html_e( 'Extra keywords', 'quick-meta-keywords' ); ?></h2>
 				<p class="qmk-intro"><label for="qmk-extra"><?php esc_html_e( 'Added to every post, after its categories and tags. Separate them with commas. Leave empty for none.', 'quick-meta-keywords' ); ?></label></p>
 				<p>
@@ -461,7 +465,7 @@ function quick_meta_keywords_render_page() {
 				</p>
 			</div>
 
-			<div class="qmk-card">
+			<div class="qmk-card qmk-preview">
 				<h2><?php esc_html_e( 'Preview', 'quick-meta-keywords' ); ?></h2>
 				<p class="qmk-pick">
 					<label for="qmk-post"><?php esc_html_e( 'Show the tag for', 'quick-meta-keywords' ); ?></label>

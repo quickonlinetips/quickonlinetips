@@ -512,6 +512,13 @@ function quick_wp_version_admin_assets() {
 		// then round again (qwv-c1 to qwv-c5, in page order). The preview card is always teal.
 		'.qwv-c1>h2{background:#f0f6fc}.qwv-c2>h2{background:#edfaef}.qwv-c3>h2{background:#fcf9e8}' .
 		'.qwv-c4>h2{background:#fcf0f1}.qwv-c5>h2{background:#f5f0fc}.qwv-preview>h2{background:#e8f6f5}' .
+		// The preview is a live window, not a settings card: tinted, dotted background, teal frame,
+		// an eye icon and a Live badge, with the preview itself sitting on top like a screen.
+		'.qwv-preview{background:#f2f8f7 radial-gradient(#cfe5e2 1px,transparent 1.5px) 0 0/16px 16px;border-color:#7fbfb8;box-shadow:0 2px 6px rgba(10,125,114,.1)}' .
+		'.qwv-preview>h2{display:flex;align-items:center;gap:8px;border-bottom-color:#b5dbd6}' .
+		'.qwv-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#0a7d72}' .
+		'.qwv-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #7fbfb8;border-radius:10px;background:#fff;color:#0a7d72;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
+		'.qwv-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#1aa58f}' .
 		'.qwv-card .form-table{margin-top:4px}.qwv-card .form-table th{padding-left:0;width:170px}' .
 		'.qwv-versions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 12px}' .
 		'.qwv-versions div{flex:1 1 150px;border:1px solid #dcdcde;border-radius:4px;padding:10px 14px}' .
@@ -875,7 +882,7 @@ function quick_wp_version_render_page() {
 		</div>
 
 		<div class="qwv-side qwv-card qwv-preview">
-			<h2><?php esc_html_e( 'Preview', 'display-wordpress-version' ); ?></h2>
+			<h2><?php esc_html_e( 'Preview', 'display-wordpress-version' ); ?> <span class="qwv-live"><?php esc_html_e( 'Live', 'display-wordpress-version' ); ?></span></h2>
 			<div class="qwv-site" id="qwv-site" aria-label="<?php esc_attr_e( 'Preview of your site', 'display-wordpress-version' ); ?>">
 				<div class="qwv-bar"><i></i><i></i><i></i><span><?php echo esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ); ?></span></div>
 				<div class="qwv-page">

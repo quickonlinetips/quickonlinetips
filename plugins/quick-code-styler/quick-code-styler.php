@@ -398,7 +398,9 @@ function quick_code_styler_admin_assets() {
 		'quick-code-styler',
 		'#qcs-preview pre{margin:0}#qcs-preview .qcs-copy{cursor:default}' .
 		'#qcs-preview.no-color pre span{color:inherit;font-style:normal}#qcs-preview.no-copy .qcs-copy{display:none}' .
-		'.qcs-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}.qcs-wrap .form-table{width:auto}' .
+		// Wrap in reverse: side by side, the preview sits on the right; when the screen is too narrow
+		// for both, it moves above the settings instead of below. (flex-end keeps both at the top.)
+		'.qcs-wrap{display:flex;flex-wrap:wrap-reverse;gap:32px;align-items:flex-end}.qcs-wrap .form-table{width:auto}' .
 		'.qcs-wrap form{max-width:640px;flex:1 1 480px}' .
 		// Each section is a white card with its heading in a bar across the top.
 		'.qcs-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
@@ -419,7 +421,7 @@ function quick_code_styler_admin_assets() {
 		'.qcs-card .qcs-intro{margin:14px 0 0;color:#50575e}.qcs-card .description{margin:0 0 12px}' .
 		'#qcs-auto-note{margin:14px 0 12px}.qcs-side.qcs-card{padding-bottom:20px;margin-bottom:0;flex:1 1 400px;max-width:640px}.qcs-side #qcs-preview{margin-top:20px}' .
 		// Keep the preview in view while picking: beside the colours on wide screens, above them otherwise.
-		'.qcs-side{position:sticky;top:46px}@media (max-width:1279px){.qcs-wrap{gap:20px}.qcs-side{order:-1;position:static}}'
+		'.qcs-side{position:sticky;top:46px}@media (max-width:1139px){.qcs-wrap{gap:20px}.qcs-side{position:static}}'
 	);
 
 	wp_enqueue_script( 'wp-color-picker' );

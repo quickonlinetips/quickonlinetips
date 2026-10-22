@@ -466,7 +466,9 @@ add_action( 'admin_menu', 'simple_feed_copyright_add_page' );
  * Styles and the live preview script, on the settings page only.
  */
 function simple_feed_copyright_admin_assets() {
-	$css = '.qfc-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}' .
+	// Wrap in reverse: side by side, the preview sits on the right; when the screen is too narrow
+	// for both, it moves above the settings instead of below. (flex-end keeps both at the top.)
+	$css = '.qfc-wrap{display:flex;flex-wrap:wrap-reverse;gap:32px;align-items:flex-end}' .
 		'.qfc-wrap form{max-width:640px;flex:1 1 480px}' .
 		// Each section is a white card with its heading in a bar across the top.
 		'.qfc-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
@@ -494,7 +496,7 @@ function simple_feed_copyright_admin_assets() {
 		'.qfc-reader h3{font-size:20px;margin:6px 0 12px;line-height:1.3}.qfc-reader .qfc-body{color:#50575e}' .
 		'.qfc-reader #qfc-footer{border-top:1px dashed #c3c4c7;margin-top:16px;padding-top:4px}.qfc-reader a{color:#2271b1}' .
 		'.qfc-reader p{margin:10px 0}.qfc-reader ul{margin:6px 0 10px 20px;list-style:disc}.qfc-reader li{margin:2px 0}' .
-		'@media (max-width:1279px){.qfc-wrap{gap:20px}.qfc-side{order:-1;position:static}}';
+		'@media (max-width:1139px){.qfc-wrap{gap:20px}.qfc-side{position:static}}';
 
 	wp_register_style( 'simple-feed-copyright-admin', false, array(), '2.0' );
 	wp_enqueue_style( 'simple-feed-copyright-admin' );

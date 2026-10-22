@@ -47,6 +47,37 @@ function quick_wp_version_show_choices() {
 }
 
 /**
+ * The marks that can join the line to the text before and after it.
+ * An empty mark means just a space.
+ *
+ * @return array<string, string>
+ */
+function quick_wp_version_separators() {
+	return array(
+		'bullet' => '•',
+		'bar'    => '|',
+		'dash'   => '–',
+		'dot'    => '·',
+		'space'  => '',
+	);
+}
+
+/**
+ * Tidy the edge of the text before or after the line, where the joining
+ * mark goes: spaces, full stops, commas and separators typed there are
+ * removed, so the line never shows "WordPress . Hello" or two bullets.
+ *
+ * @param string $text Text before or after the line.
+ * @param string $edge 'end' for the text before the line, 'start' for the text after it.
+ * @return string
+ */
+function quick_wp_version_trim_join( $text, $edge ) {
+	$marks = '(?:[\s.,;:|•·–—\-]|&nbsp;|&bull;|&middot;|&ndash;|&mdash;|&#8226;)+';
+	$text  = (string) preg_replace( 'end' === $edge ? '/' . $marks . '$/u' : '/^' . $marks . '/u', '', trim( (string) $text ) );
+	return trim( $text );
+}
+
+/**
  * The saved settings, with defaults for anything not saved yet.
  *
  * The default is Powered by WordPress with no number: showing the exact
@@ -58,7 +89,7 @@ function quick_wp_version_show_choices() {
  * While an update is waiting, the version number is hidden, so the line
  * never advertises an out-of-date WordPress.
  *
- * @return array{show: string, custom: string, link: bool, extra: string, hide_old: bool, footer: bool, align: string}
+ * @return array{show: string, custom: string, link: bool, before: string, after: string, sep: string, hide_old: bool, footer: bool, align: string}
  */
 function quick_wp_version_settings() {
 	$saved = get_option( QUICK_WP_VERSION_OPTION, array() );
@@ -68,7 +99,9 @@ function quick_wp_version_settings() {
 		'show'   => isset( $saved['show'] ) && in_array( $saved['show'], quick_wp_version_show_choices(), true ) ? $saved['show'] : 'plain',
 		'custom' => isset( $saved['custom'] ) ? (string) $saved['custom'] : '',
 		'link'   => isset( $saved['link'] ) ? (bool) $saved['link'] : true,
-		'extra'  => isset( $saved['extra'] ) ? (string) $saved['extra'] : '',
+		'before' => isset( $saved['before'] ) ? (string) $saved['before'] : '',
+		'after'  => isset( $saved['after'] ) ? (string) $saved['after'] : '',
+		'sep'    => isset( $saved['sep'] ) && array_key_exists( $saved['sep'], quick_wp_version_separators() ) ? $saved['sep'] : 'bullet',
 		'hide_old' => isset( $saved['hide_old'] ) ? (bool) $saved['hide_old'] : true,
 		'footer' => isset( $saved['footer'] ) ? (bool) $saved['footer'] : true,
 		'align'  => isset( $saved['align'] ) && in_array( $saved['align'], array( 'left', 'center', 'right' ), true ) ? $saved['align'] : 'center',
@@ -90,7 +123,9 @@ function quick_wp_version_sanitize( $input ) {
 		'show'   => isset( $input['show'] ) && in_array( $input['show'], quick_wp_version_show_choices(), true ) ? $input['show'] : 'plain',
 		'custom' => isset( $input['custom'] ) ? trim( wp_kses_post( wp_unslash( $input['custom'] ) ) ) : '',
 		'link'   => ! empty( $input['link'] ),
-		'extra'  => isset( $input['extra'] ) ? trim( wp_kses_post( wp_unslash( $input['extra'] ) ) ) : '',
+		'before' => isset( $input['before'] ) ? quick_wp_version_trim_join( wp_kses_post( wp_unslash( $input['before'] ) ), 'end' ) : '',
+		'after'  => isset( $input['after'] ) ? quick_wp_version_trim_join( wp_kses_post( wp_unslash( $input['after'] ) ), 'start' ) : '',
+		'sep'    => isset( $input['sep'] ) && array_key_exists( $input['sep'], quick_wp_version_separators() ) ? $input['sep'] : 'bullet',
 		'hide_old' => ! empty( $input['hide_old'] ),
 		'footer' => ! empty( $input['footer'] ),
 		'align'  => isset( $input['align'] ) && in_array( $input['align'], array( 'left', 'center', 'right' ), true ) ? $input['align'] : 'center',
@@ -201,9 +236,18 @@ function quick_wp_version_line( $settings = null ) {
 			$line = sprintf( __( 'Powered by %s', 'display-wordpress-version' ), $wordpress );
 	}
 
-	// Anything else the site owner wants on the same line.
-	if ( '' !== $settings['extra'] ) {
-		$line .= ' ' . wp_kses_post( $settings['extra'] );
+	// Text before and after the line, joined with the chosen mark (a bullet unless changed).
+	$marks  = quick_wp_version_separators();
+	$mark   = isset( $marks[ $settings['sep'] ] ) ? $marks[ $settings['sep'] ] : '•';
+	$glue   = '' === $mark ? ' ' : ' ' . $mark . ' ';
+	$before = quick_wp_version_trim_join( wp_kses_post( $settings['before'] ), 'end' );
+	$after  = quick_wp_version_trim_join( wp_kses_post( $settings['after'] ), 'start' );
+
+	if ( '' !== $before ) {
+		$line = $before . $glue . $line;
+	}
+	if ( '' !== $after ) {
+		$line .= $glue . $after;
 	}
 
 	return (string) apply_filters( 'quick_wp_version_line', $line, $settings );
@@ -529,8 +573,13 @@ document.addEventListener( 'DOMContentLoaded', function () {
 			line = custom.split( '{version}' ).join( data.version ).split( '{major}' ).join( data.major );
 		}
 
-		var extra = value( 'extra' ).trim();
-		preview.innerHTML = line + ( extra ? ' ' + extra : '' );
+		// Same tidying and joining as the PHP.
+		var marks = '(?:[\\s.,;:|•·–—\\-]|&nbsp;|&bull;|&middot;|&ndash;|&mdash;|&#8226;)+';
+		var before = value( 'before' ).trim().replace( new RegExp( marks + '$' ), '' ).trim();
+		var after = value( 'after' ).trim().replace( new RegExp( '^' + marks ), '' ).trim();
+		var mark = data.marks[ value( 'sep' ) ];
+		var glue = mark ? ' ' + mark + ' ' : ' ';
+		preview.innerHTML = ( before ? before + glue : '' ) + line + ( after ? glue + after : '' );
 		preview.parentNode.style.textAlign = value( 'align' ) || 'center';
 		var note = value( 'footer' ) ? data.whereOn : data.whereOff;
 		if ( hidden ) {
@@ -574,6 +623,7 @@ JS;
 				'number'  => __( 'Powered by %1$s %2$s', 'display-wordpress-version' ),
 				'whereOn' => __( 'This is how the line looks at the very bottom of every page.', 'display-wordpress-version' ),
 				'waiting'  => quick_wp_version_update_waiting(),
+				'marks'    => quick_wp_version_separators(),
 				'linkNote' => __( 'The word WordPress links to https://wordpress.org/.', 'display-wordpress-version' ),
 				/* translators: %s: newest WordPress version */
 				'hiddenNote' => sprintf( __( 'WordPress %s is out, so the number is hidden until you update.', 'display-wordpress-version' ), quick_wp_version_update_waiting() ),
@@ -715,17 +765,43 @@ function quick_wp_version_render_page() {
 							<p class="description"><?php esc_html_e( 'Visitors who click WordPress in the line go to the official WordPress website. This is for the three ready-made lines; in your own text, add any links you like.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>
+				</table>
+			</div>
+
+			<div class="qwv-card qwv-c3">
+				<h2><?php esc_html_e( 'Text around the line (optional)', 'display-wordpress-version' ); ?></h2>
+				<p class="qwv-intro"><?php esc_html_e( 'Add your own words before or after the line, such as a copyright or a credit to your host. The mark below joins them up, so there is no need to type one.', 'display-wordpress-version' ); ?></p>
+				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><label for="qwv-extra"><?php esc_html_e( 'Extra text', 'display-wordpress-version' ); ?></label></th>
+						<th scope="row"><label for="qwv-before"><?php esc_html_e( 'Text before', 'display-wordpress-version' ); ?></label></th>
 						<td>
-							<textarea id="qwv-extra" class="large-text" rows="2" name="<?php echo esc_attr( $name . '[extra]' ); ?>" placeholder="<?php esc_attr_e( '| Theme by … | © My Site', 'display-wordpress-version' ); ?>"><?php echo esc_textarea( $settings['extra'] ); ?></textarea>
-							<p class="description"><?php esc_html_e( 'Optional. Added after the line, for credits, a copyright or a link. Links and simple HTML are fine.', 'display-wordpress-version' ); ?></p>
+							<input type="text" id="qwv-before" class="large-text" name="<?php echo esc_attr( $name . '[before]' ); ?>" value="<?php echo esc_attr( $settings['before'] ); ?>" placeholder="<?php echo esc_attr( '© ' . gmdate( 'Y' ) . ' ' . get_bloginfo( 'name' ) ); ?>">
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="qwv-after"><?php esc_html_e( 'Text after', 'display-wordpress-version' ); ?></label></th>
+						<td>
+							<input type="text" id="qwv-after" class="large-text" name="<?php echo esc_attr( $name . '[after]' ); ?>" value="<?php echo esc_attr( $settings['after'] ); ?>" placeholder="<?php esc_attr_e( 'Hosted by …', 'display-wordpress-version' ); ?>">
+							<p class="description"><?php esc_html_e( 'Links and simple HTML are fine in both boxes.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="qwv-sep"><?php esc_html_e( 'Joined with', 'display-wordpress-version' ); ?></label></th>
+						<td>
+							<select id="qwv-sep" name="<?php echo esc_attr( $name . '[sep]' ); ?>">
+								<option value="bullet" <?php selected( $settings['sep'], 'bullet' ); ?>><?php esc_html_e( '• Bullet', 'display-wordpress-version' ); ?></option>
+								<option value="bar" <?php selected( $settings['sep'], 'bar' ); ?>><?php esc_html_e( '| Line', 'display-wordpress-version' ); ?></option>
+								<option value="dash" <?php selected( $settings['sep'], 'dash' ); ?>><?php esc_html_e( '– Dash', 'display-wordpress-version' ); ?></option>
+								<option value="dot" <?php selected( $settings['sep'], 'dot' ); ?>><?php esc_html_e( '· Dot', 'display-wordpress-version' ); ?></option>
+								<option value="space" <?php selected( $settings['sep'], 'space' ); ?>><?php esc_html_e( 'Just a space', 'display-wordpress-version' ); ?></option>
+							</select>
+							<p class="description"><?php esc_html_e( 'Added by itself between the line and your text. A full stop or mark you type at the join is left out, so it never shows twice.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>
 				</table>
 			</div>
 
-			<div class="qwv-card qwv-c3">
+			<div class="qwv-card qwv-c4">
 				<h2><?php esc_html_e( 'Where it appears', 'display-wordpress-version' ); ?></h2>
 				<p class="qwv-intro"><?php esc_html_e( 'This is all most sites need. The line appears by itself at the very bottom of every page.', 'display-wordpress-version' ); ?></p>
 				<table class="form-table" role="presentation">
@@ -755,7 +831,7 @@ function quick_wp_version_render_page() {
 			<?php submit_button(); ?>
 		</form>
 
-		<div class="qwv-card qwv-c4 qwv-other">
+		<div class="qwv-card qwv-c5 qwv-other">
 			<h2><?php esc_html_e( 'Other ways to add the line (optional)', 'display-wordpress-version' ); ?></h2>
 			<p class="qwv-intro"><?php esc_html_e( 'You do not need these. Use one only if you want the line in a different place, such as a sidebar. They show the same line you chose above. If you use one, you can untick the automatic line.', 'display-wordpress-version' ); ?></p>
 			<table class="form-table" role="presentation">

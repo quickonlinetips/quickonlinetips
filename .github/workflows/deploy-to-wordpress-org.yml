@@ -1,0 +1,180 @@
+# Sends one plugin from the plugins/ folder to WordPress.org.
+#
+# How to use it (see plugins/RELEASING.md for the full steps):
+#   On GitHub, publish a release whose tag is the plugin's folder name,
+#   a dash and the version, for example:  quick-meta-keywords-2.0
+#
+# What it does:
+#   1. Checks the version in the plugin file and the readme's Stable tag
+#      both match the version in the tag, and stops if they don't.
+#   2. Copies the plugin's code to WordPress.org (trunk and tags/<version>),
+#      leaving out the assets folder and the screenshots.
+#   3. Copies the banner, icon and screenshots to WordPress.org's assets folder.
+#   4. Attaches the plugin zip to the GitHub release.
+#
+# You can also run it by hand from the Actions tab ("Run workflow"). Leave
+# "Test only" ticked to check everything without sending anything.
+#
+# Needs two repository secrets: SVN_USERNAME (your WordPress.org username)
+# and SVN_PASSWORD (the SVN password from your WordPress.org profile).
+
+name: Deploy plugin to WordPress.org
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      plugin:
+        description: "Plugin folder name (same as its WordPress.org slug)"
+        required: true
+        type: choice
+        options:
+          - quick-meta-keywords
+          - simple-feed-copyright
+          - display-wordpress-version
+          - quick-code-styler
+      version:
+        description: "Version to send, for example 2.0"
+        required: true
+        type: string
+      dry_run:
+        description: "Test only: check everything but don't send to WordPress.org"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+# Never send two updates of the same plugin at once.
+concurrency:
+  group: wporg-${{ github.event.release.tag_name || inputs.plugin }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Work out which plugin and version
+        id: which
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          IN_PLUGIN: ${{ inputs.plugin }}
+          IN_VERSION: ${{ inputs.version }}
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ -n "$TAG" ]; then
+            # Tag looks like quick-meta-keywords-2.0 (a "v" before the number is fine too).
+            if [[ ! "$TAG" =~ ^([a-z0-9-]+)-v?([0-9]+(\.[0-9]+)*)$ ]]; then
+              echo "::error::The release tag \"$TAG\" should be the plugin folder name, a dash and the version, for example quick-meta-keywords-2.0"
+              exit 1
+            fi
+            SLUG="${BASH_REMATCH[1]}"
+            VERSION="${BASH_REMATCH[2]}"
+            DRY_RUN=false
+          else
+            SLUG="$IN_PLUGIN"
+            VERSION="${IN_VERSION#v}"
+            DRY_RUN="$IN_DRY_RUN"
+          fi
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "dry_run=$DRY_RUN" >> "$GITHUB_OUTPUT"
+          echo "Plugin: $SLUG   Version: $VERSION   Test only: $DRY_RUN"
+
+      - name: Get the code
+        uses: actions/checkout@v4
+        with:
+          # For a release, use the code at the release tag.
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - name: Check the plugin and its version numbers
+        env:
+          SLUG: ${{ steps.which.outputs.slug }}
+          VERSION: ${{ steps.which.outputs.version }}
+        run: |
+          DIR="plugins/$SLUG"
+          if [ ! -d "$DIR" ]; then
+            echo "::error::There is no folder $DIR in the repo."
+            exit 1
+          fi
+
+          MAIN=$(grep -l "Plugin Name:" "$DIR"/*.php | head -n 1)
+          if [ -z "$MAIN" ]; then
+            echo "::error::No plugin file with a Plugin Name header in $DIR."
+            exit 1
+          fi
+
+          FILE_VERSION=$(grep -m1 -E '^[[:space:]/*#@]*Version:' "$MAIN" | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          STABLE_TAG=$(grep -m1 -i -E '^Stable tag:' "$DIR/readme.txt" | sed -E 's/^[Ss]table [Tt]ag:[[:space:]]*//' | tr -d '[:space:]')
+
+          echo "Plugin file:       $MAIN"
+          echo "Version in file:   $FILE_VERSION"
+          echo "Readme Stable tag: $STABLE_TAG"
+          echo "Release version:   $VERSION"
+
+          if [ "$FILE_VERSION" != "$VERSION" ] || [ "$STABLE_TAG" != "$VERSION" ]; then
+            echo "::error::Version numbers don't match. The plugin file says $FILE_VERSION and the readme Stable tag says $STABLE_TAG, but the release is $VERSION. Make all three the same and try again."
+            exit 1
+          fi
+
+      - name: Prepare the files for WordPress.org
+        env:
+          SLUG: ${{ steps.which.outputs.slug }}
+        run: |
+          DIR="plugins/$SLUG"
+          BUILD="$RUNNER_TEMP/build/$SLUG"
+          ASSETS="$RUNNER_TEMP/assets/$SLUG"
+          mkdir -p "$BUILD" "$ASSETS"
+
+          # The plugin itself: everything except the images that belong in assets.
+          rsync -a \
+            --exclude 'assets/' \
+            --exclude 'screenshot-*' \
+            --exclude '.DS_Store' \
+            --exclude '.git*' \
+            "$DIR/" "$BUILD/"
+
+          # Banner, icon and screenshots for the WordPress.org plugin page.
+          if [ -d "$DIR/assets" ]; then
+            cp -R "$DIR/assets/." "$ASSETS/"
+          fi
+          find "$DIR" -maxdepth 1 -name 'screenshot-*' -exec cp {} "$ASSETS/" \;
+
+          echo "Plugin files:";   (cd "$BUILD" && find . -type f | sort)
+          echo "Page images:";    (cd "$ASSETS" && find . -type f | sort)
+
+          echo "BUILD_DIR=$BUILD" >> "$GITHUB_ENV"
+          echo "ASSETS_DIR=$ASSETS" >> "$GITHUB_ENV"
+
+      - name: Send to WordPress.org
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+          dry-run: ${{ steps.which.outputs.dry_run }}
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ${{ steps.which.outputs.slug }}
+          VERSION: ${{ steps.which.outputs.version }}
+
+      - name: Attach the zip to the GitHub release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+          ZIP: ${{ steps.deploy.outputs.zip-path }}
+          SLUG: ${{ steps.which.outputs.slug }}
+          VERSION: ${{ steps.which.outputs.version }}
+        run: |
+          cp "$ZIP" "$RUNNER_TEMP/$SLUG.$VERSION.zip"
+          gh release upload "$TAG" "$RUNNER_TEMP/$SLUG.$VERSION.zip" --clobber --repo "$GITHUB_REPOSITORY"
+
+      - name: Keep the zip from a manual run
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.which.outputs.slug }}.${{ steps.which.outputs.version }}
+          path: ${{ steps.deploy.outputs.zip-path }}

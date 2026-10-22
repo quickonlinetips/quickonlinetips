@@ -14,6 +14,8 @@ Adds a META keywords tag to every post, made from its categories and tags, plus 
 
 Quick META Keywords adds a META keywords tag to the head of your posts, filled with the post's own topics. Activate it and every post, new and old, gets a tidy keywords tag with nothing to type.
 
+**Refreshed for 2026.** First released in 2007, Quick META Keywords 2.0 is rebuilt with a settings page and a live preview. Choose categories, tags or both, add your own extra keywords, and see the exact tag before you save. You decide what goes in, far more than the original plugin ever allowed.
+
 You choose what goes in:
 
 * **Categories.** The post's categories become keywords.
@@ -39,23 +41,19 @@ Go to Settings > Quick META Keywords to turn categories and tags on or off and a
 * No database tables, no tracking, no ads, no upsells.
 * Delete the plugin and its settings are removed too.
 
-Made by [Quick Online Tips](https://www.quickonlinetips.com), tech help that works since 2004.
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/
 
-**Are META keywords still useful in 2026?**
+**Where META keywords fit in 2026**
 
-A short, honest answer.
+When this plugin first came out, the keywords tag was a standard part of SEO. Search engines have moved on, and Google and Bing no longer use it for ranking, so think of it as a tidy topic label for each post rather than a ranking tool.
 
-In the early days of the web, search engines such as AltaVista and Infoseek read the META keywords tag to learn what a page was about. Because anyone could type any word into it, the tag was soon stuffed with popular words that had nothing to do with the page. Search engines stopped trusting it.
+It still earns its place:
 
-In September 2009 Google said publicly that it does not use the keywords tag for web ranking. Yahoo dropped it soon after, and Bing has said the tag does not help rankings and that stuffing it can count against a page. That is still true today: **META keywords will not move you up in Google or Bing.** Modern SEO plugins focus on titles, descriptions and structured data instead.
+* **Site search and other tools.** Some site search engines, intranet search tools and content directories read the keywords tag as a list of the page's topics.
+* **A clear topic label.** Every post gets a short, accurate summary of its topics in the page source, taken from the categories and tags you already chose.
+* **Clean and honest by design.** Your real categories and tags keep the tag relevant, with no stuffing.
 
-So why keep the tag? It still has small, practical uses:
-
-* **Site search and other tools.** Some site search engines, intranet search tools, content directories and page-reading tools still pick up the keywords tag as a list of the page's topics.
-* **A clear topic label.** It gives every post a short, accurate summary of its topics in the page source, taken from the categories and tags you already chose.
-* **No harm when done well.** Using your real categories and tags keeps the tag honest and relevant, which is exactly what search engines asked for.
-
-Our advice: keep it short and true to each post. Use categories and tags you would be happy for anyone to read, add only a few extra keywords, and spend your real SEO effort on good titles, descriptions and content. Remember that the tag is public, so anyone can see it in your page source.
+Keep it short and true to each post, and it does its job quietly in the background.
 
 == Installation ==
 
@@ -78,7 +76,7 @@ Posts have categories and tags, which describe each one. Pages and the home page
 
 = Will META keywords improve my Google ranking? =
 
-No. Google and Bing do not use the keywords tag for ranking. See "Are META keywords still useful in 2026?" above for what the tag is still good for.
+No. Google and Bing do not use the keywords tag for ranking. See "Where META keywords fit in 2026" above for what the tag is still good for.
 
 = I use Rank Math, Yoast SEO or another SEO plugin. Is that OK? =
 
@@ -96,7 +94,7 @@ Yes. The `quick_meta_keywords` filter receives the list of keywords and the post
 
 = Where can I send feedback? =
 
-Please use the support forum on WordPress.org, or visit [Quick Online Tips](https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/).
+Please use the support forum on WordPress.org, or the plugin page above.
 
 == Screenshots ==
 
@@ -106,6 +104,7 @@ Please use the support forum on WordPress.org, or visit [Quick Online Tips](http
 == Changelog ==
 
 = 2.0 =
+* 2026 refresh of the plugin first released in 2007, with far more control over the tag.
 * New settings page under Settings > Quick META Keywords.
 * Tags can now be used as keywords, as well as categories.
 * Add your own extra keywords to every post.

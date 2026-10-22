@@ -35,7 +35,7 @@ It works with the standard WordPress Code block and classic `<pre>` code, so the
 * Turn off the colours and the Copy button and it loads no JavaScript at all.
 * No special block or shortcode, so nothing breaks if you ever switch it off. Your code simply goes back to your theme's style.
 
-Made by [Quick Online Tips](https://www.quickonlinetips.com), tech help that works since 2004.
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-code-styler-wordpress-plugin/
 
 == Installation ==
 
@@ -81,6 +81,10 @@ The plugin looks for code in the post content. If your builder stores content el
 = Does it slow my site down? =
 
 No. It adds one small stylesheet and one tiny script, only on pages that show code.
+
+= Where can I send feedback? =
+
+Please use the support forum on WordPress.org, or the plugin page above.
 
 == Screenshots ==
 

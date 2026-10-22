@@ -14,6 +14,8 @@ A simple "Powered by WordPress" line for your site, with or without the version 
 
 Quick WordPress Version adds a small "Powered by WordPress" line to the bottom of your site. Activate it and the line appears, below your theme's footer, with no theme files to edit. It works with classic and block themes.
 
+**Refreshed for 2026.** First released in 2007 as Display WordPress Version, version 2.0 is rebuilt with a settings page and a live preview. Choose the wording, add your own text before and after the line, decide where it shows, and check your WordPress version at a glance. Far more control than the original one-line plugin.
+
 You choose what the line says:
 
 * **Powered by WordPress** (the default, and the safest)
@@ -45,7 +47,9 @@ Every place uses the same choices, so the line always looks the same.
 
 Tiny: no extra stylesheet or JavaScript on your site, and nothing loaded from outside. The settings page code runs only on its own screen.
 
-This plugin was called Display WordPress Version until version 2.0. Sites already using `quickversion()` keep working.
+Sites already using `quickversion()` from the original plugin keep working.
+
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/
 
 == Installation ==
 
@@ -85,7 +89,7 @@ Yes, with the `quick_wp_version_line` filter.
 
 = Where can I send feedback? =
 
-On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/
+Please use the support forum on WordPress.org, or the plugin page above.
 
 == Screenshots ==
 
@@ -97,6 +101,7 @@ On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-v
 == Changelog ==
 
 = 2.0 =
+* 2026 refresh of the plugin first released in 2007, with far more control over the line.
 * New name: Quick WordPress Version (was Display WordPress Version). Same plugin, same address.
 * Settings page shows your installed and latest WordPress version, and whether an update is waiting.
 * Choose the line: Powered by WordPress, main version only, full version, or your own text.

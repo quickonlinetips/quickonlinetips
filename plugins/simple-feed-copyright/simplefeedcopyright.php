@@ -470,12 +470,11 @@ function simple_feed_copyright_admin_assets() {
 		'.qfc-wrap form{max-width:640px;flex:1 1 480px}' .
 		// Each section is a white card with its heading in a bar across the top.
 		'.qfc-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
-		'.qfc-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
-		// Pale heading colours that change from card to card, in a fixed order:
-		// blue, green, yellow, pink, purple, then round again. The preview is always teal.
-		'#qfc-form>.qfc-card:nth-of-type(5n+1)>h2{background:#f0f6fc}#qfc-form>.qfc-card:nth-of-type(5n+2)>h2{background:#edfaef}' .
-		'#qfc-form>.qfc-card:nth-of-type(5n+3)>h2{background:#fcf9e8}#qfc-form>.qfc-card:nth-of-type(5n+4)>h2{background:#fcf0f1}' .
-		'#qfc-form>.qfc-card:nth-of-type(5n)>h2{background:#f5f0fc}.qfc-side>h2{background:#e8f6f5}' .
+		'.qfc-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
+		// Heading colours change from card to card in a fixed order: blue, green, yellow, pink, purple,
+		// then round again (qfc-c1 to qfc-c5, in page order). The preview card is always teal.
+		'.qfc-c1>h2{background:#f0f6fc}.qfc-c2>h2{background:#edfaef}.qfc-c3>h2{background:#fcf9e8}' .
+		'.qfc-c4>h2{background:#fcf0f1}.qfc-c5>h2{background:#f5f0fc}.qfc-preview>h2{background:#e8f6f5}' .
 		'.qfc-card .form-table{margin-top:4px}.qfc-card .form-table th{padding-left:0;width:150px}' .
 		'.qfc-card .qfc-intro{margin:14px 0 0;color:#50575e}.qfc-card .description{margin:6px 0 0}.qfc-card>.description{margin:0 0 14px}' .
 		'.qfc-card textarea{width:100%;font-family:Consolas,Monaco,monospace;font-size:13px}.qfc-sub{margin-top:8px}' .
@@ -679,7 +678,7 @@ function simple_feed_copyright_render_page() {
 			<form method="post" action="options.php" id="qfc-form">
 				<?php settings_fields( 'simple_feed_copyright' ); ?>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-c1">
 					<h2><?php esc_html_e( 'Copyright line', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -751,7 +750,7 @@ function simple_feed_copyright_render_page() {
 					</table>
 				</div>
 
-				<div class="qfc-card" id="qfc-original-card">
+				<div class="qfc-card qfc-c2" id="qfc-original-card">
 					<h2><?php esc_html_e( 'Link to the original article', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -771,7 +770,7 @@ function simple_feed_copyright_render_page() {
 					</table>
 				</div>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-c3">
 					<h2><?php esc_html_e( 'Write your own notice', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -796,7 +795,7 @@ function simple_feed_copyright_render_page() {
 					</p>
 				</div>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-c4">
 					<h2><?php esc_html_e( 'Extras below the notice', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -832,7 +831,7 @@ function simple_feed_copyright_render_page() {
 					</table>
 				</div>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-c5">
 					<h2><?php esc_html_e( 'Where it appears', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -868,7 +867,7 @@ function simple_feed_copyright_render_page() {
 				<?php submit_button(); ?>
 			</form>
 
-			<div class="qfc-side qfc-card">
+			<div class="qfc-side qfc-card qfc-preview">
 				<h2><?php esc_html_e( 'Preview', 'simple-feed-copyright' ); ?></h2>
 				<div class="qfc-reader">
 					<div class="qfc-from"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></div>

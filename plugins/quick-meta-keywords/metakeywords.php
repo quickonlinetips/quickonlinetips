@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Quick META Keywords
- * Plugin URI:        https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-meta-keywords
+ * Plugin URI:        https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/
  * Description:       Adds a META keywords tag to your posts, made from their categories and tags, plus any keywords you add. Choose what goes in and see a live preview under Settings > Quick META Keywords.
  * Version:           2.0
  * Requires at least: 6.0

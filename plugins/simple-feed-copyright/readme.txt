@@ -14,6 +14,8 @@ Adds a copyright notice and a link to the original article at the end of every p
 
 Your RSS feed travels far beyond your site. Feed readers show it, and scraper sites and autoblogs often copy it word for word onto their own pages. Quick Feed Copyright adds a short notice to the end of every post in your feed, so wherever your posts end up, they still say who wrote them and link back to the original.
 
+**Refreshed for 2026.** First released in 2007 as Simple Feed Copyright, version 2.0 is rebuilt with a settings page and a live preview. Choose every part of the notice, change the wording, write your own, and add extras below it. Far more control than the original fixed notice, and more useful than ever now that feeds are copied more widely.
+
 Out of the box, every post in your feed ends like this:
 
 *Original article: Title of the Post* (linked to the post)
@@ -49,6 +51,8 @@ Prefer your own words? Write the whole notice yourself, with HTML and handy plac
 
 Formerly called Simple Feed Copyright. Updating keeps your feed exactly as it was until you change a setting.
 
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/
+
 == Installation ==
 
 1. In your dashboard, go to Plugins > Add New, search for **Quick Feed Copyright**, then click Install and Activate.
@@ -83,7 +87,7 @@ Yes. Use the `simple_feed_copyright_footer` filter, which receives the notice HT
 
 = Where can I send feedback about this plugin? =
 
-https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/
+Please use the support forum on WordPress.org, or the plugin page above.
 
 == Screenshots ==
 
@@ -94,6 +98,7 @@ https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/
 == Changelog ==
 
 = 2.0 =
+* 2026 refresh of the plugin first released in 2007, with far more control over the notice.
 * New name: Quick Feed Copyright, formerly Simple Feed Copyright.
 * New settings page with a live preview, under Settings > Quick Feed Copyright.
 * Choose the copyright symbol, year (including the year each post was published, or a range), name and rights wording.

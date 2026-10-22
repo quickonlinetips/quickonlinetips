@@ -21,7 +21,7 @@ You choose what the line says:
 * **Powered by WordPress 7.1.3**, the full version
 * **Your own text**, such as "Proudly running WordPress {version}", or anything else you like
 
-Add extra text after the line too, for footer credits, a copyright or a link to your host.
+Add your own text before or after the line too, such as a copyright or a link to your host. A bullet joins them up by itself, or choose a line, dash, dot or just a space.
 
 **Know your version, keep it private**
 
@@ -91,7 +91,7 @@ On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-v
 
 1. Settings show your installed and latest WordPress version, and what the line says, with a live preview.
 2. The line appears by itself at the bottom of every page. Optional other ways to add it are kept separate.
-3. Use your own text and add extra text such as credits or a copyright.
+3. Add text before and after the line, joined with a bullet or another mark.
 4. The line at the bottom of a site using the Twenty Twenty-Five theme.
 
 == Changelog ==
@@ -100,7 +100,7 @@ On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-v
 * New name: Quick WordPress Version (was Display WordPress Version). Same plugin, same address.
 * Settings page shows your installed and latest WordPress version, and whether an update is waiting.
 * Choose the line: Powered by WordPress, main version only, full version, or your own text.
-* Extra text box for credits, a copyright or links.
+* Text before and after the line, joined with a bullet (or a line, dash, dot or space) added by itself.
 * While a WordPress update is waiting, the version number is hidden from visitors until you update.
 * The line can now be added automatically at the bottom of every page, with no theme files to edit.
 * New `[quick_wp_version]` shortcode and widget.

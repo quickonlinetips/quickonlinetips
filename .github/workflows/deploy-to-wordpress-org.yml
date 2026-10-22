@@ -155,8 +155,9 @@ jobs:
           generate-zip: true
           dry-run: ${{ steps.which.outputs.dry_run }}
         env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          # A test run sends nothing, so it can run before the login is added.
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME || (steps.which.outputs.dry_run == 'true' && 'test-only' || '') }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD || (steps.which.outputs.dry_run == 'true' && 'test-only' || '') }}
           SLUG: ${{ steps.which.outputs.slug }}
           VERSION: ${{ steps.which.outputs.version }}
 

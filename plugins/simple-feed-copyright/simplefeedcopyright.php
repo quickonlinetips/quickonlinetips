@@ -471,6 +471,10 @@ function simple_feed_copyright_admin_assets() {
 		// Each section is a white card with its heading in a bar across the top.
 		'.qfc-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
 		'.qfc-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
+		// Pale heading colours, the same tints WordPress uses for its notices:
+		// blue for the main settings, yellow for writing your own, green for extras, pink for where it appears.
+		'.qfc-card.qfc-blue>h2{background:#f0f6fc}.qfc-card.qfc-yellow>h2{background:#fcf9e8}' .
+		'.qfc-card.qfc-green>h2{background:#edfaef}.qfc-card.qfc-pink>h2{background:#fcf0f1}' .
 		'.qfc-card .form-table{margin-top:4px}.qfc-card .form-table th{padding-left:0;width:150px}' .
 		'.qfc-card .qfc-intro{margin:14px 0 0;color:#50575e}.qfc-card .description{margin:6px 0 0}.qfc-card>.description{margin:0 0 14px}' .
 		'.qfc-card textarea{width:100%;font-family:Consolas,Monaco,monospace;font-size:13px}.qfc-sub{margin-top:8px}' .
@@ -674,7 +678,7 @@ function simple_feed_copyright_render_page() {
 			<form method="post" action="options.php" id="qfc-form">
 				<?php settings_fields( 'simple_feed_copyright' ); ?>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-blue">
 					<h2><?php esc_html_e( 'Copyright line', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -746,7 +750,7 @@ function simple_feed_copyright_render_page() {
 					</table>
 				</div>
 
-				<div class="qfc-card" id="qfc-original-card">
+				<div class="qfc-card qfc-blue" id="qfc-original-card">
 					<h2><?php esc_html_e( 'Link to the original article', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -766,7 +770,7 @@ function simple_feed_copyright_render_page() {
 					</table>
 				</div>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-yellow">
 					<h2><?php esc_html_e( 'Write your own notice', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -791,7 +795,7 @@ function simple_feed_copyright_render_page() {
 					</p>
 				</div>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-green">
 					<h2><?php esc_html_e( 'Extras below the notice', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>
@@ -827,7 +831,7 @@ function simple_feed_copyright_render_page() {
 					</table>
 				</div>
 
-				<div class="qfc-card">
+				<div class="qfc-card qfc-pink">
 					<h2><?php esc_html_e( 'Where it appears', 'simple-feed-copyright' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr>

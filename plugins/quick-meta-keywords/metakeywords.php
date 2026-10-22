@@ -266,7 +266,9 @@ function quick_meta_keywords_admin_assets() {
 	wp_enqueue_style( 'quick-meta-keywords-admin' );
 	wp_add_inline_style(
 		'quick-meta-keywords-admin',
-		'.qmk-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}' .
+		// Wrap in reverse: side by side, the preview sits on the right; when the screen is too narrow
+		// for both, it moves above the settings instead of below. (flex-end keeps both at the top.)
+		'.qmk-wrap{display:flex;flex-wrap:wrap-reverse;gap:32px;align-items:flex-end}' .
 		'.qmk-wrap form{max-width:640px;flex:1 1 480px}' .
 		// Each section is a white card with its heading in a bar across the top.
 		'.qmk-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
@@ -287,7 +289,7 @@ function quick_meta_keywords_admin_assets() {
 		'.qmk-card .qmk-intro{margin:14px 0 0;color:#50575e}.qmk-card .description{margin:6px 0 0}' .
 		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.
 		'.qmk-side{flex:1 1 400px;max-width:640px;position:sticky;top:46px;padding-bottom:20px;margin-bottom:0}' .
-		'@media (max-width:1279px){.qmk-wrap{gap:20px}.qmk-side{order:-1;position:static}}' .
+		'@media (max-width:1139px){.qmk-wrap{gap:20px}.qmk-side{position:static}}' .
 		'.qmk-note{margin-top:12px!important}' .
 		'#qmk-extra{width:100%}' .
 		'#qmk-post{width:100%;max-width:100%}.qmk-legend{margin:0;color:#1d2327}' .

@@ -504,7 +504,9 @@ function quick_wp_version_admin_assets() {
 	wp_enqueue_style( 'quick-wp-version-admin' );
 	wp_add_inline_style(
 		'quick-wp-version-admin',
-		'.qwv-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}' .
+		// Wrap in reverse: side by side, the preview sits on the right; when the screen is too narrow
+		// for both, it moves above the settings instead of below. (flex-end keeps both at the top.)
+		'.qwv-wrap{display:flex;flex-wrap:wrap-reverse;gap:32px;align-items:flex-end}' .
 		'.qwv-main{max-width:640px;flex:1 1 480px}' .
 		'.qwv-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 8px}' .
 		'.qwv-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
@@ -547,7 +549,7 @@ function quick_wp_version_admin_assets() {
 		'.qwv-middle{padding:7px 12px;background:#f6f7f7;border:1px dashed #c3c4c7;border-radius:4px;color:#1d2327}.qwv-middle a{pointer-events:none}' .
 		'.qwv-tag{position:absolute;top:-11px;left:12px;padding:1px 9px;border-radius:10px;background:#2271b1;color:#fff;font-size:11px;font-weight:600;line-height:18px}' .
 		'#qwv-where{margin:12px 0 0}' .
-		'@media (max-width:1279px){.qwv-wrap{gap:20px}.qwv-side{order:-1;position:static}}'
+		'@media (max-width:1139px){.qwv-wrap{gap:20px}.qwv-side{position:static}}'
 	);
 
 	// Live preview. It only shows how the line will look; nothing is saved until Save Changes.

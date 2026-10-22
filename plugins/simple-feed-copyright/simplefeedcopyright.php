@@ -742,7 +742,7 @@ function simple_feed_copyright_render_page() {
 									<option value="none" <?php selected( $s['rights'], 'none' ); ?>><?php esc_html_e( 'Nothing', 'simple-feed-copyright' ); ?></option>
 								</select>
 								<div id="qfc-custom-rights" class="qfc-sub">
-									<input type="text" class="large-text" name="<?php echo $f( 'custom_rights' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" value="<?php echo esc_attr( $s['custom_rights'] ); ?>" placeholder="<?php esc_attr_e( 'Licensed under CC BY 4.0.', 'simple-feed-copyright' ); ?>" aria-label="<?php esc_attr_e( 'Rights wording', 'simple-feed-copyright' ); ?>" />
+									<input type="text" class="large-text" name="<?php echo $f( 'custom_rights' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" value="<?php echo esc_attr( $s['custom_rights'] ); ?>" placeholder="<?php esc_attr_e( 'For example: Licensed under CC BY 4.0.', 'simple-feed-copyright' ); ?>" aria-label="<?php esc_attr_e( 'Rights wording', 'simple-feed-copyright' ); ?>" />
 									<p class="description"><?php esc_html_e( 'Links are allowed, for example to a Creative Commons licence.', 'simple-feed-copyright' ); ?></p>
 								</div>
 							</td>

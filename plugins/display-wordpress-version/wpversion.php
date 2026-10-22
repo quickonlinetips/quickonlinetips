@@ -3,7 +3,7 @@
  * Plugin Name:       Quick WordPress Version
  * Plugin URI:        https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/
  * Description:       A simple "Powered by WordPress" line for your site, with or without the version number. Shows your installed and latest WordPress version in Settings.
- * Version:           1.4
+ * Version:           2.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Quick Online Tips

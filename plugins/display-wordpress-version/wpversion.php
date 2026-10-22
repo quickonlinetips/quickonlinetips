@@ -52,7 +52,10 @@ function quick_wp_version_show_choices() {
  * The default is Powered by WordPress with no number: showing the exact
  * version tells everyone, including attackers, what your site runs.
  *
- * @return array{show: string, custom: string, link: bool, extra: string}
+ * The line is added at the bottom of every page automatically,
+ * centred, until the site owner turns that off.
+ *
+ * @return array{show: string, custom: string, link: bool, extra: string, footer: bool, align: string}
  */
 function quick_wp_version_settings() {
 	$saved = get_option( QUICK_WP_VERSION_OPTION, array() );
@@ -63,6 +66,8 @@ function quick_wp_version_settings() {
 		'custom' => isset( $saved['custom'] ) ? (string) $saved['custom'] : '',
 		'link'   => isset( $saved['link'] ) ? (bool) $saved['link'] : true,
 		'extra'  => isset( $saved['extra'] ) ? (string) $saved['extra'] : '',
+		'footer' => isset( $saved['footer'] ) ? (bool) $saved['footer'] : true,
+		'align'  => isset( $saved['align'] ) && in_array( $saved['align'], array( 'left', 'center', 'right' ), true ) ? $saved['align'] : 'center',
 	);
 }
 
@@ -82,6 +87,8 @@ function quick_wp_version_sanitize( $input ) {
 		'custom' => isset( $input['custom'] ) ? trim( wp_kses_post( wp_unslash( $input['custom'] ) ) ) : '',
 		'link'   => ! empty( $input['link'] ),
 		'extra'  => isset( $input['extra'] ) ? trim( wp_kses_post( wp_unslash( $input['extra'] ) ) ) : '',
+		'footer' => ! empty( $input['footer'] ),
+		'align'  => isset( $input['align'] ) && in_array( $input['align'], array( 'left', 'center', 'right' ), true ) ? $input['align'] : 'center',
 	);
 }
 
@@ -145,12 +152,55 @@ function quick_wp_version_line( $settings = null ) {
 }
 
 /**
+ * Remember whether the theme has already printed the line with
+ * quickversion() on this page, so the automatic line is not added twice.
+ *
+ * @param bool $printed Pass true to note that the line was printed.
+ * @return bool
+ */
+function quick_wp_version_printed( $printed = false ) {
+	static $done = false;
+
+	if ( $printed ) {
+		$done = true;
+	}
+
+	return $done;
+}
+
+/**
  * Old template tag, kept so themes that already call it keep working.
  * Prints the line, using the choices in Settings > Quick WordPress Version.
+ * When a theme uses it, the automatic line at the bottom is skipped.
  */
 function quickversion() {
+	quick_wp_version_printed( true );
 	echo quick_wp_version_line(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts.
 }
+
+/* ------------------------------------------------------------------ *
+ * Automatic line at the very bottom of every page
+ * ------------------------------------------------------------------ */
+
+/**
+ * Add the line as a new line at the very bottom of the page, below the
+ * theme's own footer. Works with any theme, classic or block, with no
+ * theme files to edit. Small, plain text that takes the theme's colours.
+ */
+function quick_wp_version_footer() {
+	$settings = quick_wp_version_settings();
+
+	if ( ! $settings['footer'] || quick_wp_version_printed() ) {
+		return;
+	}
+
+	printf(
+		'<p class="quick-wp-version" style="margin:0;padding:12px 16px;font-size:13px;text-align:%1$s">%2$s</p>' . "\n",
+		esc_attr( $settings['align'] ),
+		quick_wp_version_line( $settings ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts.
+	);
+}
+add_action( 'wp_footer', 'quick_wp_version_footer', 100 );
 
 /* ------------------------------------------------------------------ *
  * Installed and latest WordPress version
@@ -444,6 +494,39 @@ function quick_wp_version_render_page() {
 				</table>
 				<p style="margin:0"><strong><?php esc_html_e( 'Preview', 'display-wordpress-version' ); ?></strong></p>
 				<div id="qwv-preview"><?php echo quick_wp_version_line( $settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts. ?></div>
+			</div>
+
+			<div class="qwv-card">
+				<h2><?php esc_html_e( 'Where to show it', 'display-wordpress-version' ); ?></h2>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Bottom of every page', 'display-wordpress-version' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="<?php echo esc_attr( $name . '[footer]' ); ?>" value="1" <?php checked( $settings['footer'] ); ?>>
+								<?php esc_html_e( 'Add the line automatically, below your theme\'s footer', 'display-wordpress-version' ); ?>
+							</label>
+							<p class="description"><?php esc_html_e( 'Works with any theme. No theme files to edit.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="qwv-align"><?php esc_html_e( 'Line position', 'display-wordpress-version' ); ?></label></th>
+						<td>
+							<select id="qwv-align" name="<?php echo esc_attr( $name . '[align]' ); ?>">
+								<option value="center" <?php selected( $settings['align'], 'center' ); ?>><?php esc_html_e( 'Centre', 'display-wordpress-version' ); ?></option>
+								<option value="left" <?php selected( $settings['align'], 'left' ); ?>><?php esc_html_e( 'Left', 'display-wordpress-version' ); ?></option>
+								<option value="right" <?php selected( $settings['align'], 'right' ); ?>><?php esc_html_e( 'Right', 'display-wordpress-version' ); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Theme template', 'display-wordpress-version' ); ?></th>
+						<td>
+							<code>&lt;?php if ( function_exists( 'quickversion' ) ) { quickversion(); } ?&gt;</code>
+							<p class="description"><?php esc_html_e( 'For theme builders: prints the line exactly where you put it. Pages that use it skip the automatic line.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+				</table>
 			</div>
 
 			<?php submit_button(); ?>

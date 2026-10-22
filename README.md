@@ -33,7 +33,7 @@
 
 | Plugin | Download | About | Code |
 |---|---|---|---|
-| **Simple Feed Copyright** | [WordPress.org](https://wordpress.org/plugins/simple-feed-copyright/) | [Plugin page](https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/) | [plugins/simple-feed-copyright](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/simple-feed-copyright) |
+| **Quick Feed Copyright** | [WordPress.org](https://wordpress.org/plugins/simple-feed-copyright/) | [Plugin page](https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/) | [plugins/simple-feed-copyright](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/simple-feed-copyright) |
 | **Quick META Keywords** | [WordPress.org](https://wordpress.org/plugins/quick-meta-keywords/) | [Plugin page](https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/) | [plugins/quick-meta-keywords](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-meta-keywords) |
 | **Display WordPress Version** | [WordPress.org](https://wordpress.org/plugins/display-wordpress-version/) | [Plugin page](https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/) | [plugins/display-wordpress-version](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/display-wordpress-version) |
 | **Quick Code Styler** 🆕 | Coming soon | Code blocks with syntax colours and a Copy button | [plugins/quick-code-styler](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-code-styler) |

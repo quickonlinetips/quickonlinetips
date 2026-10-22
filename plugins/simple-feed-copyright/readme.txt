@@ -17,6 +17,7 @@ Your RSS feed travels far beyond your site. Feed readers show it, and scraper si
 Out of the box, every post in your feed ends like this:
 
 *Original article: Title of the Post* (linked to the post)
+
 *© 2026 Your Blog Name. All Rights Reserved.* (your blog name linked to your site)
 
 Those links tell readers and search engines where the article came from, even on a site that copied it.

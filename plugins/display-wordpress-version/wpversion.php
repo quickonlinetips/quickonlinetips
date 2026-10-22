@@ -731,7 +731,7 @@ function quick_wp_version_render_page() {
 										<input type="radio" id="qwv-show-custom" name="<?php echo esc_attr( $name . '[show]' ); ?>" value="custom" <?php checked( $settings['show'], 'custom' ); ?>>
 										<?php esc_html_e( 'My own text:', 'display-wordpress-version' ); ?>
 									</label>
-									<input type="text" id="qwv-custom-text" class="regular-text" name="<?php echo esc_attr( $name . '[custom]' ); ?>" value="<?php echo esc_attr( $settings['custom'] ); ?>" placeholder="<?php esc_attr_e( 'Proudly built with WordPress', 'display-wordpress-version' ); ?>">
+									<input type="text" id="qwv-custom-text" class="regular-text" name="<?php echo esc_attr( $name . '[custom]' ); ?>" value="<?php echo esc_attr( $settings['custom'] ); ?>" placeholder="<?php esc_attr_e( 'For example: Proudly built with WordPress', 'display-wordpress-version' ); ?>">
 									<p class="description">
 										<?php
 										/* translators: 1: {version} placeholder, 2: installed version, 3: {major} placeholder, 4: main version number */
@@ -775,13 +775,13 @@ function quick_wp_version_render_page() {
 					<tr>
 						<th scope="row"><label for="qwv-before"><?php esc_html_e( 'Text before', 'display-wordpress-version' ); ?></label></th>
 						<td>
-							<input type="text" id="qwv-before" class="large-text" name="<?php echo esc_attr( $name . '[before]' ); ?>" value="<?php echo esc_attr( $settings['before'] ); ?>" placeholder="<?php echo esc_attr( '© ' . gmdate( 'Y' ) . ' ' . get_bloginfo( 'name' ) ); ?>">
+							<input type="text" id="qwv-before" class="large-text" name="<?php echo esc_attr( $name . '[before]' ); ?>" value="<?php echo esc_attr( $settings['before'] ); ?>" placeholder="<?php echo esc_attr( __( 'For example:', 'display-wordpress-version' ) . ' © ' . gmdate( 'Y' ) . ' ' . get_bloginfo( 'name' ) ); ?>">
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="qwv-after"><?php esc_html_e( 'Text after', 'display-wordpress-version' ); ?></label></th>
 						<td>
-							<input type="text" id="qwv-after" class="large-text" name="<?php echo esc_attr( $name . '[after]' ); ?>" value="<?php echo esc_attr( $settings['after'] ); ?>" placeholder="<?php esc_attr_e( 'Hosted by …', 'display-wordpress-version' ); ?>">
+							<input type="text" id="qwv-after" class="large-text" name="<?php echo esc_attr( $name . '[after]' ); ?>" value="<?php echo esc_attr( $settings['after'] ); ?>" placeholder="<?php esc_attr_e( 'For example: Hosted by …', 'display-wordpress-version' ); ?>">
 							<p class="description"><?php esc_html_e( 'Links and simple HTML are fine in both boxes.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>

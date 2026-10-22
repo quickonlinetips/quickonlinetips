@@ -151,3 +151,303 @@ function quick_wp_version_line( $settings = null ) {
 function quickversion() {
 	echo quick_wp_version_line(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts.
 }
+
+/* ------------------------------------------------------------------ *
+ * Installed and latest WordPress version
+ * ------------------------------------------------------------------ */
+
+/**
+ * The newest WordPress version, as last reported by WordPress.org.
+ *
+ * WordPress already checks for updates twice a day and remembers the
+ * answer, so this normally costs nothing. Only if there is no answer
+ * yet does it ask WordPress.org, and only on the settings page.
+ *
+ * @return string Version like 7.1.3, or empty if WordPress.org could not be reached.
+ */
+function quick_wp_version_latest() {
+	require_once ABSPATH . 'wp-admin/includes/update.php';
+
+	$updates = get_core_updates( array( 'dismissed' => true ) );
+
+	if ( ! is_array( $updates ) && function_exists( 'wp_version_check' ) ) {
+		wp_version_check();
+		$updates = get_core_updates( array( 'dismissed' => true ) );
+	}
+
+	$latest = '';
+
+	foreach ( (array) $updates as $update ) {
+		if (
+			isset( $update->response, $update->current )
+			&& in_array( $update->response, array( 'upgrade', 'latest' ), true )
+			&& ( '' === $latest || version_compare( $update->current, $latest, '>' ) )
+		) {
+			$latest = $update->current;
+		}
+	}
+
+	return $latest;
+}
+
+/* ------------------------------------------------------------------ *
+ * Settings page: Settings > Quick WordPress Version
+ * ------------------------------------------------------------------ */
+
+/**
+ * Register the one option that holds all settings.
+ */
+function quick_wp_version_register_setting() {
+	register_setting(
+		'quick_wp_version',
+		QUICK_WP_VERSION_OPTION,
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'quick_wp_version_sanitize',
+		)
+	);
+}
+add_action( 'admin_init', 'quick_wp_version_register_setting' );
+
+/**
+ * Add the page to the Settings menu.
+ */
+function quick_wp_version_add_page() {
+	$hook = add_options_page(
+		__( 'Quick WordPress Version', 'display-wordpress-version' ),
+		__( 'Quick WordPress Version', 'display-wordpress-version' ),
+		'manage_options',
+		'quick-wp-version',
+		'quick_wp_version_render_page'
+	);
+
+	add_action( 'admin_enqueue_scripts', function ( $current ) use ( $hook ) {
+		if ( $current === $hook ) {
+			quick_wp_version_admin_assets();
+		}
+	} );
+}
+add_action( 'admin_menu', 'quick_wp_version_add_page' );
+
+/**
+ * A Settings link next to Deactivate on the Plugins page.
+ *
+ * @param string[] $links Links WordPress shows for this plugin.
+ * @return string[]
+ */
+function quick_wp_version_action_links( $links ) {
+	array_unshift(
+		$links,
+		'<a href="' . esc_url( admin_url( 'options-general.php?page=quick-wp-version' ) ) . '">' . esc_html__( 'Settings', 'display-wordpress-version' ) . '</a>'
+	);
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'quick_wp_version_action_links' );
+
+/**
+ * On the settings page only: a few lines of CSS for the cards,
+ * and a small script so the preview follows the choices as you click.
+ */
+function quick_wp_version_admin_assets() {
+	wp_register_style( 'quick-wp-version-admin', false, array(), '2.0' );
+	wp_enqueue_style( 'quick-wp-version-admin' );
+	wp_add_inline_style(
+		'quick-wp-version-admin',
+		'.qwv-wrap{max-width:720px}' .
+		'.qwv-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 8px}' .
+		'.qwv-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
+		'.qwv-card .form-table{margin-top:4px}.qwv-card .form-table th{padding-left:0;width:170px}' .
+		'.qwv-versions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 12px}' .
+		'.qwv-versions div{flex:1 1 150px;border:1px solid #dcdcde;border-radius:4px;padding:10px 14px}' .
+		'.qwv-versions span{display:block;color:#50575e;font-size:12px}.qwv-versions strong{font-size:22px;line-height:1.5}' .
+		'.qwv-status{display:inline-block;border-radius:12px;padding:2px 10px;font-weight:600;font-size:12px;margin-right:6px}' .
+		'.qwv-ok{background:#edfaef;color:#00650d}.qwv-old{background:#fcf0e1;color:#8a4a00}.qwv-unknown{background:#f0f0f1;color:#50575e}' .
+		'.qwv-card .form-table td fieldset label{display:block;margin:0 0 10px;line-height:1.6}.qwv-card fieldset code{font-size:12px}' .
+		'#qwv-custom-text{margin:4px 0 0 24px;width:calc(100% - 24px)}#qwv-custom-wrap .description{margin-left:24px}' .
+		'#qwv-preview{margin:16px 0 12px;padding:14px 16px;background:#f6f7f7;border:1px dashed #c3c4c7;border-radius:4px;font-size:14px}'
+	);
+
+	// Live preview. It only shows how the line will look; nothing is saved until Save Changes.
+	$script = <<<'JS'
+document.addEventListener( 'DOMContentLoaded', function () {
+	var form = document.getElementById( 'qwv-form' );
+	var preview = document.getElementById( 'qwv-preview' );
+	if ( ! form || ! preview ) {
+		return;
+	}
+	var data = window.qwvPreview;
+
+	function value( name ) {
+		var field = form.querySelector( '[name="quick_wp_version[' + name + ']"]:checked' ) || form.querySelector( '[name="quick_wp_version[' + name + ']"]' );
+		return field ? ( field.type === 'checkbox' && ! field.checked ? '' : field.value ) : '';
+	}
+
+	function update() {
+		var show = value( 'show' );
+		var wp = value( 'link' ) ? '<a href="https://wordpress.org/">WordPress</a>' : 'WordPress';
+		var custom = value( 'custom' ).trim();
+		var line = data.plain.replace( '%s', wp );
+
+		if ( show === 'major' || show === 'full' ) {
+			line = data.number.replace( '%1$s', wp ).replace( '%2$s', show === 'major' ? data.major : data.version );
+		} else if ( show === 'custom' && custom ) {
+			line = custom.split( '{version}' ).join( data.version ).split( '{major}' ).join( data.major );
+		}
+
+		var extra = value( 'extra' ).trim();
+		preview.innerHTML = line + ( extra ? ' ' + extra : '' );
+		document.getElementById( 'qwv-custom-wrap' ).style.opacity = show === 'custom' ? 1 : 0.6;
+	}
+
+	form.addEventListener( 'input', update );
+	form.addEventListener( 'change', update );
+	update();
+} );
+JS;
+
+	$version = (string) get_bloginfo( 'version' );
+
+	wp_register_script( 'quick-wp-version-admin', false, array(), '2.0', true );
+	wp_enqueue_script( 'quick-wp-version-admin' );
+	wp_add_inline_script(
+		'quick-wp-version-admin',
+		'window.qwvPreview = ' . wp_json_encode(
+			array(
+				'version' => $version,
+				'major'   => strtok( $version, '.' ),
+				/* translators: %s: the word WordPress */
+				'plain'   => __( 'Powered by %s', 'display-wordpress-version' ),
+				/* translators: 1: the word WordPress, 2: version number */
+				'number'  => __( 'Powered by %1$s %2$s', 'display-wordpress-version' ),
+			)
+		) . ';' . $script
+	);
+}
+
+/**
+ * The settings page itself.
+ */
+function quick_wp_version_render_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$settings  = quick_wp_version_settings();
+	$name      = QUICK_WP_VERSION_OPTION;
+	$installed = (string) get_bloginfo( 'version' );
+	$major     = strtok( $installed, '.' );
+	$latest    = quick_wp_version_latest();
+
+	$examples = array(
+		/* translators: %s: the word WordPress */
+		'plain' => sprintf( __( 'Powered by %s', 'display-wordpress-version' ), 'WordPress' ),
+		/* translators: 1: the word WordPress, 2: version number */
+		'major' => sprintf( __( 'Powered by %1$s %2$s', 'display-wordpress-version' ), 'WordPress', $major ),
+		/* translators: 1: the word WordPress, 2: version number */
+		'full'  => sprintf( __( 'Powered by %1$s %2$s', 'display-wordpress-version' ), 'WordPress', $installed ),
+	);
+	?>
+	<div class="wrap qwv-wrap">
+		<h1><?php esc_html_e( 'Quick WordPress Version', 'display-wordpress-version' ); ?></h1>
+
+		<div class="qwv-card">
+			<h2><?php esc_html_e( 'Your WordPress', 'display-wordpress-version' ); ?></h2>
+			<div class="qwv-versions">
+				<div>
+					<span><?php esc_html_e( 'Installed on this site', 'display-wordpress-version' ); ?></span>
+					<strong><?php echo esc_html( $installed ); ?></strong>
+				</div>
+				<div>
+					<span><?php esc_html_e( 'Latest from WordPress.org', 'display-wordpress-version' ); ?></span>
+					<strong><?php echo esc_html( $latest ? $latest : '—' ); ?></strong>
+				</div>
+			</div>
+			<p>
+				<?php if ( '' === $latest ) : ?>
+					<span class="qwv-status qwv-unknown"><?php esc_html_e( 'Not checked', 'display-wordpress-version' ); ?></span>
+					<?php esc_html_e( 'WordPress.org could not be reached just now.', 'display-wordpress-version' ); ?>
+					<?php if ( current_user_can( 'update_core' ) ) : ?>
+						<a href="<?php echo esc_url( admin_url( 'update-core.php?force-check=1' ) ); ?>"><?php esc_html_e( 'Check again', 'display-wordpress-version' ); ?></a>
+					<?php endif; ?>
+				<?php elseif ( version_compare( $installed, $latest, '>=' ) ) : ?>
+					<span class="qwv-status qwv-ok"><?php esc_html_e( 'Up to date', 'display-wordpress-version' ); ?></span>
+					<?php esc_html_e( 'You have the latest WordPress.', 'display-wordpress-version' ); ?>
+				<?php else : ?>
+					<span class="qwv-status qwv-old"><?php esc_html_e( 'Update available', 'display-wordpress-version' ); ?></span>
+					<?php
+					/* translators: %s: newest WordPress version */
+					echo esc_html( sprintf( __( 'WordPress %s is out. Updating keeps your site safe.', 'display-wordpress-version' ), $latest ) );
+					?>
+					<?php if ( current_user_can( 'update_core' ) ) : ?>
+						<a href="<?php echo esc_url( admin_url( 'update-core.php' ) ); ?>"><?php esc_html_e( 'Update now', 'display-wordpress-version' ); ?></a>
+					<?php endif; ?>
+				<?php endif; ?>
+			</p>
+		</div>
+
+		<form id="qwv-form" method="post" action="options.php">
+			<?php settings_fields( 'quick_wp_version' ); ?>
+
+			<div class="qwv-card">
+				<h2><?php esc_html_e( 'What to show', 'display-wordpress-version' ); ?></h2>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Line', 'display-wordpress-version' ); ?></th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text"><?php esc_html_e( 'Line', 'display-wordpress-version' ); ?></legend>
+								<label>
+									<input type="radio" name="<?php echo esc_attr( $name . '[show]' ); ?>" value="plain" <?php checked( $settings['show'], 'plain' ); ?>>
+									<?php echo esc_html( $examples['plain'] ); ?>
+									<em>&mdash; <?php esc_html_e( 'safest, keeps your version private', 'display-wordpress-version' ); ?></em>
+								</label>
+								<label>
+									<input type="radio" name="<?php echo esc_attr( $name . '[show]' ); ?>" value="major" <?php checked( $settings['show'], 'major' ); ?>>
+									<?php echo esc_html( $examples['major'] ); ?>
+								</label>
+								<label>
+									<input type="radio" name="<?php echo esc_attr( $name . '[show]' ); ?>" value="full" <?php checked( $settings['show'], 'full' ); ?>>
+									<?php echo esc_html( $examples['full'] ); ?>
+								</label>
+								<div id="qwv-custom-wrap">
+									<label for="qwv-show-custom" style="margin-bottom:0">
+										<input type="radio" id="qwv-show-custom" name="<?php echo esc_attr( $name . '[show]' ); ?>" value="custom" <?php checked( $settings['show'], 'custom' ); ?>>
+										<?php esc_html_e( 'My own text:', 'display-wordpress-version' ); ?>
+									</label>
+									<input type="text" id="qwv-custom-text" class="regular-text" name="<?php echo esc_attr( $name . '[custom]' ); ?>" value="<?php echo esc_attr( $settings['custom'] ); ?>" placeholder="<?php esc_attr_e( 'Proudly built with WordPress', 'display-wordpress-version' ); ?>">
+									<p class="description">
+										<?php
+										/* translators: 1: {version} placeholder, 2: installed version, 3: {major} placeholder, 4: main version number */
+										printf( esc_html__( 'Use %1$s for %2$s and %3$s for %4$s. Links and simple HTML are fine.', 'display-wordpress-version' ), '<code>{version}</code>', esc_html( $installed ), '<code>{major}</code>', esc_html( $major ) );
+										?>
+									</p>
+								</div>
+							</fieldset>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Link', 'display-wordpress-version' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="<?php echo esc_attr( $name . '[link]' ); ?>" value="1" <?php checked( $settings['link'] ); ?>>
+								<?php esc_html_e( 'Link the word WordPress to WordPress.org', 'display-wordpress-version' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="qwv-extra"><?php esc_html_e( 'Extra text', 'display-wordpress-version' ); ?></label></th>
+						<td>
+							<textarea id="qwv-extra" class="large-text" rows="2" name="<?php echo esc_attr( $name . '[extra]' ); ?>" placeholder="<?php esc_attr_e( '| Theme by … | © My Site', 'display-wordpress-version' ); ?>"><?php echo esc_textarea( $settings['extra'] ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'Optional. Added after the line, for credits, a copyright or a link. Links and simple HTML are fine.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+				</table>
+				<p style="margin:0"><strong><?php esc_html_e( 'Preview', 'display-wordpress-version' ); ?></strong></p>
+				<div id="qwv-preview"><?php echo quick_wp_version_line( $settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts. ?></div>
+			</div>
+
+			<?php submit_button(); ?>
+		</form>
+	</div>
+	<?php
+}

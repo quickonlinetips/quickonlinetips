@@ -203,6 +203,105 @@ function quick_wp_version_footer() {
 add_action( 'wp_footer', 'quick_wp_version_footer', 100 );
 
 /* ------------------------------------------------------------------ *
+ * Anywhere else: shortcode and widget
+ * ------------------------------------------------------------------ */
+
+/**
+ * [quick_wp_version] shortcode, for posts, pages, the Shortcode block
+ * and block theme footers.
+ *
+ * @return string
+ */
+function quick_wp_version_shortcode() {
+	return '<span class="quick-wp-version">' . quick_wp_version_line() . '</span>';
+}
+add_shortcode( 'quick_wp_version', 'quick_wp_version_shortcode' );
+
+/**
+ * Widget for themes with widget areas, such as a footer or sidebar.
+ */
+class Quick_WP_Version_Widget extends WP_Widget {
+
+	/**
+	 * Name and description in Appearance > Widgets.
+	 */
+	public function __construct() {
+		parent::__construct(
+			'quick_wp_version',
+			__( 'Quick WordPress Version', 'display-wordpress-version' ),
+			array(
+				'description'                 => __( 'Your Powered by WordPress line.', 'display-wordpress-version' ),
+				'customize_selective_refresh' => true,
+			)
+		);
+	}
+
+	/**
+	 * Show the widget on the site.
+	 *
+	 * @param array $args     Theme's widget wrapper HTML.
+	 * @param array $instance This widget's settings.
+	 */
+	public function widget( $args, $instance ) {
+		$title = ! empty( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) : '';
+
+		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- From the theme.
+		if ( $title ) {
+			echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- From the theme.
+		}
+		echo '<p class="quick-wp-version">' . quick_wp_version_line() . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts.
+		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- From the theme.
+	}
+
+	/**
+	 * The widget's one setting: an optional title.
+	 *
+	 * @param array $instance This widget's settings.
+	 * @return string
+	 */
+	public function form( $instance ) {
+		$title = isset( $instance['title'] ) ? $instance['title'] : '';
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title (optional):', 'display-wordpress-version' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+		</p>
+		<p class="description">
+			<?php
+			printf(
+				/* translators: %s: link to the plugin's settings page */
+				esc_html__( 'Choose what the line says in %s.', 'display-wordpress-version' ),
+				'<a href="' . esc_url( admin_url( 'options-general.php?page=quick-wp-version' ) ) . '">' . esc_html__( 'Settings > Quick WordPress Version', 'display-wordpress-version' ) . '</a>'
+			);
+			?>
+		</p>
+		<?php
+		return '';
+	}
+
+	/**
+	 * Save the title.
+	 *
+	 * @param array $new_instance New settings.
+	 * @param array $old_instance Previous settings.
+	 * @return array
+	 */
+	public function update( $new_instance, $old_instance ) {
+		return array(
+			'title' => isset( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '',
+		);
+	}
+}
+
+/**
+ * Make the widget available in Appearance > Widgets.
+ */
+function quick_wp_version_register_widget() {
+	register_widget( 'Quick_WP_Version_Widget' );
+}
+add_action( 'widgets_init', 'quick_wp_version_register_widget' );
+
+/* ------------------------------------------------------------------ *
  * Installed and latest WordPress version
  * ------------------------------------------------------------------ */
 
@@ -517,6 +616,28 @@ function quick_wp_version_render_page() {
 								<option value="left" <?php selected( $settings['align'], 'left' ); ?>><?php esc_html_e( 'Left', 'display-wordpress-version' ); ?></option>
 								<option value="right" <?php selected( $settings['align'], 'right' ); ?>><?php esc_html_e( 'Right', 'display-wordpress-version' ); ?></option>
 							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Shortcode', 'display-wordpress-version' ); ?></th>
+						<td>
+							<code>[quick_wp_version]</code>
+							<p class="description"><?php esc_html_e( 'Put the line anywhere: a post, a page, or a Shortcode block in your footer.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Widget', 'display-wordpress-version' ); ?></th>
+						<td>
+							<p style="margin-top:0">
+								<?php
+								printf(
+									/* translators: %s: link to Appearance > Widgets */
+									esc_html__( 'Add the Quick WordPress Version widget to a footer or sidebar in %s.', 'display-wordpress-version' ),
+									'<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . esc_html__( 'Appearance > Widgets', 'display-wordpress-version' ) . '</a>'
+								);
+								?>
+							</p>
+							<p class="description"><?php esc_html_e( 'If you place the line yourself, you can untick the automatic line above.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>
 					<tr>

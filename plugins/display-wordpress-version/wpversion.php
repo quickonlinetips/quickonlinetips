@@ -581,6 +581,7 @@ function quick_wp_version_render_page() {
 								<input type="checkbox" name="<?php echo esc_attr( $name . '[link]' ); ?>" value="1" <?php checked( $settings['link'] ); ?>>
 								<?php esc_html_e( 'Link the word WordPress to WordPress.org', 'display-wordpress-version' ); ?>
 							</label>
+							<p class="description"><?php esc_html_e( 'For the three ready-made lines. In your own text, add any links you like.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -632,7 +633,7 @@ function quick_wp_version_render_page() {
 								<?php
 								printf(
 									/* translators: %s: link to Appearance > Widgets */
-									esc_html__( 'Add the Quick WordPress Version widget to a footer or sidebar in %s.', 'display-wordpress-version' ),
+									esc_html__( 'If your theme has widget areas, add the Quick WordPress Version widget to a footer or sidebar in %s.', 'display-wordpress-version' ),
 									'<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . esc_html__( 'Appearance > Widgets', 'display-wordpress-version' ) . '</a>'
 								);
 								?>
@@ -643,7 +644,7 @@ function quick_wp_version_render_page() {
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Theme template', 'display-wordpress-version' ); ?></th>
 						<td>
-							<code>&lt;?php if ( function_exists( 'quickversion' ) ) { quickversion(); } ?&gt;</code>
+							<code>&lt;?php quickversion(); ?&gt;</code>
 							<p class="description"><?php esc_html_e( 'For theme builders: prints the line exactly where you put it. Pages that use it skip the automatic line.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>

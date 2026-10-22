@@ -402,7 +402,11 @@ function quick_code_styler_admin_assets() {
 		'.qcs-wrap form{max-width:640px;flex:1 1 480px}' .
 		// Each section is a white card with its heading in a bar across the top.
 		'.qcs-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 6px}' .
-		'.qcs-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
+		'.qcs-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
+		// Heading colours change from card to card in a fixed order: blue, green, yellow, pink, purple,
+		// then round again (qcs-c1 to qcs-c5, in page order). The preview card is always teal.
+		'.qcs-c1>h2{background:#f0f6fc}.qcs-c2>h2{background:#edfaef}.qcs-c3>h2{background:#fcf9e8}' .
+		'.qcs-c4>h2{background:#fcf0f1}.qcs-c5>h2{background:#f5f0fc}.qcs-preview>h2{background:#e8f6f5}' .
 		'.qcs-card .form-table{margin-top:4px}.qcs-card .form-table th{padding-left:0;width:150px}' .
 		'.qcs-card .qcs-intro{margin:14px 0 0;color:#50575e}.qcs-card .description{margin:0 0 12px}' .
 		'#qcs-auto-note{margin:14px 0 12px}.qcs-side.qcs-card{padding-bottom:20px;margin-bottom:0;flex:1 1 400px;max-width:640px}.qcs-side #qcs-preview{margin-top:20px}' .
@@ -505,7 +509,7 @@ function quick_code_styler_render_page() {
 			<form method="post" action="options.php">
 				<?php settings_fields( 'quick_code_styler' ); ?>
 
-				<div class="qcs-card">
+				<div class="qcs-card qcs-c1">
 				<h2><?php esc_html_e( 'Look', 'quick-code-styler' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
@@ -530,7 +534,7 @@ function quick_code_styler_render_page() {
 				</table>
 				</div>
 
-				<div class="qcs-card">
+				<div class="qcs-card qcs-c2">
 				<h2><?php esc_html_e( 'Colours', 'quick-code-styler' ); ?></h2>
 				<div id="qcs-colours">
 					<p class="qcs-intro"><?php esc_html_e( 'Click Default under a colour to undo a change. Switching between Dark and Light starts from that look\'s own colours.', 'quick-code-styler' ); ?></p>
@@ -552,7 +556,7 @@ function quick_code_styler_render_page() {
 				<p id="qcs-auto-note" class="description"><?php esc_html_e( 'Automatic uses the built-in light and dark colours. Choose Dark or Light to pick your own.', 'quick-code-styler' ); ?></p>
 				</div>
 
-				<div class="qcs-card">
+				<div class="qcs-card qcs-c3">
 				<h2><?php esc_html_e( 'Extras', 'quick-code-styler' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
@@ -580,7 +584,7 @@ function quick_code_styler_render_page() {
 				<?php submit_button(); ?>
 			</form>
 
-			<div class="qcs-side qcs-card">
+			<div class="qcs-side qcs-card qcs-preview">
 				<h2><?php esc_html_e( 'Preview', 'quick-code-styler' ); ?></h2>
 				<div id="qcs-preview" class="qcs-on" style="<?php echo esc_attr( $style ); ?>">
 <pre><code><span class="qcs-c">&lt;!-- A link --&gt;</span>

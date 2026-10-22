@@ -290,17 +290,17 @@ function quick_meta_keywords_admin_assets() {
 		'@media (max-width:1279px){.qmk-wrap{gap:20px}.qmk-side{order:-1;position:static}}' .
 		'.qmk-note{margin-top:12px!important}' .
 		'#qmk-extra{width:100%}' .
-		'#qmk-post{width:100%;max-width:100%}.qmk-legend{margin:0;color:#50575e}' .
+		'#qmk-post{width:100%;max-width:100%}.qmk-legend{margin:0;color:#1d2327}' .
 		'.qmk-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;padding:0;list-style:none}.qmk-chips:empty{display:none}' .
-		'.qmk-chips li{margin:0;padding:3px 10px;border-radius:12px;font-size:12px;line-height:18px;border:1px solid}' .
-		'.qmk-chips .qmk-cat{background:#f0f6fc;border-color:#9ec2e6;color:#0a4b78}' .
-		'.qmk-chips .qmk-tag{background:#edfaef;border-color:#8fd19e;color:#00450c}' .
-		'.qmk-chips .qmk-extra{background:#fcf9e8;border-color:#e6d58a;color:#614200}' .
+		'.qmk-chips li{margin:0;padding:4px 12px;border-radius:14px;font-size:14px;font-weight:600;line-height:20px;border:1.5px solid}' .
+		'.qmk-chips .qmk-cat{background:#d5e5f8;border-color:#2271b1;color:#0a4b78}' .
+		'.qmk-chips .qmk-tag{background:#d1f2da;border-color:#00a32a;color:#005c12}' .
+		'.qmk-chips .qmk-extra{background:#fbefc4;border-color:#dba617;color:#614200}' .
 		'.qmk-code{margin:20px 0 0;padding:16px 18px;background:#1e2433;color:#e6edf3;border:1px solid #4a5568;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.35);font:13px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;word-break:break-word}' .
 		'.qmk-code .t{color:#7ee787}.qmk-code .a{color:#79c0ff}.qmk-code .s{color:#a5d6ff}' .
 		'.qmk-count{margin-left:14px;color:#1d2327;font-weight:600}.qmk-empty{color:#f2cc60}' .
-		'.qmk-legend .qmk-key:first-child{margin-left:0}.qmk-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 12px;vertical-align:-1px;border:1px solid}' .
-		'.qmk-key.qmk-cat{background:#f0f6fc;border-color:#9ec2e6}.qmk-key.qmk-tag{background:#edfaef;border-color:#8fd19e}.qmk-key.qmk-extra{background:#fcf9e8;border-color:#e6d58a}'
+		'.qmk-legend .qmk-key:first-child{margin-left:0}.qmk-key{display:inline-block;width:12px;height:12px;border-radius:3px;margin:0 5px 0 14px;vertical-align:-1px;border:1.5px solid}' .
+		'.qmk-key.qmk-cat{background:#d5e5f8;border-color:#2271b1}.qmk-key.qmk-tag{background:#d1f2da;border-color:#00a32a}.qmk-key.qmk-extra{background:#fbefc4;border-color:#dba617}'
 	);
 
 	$script = <<<'JS'

@@ -288,17 +288,17 @@ function quick_meta_keywords_admin_assets() {
 		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.
 		'.qmk-side{flex:1 1 400px;max-width:640px;position:sticky;top:46px;padding-bottom:20px;margin-bottom:0}' .
 		'@media (max-width:1279px){.qmk-wrap{gap:20px}.qmk-side{order:-1;position:static}}' .
-		'.qmk-box{margin-top:20px;padding:16px 18px;background:#fff;border:1px solid #dcdcde;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.qmk-note{margin-top:12px!important}' .
+		'.qmk-note{margin-top:12px!important}' .
 		'#qmk-extra{width:100%}' .
-		'#qmk-post{width:100%;max-width:100%}.qmk-for{margin:0 0 8px;color:#50575e}.qmk-for strong{color:#1d2327}.qmk-legend{margin:0 0 10px;color:#50575e}' .
-		'.qmk-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;padding:0;list-style:none}' .
+		'#qmk-post{width:100%;max-width:100%}.qmk-legend{margin:0;color:#50575e}' .
+		'.qmk-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;padding:0;list-style:none}.qmk-chips:empty{display:none}' .
 		'.qmk-chips li{margin:0;padding:3px 10px;border-radius:12px;font-size:12px;line-height:18px;border:1px solid}' .
 		'.qmk-chips .qmk-cat{background:#f0f6fc;border-color:#9ec2e6;color:#0a4b78}' .
 		'.qmk-chips .qmk-tag{background:#edfaef;border-color:#8fd19e;color:#00450c}' .
 		'.qmk-chips .qmk-extra{background:#fcf9e8;border-color:#e6d58a;color:#614200}' .
-		'.qmk-code{margin:0;padding:14px 16px;background:#1e2433;color:#e6edf3;border-radius:4px;font:13px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;word-break:break-word}' .
+		'.qmk-code{margin:20px 0 0;padding:16px 18px;background:#1e2433;color:#e6edf3;border:1px solid #4a5568;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.35);font:13px/1.6 Consolas,Monaco,monospace;white-space:pre-wrap;word-break:break-word}' .
 		'.qmk-code .t{color:#7ee787}.qmk-code .a{color:#79c0ff}.qmk-code .s{color:#a5d6ff}' .
-		'.qmk-count{margin:10px 0 6px;color:#50575e}.qmk-empty{color:#f2cc60}' .
+		'.qmk-count{margin-left:14px;color:#1d2327;font-weight:600}.qmk-empty{color:#f2cc60}' .
 		'.qmk-legend .qmk-key:first-child{margin-left:0}.qmk-key{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 12px;vertical-align:-1px;border:1px solid}' .
 		'.qmk-key.qmk-cat{background:#f0f6fc;border-color:#9ec2e6}.qmk-key.qmk-tag{background:#edfaef;border-color:#8fd19e}.qmk-key.qmk-extra{background:#fcf9e8;border-color:#e6d58a}'
 	);
@@ -321,7 +321,6 @@ function quick_meta_keywords_admin_assets() {
 	// Same rules as the plugin: trimmed, no blanks, no repeats ignoring capitals.
 	function build() {
 		var post = data.posts[ picker.value ] || data.posts[ 0 ];
-		document.getElementById( 'qmk-title' ).textContent = post.title;
 		var seen = {};
 		var list = [];
 
@@ -494,6 +493,19 @@ function quick_meta_keywords_render_page() {
 							<p class="description"><?php esc_html_e( 'Pick any of your recent posts to see its tag in the preview. This choice is only for the preview and is not saved.', 'quick-meta-keywords' ); ?></p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Its keywords', 'quick-meta-keywords' ); ?></th>
+						<td>
+							<ul id="qmk-chips" class="qmk-chips"></ul>
+							<p class="qmk-legend" aria-hidden="true">
+								<span class="qmk-key qmk-cat"></span><?php esc_html_e( 'Category', 'quick-meta-keywords' ); ?>
+								<span class="qmk-key qmk-tag"></span><?php esc_html_e( 'Tag', 'quick-meta-keywords' ); ?>
+								<span class="qmk-key qmk-extra"></span><?php esc_html_e( 'Extra', 'quick-meta-keywords' ); ?>
+								<span class="qmk-count" id="qmk-count"></span>
+							</p>
+							<p class="description"><?php esc_html_e( 'Repeated words appear once. The catch-all "Uncategorized" category is left out.', 'quick-meta-keywords' ); ?></p>
+						</td>
+					</tr>
 				</table>
 			</div>
 
@@ -502,18 +514,8 @@ function quick_meta_keywords_render_page() {
 
 		<div class="qmk-side qmk-card qmk-preview">
 			<h2><?php esc_html_e( 'Preview', 'quick-meta-keywords' ); ?> <span class="qmk-live"><?php esc_html_e( 'Live', 'quick-meta-keywords' ); ?></span></h2>
-			<div class="qmk-box">
-				<p class="qmk-for"><?php esc_html_e( 'Keywords tag for', 'quick-meta-keywords' ); ?> <strong id="qmk-title"><?php echo esc_html( $posts[0]['title'] ); ?></strong></p>
-				<p class="qmk-legend" aria-hidden="true">
-					<span class="qmk-key qmk-cat"></span><?php esc_html_e( 'Category', 'quick-meta-keywords' ); ?>
-					<span class="qmk-key qmk-tag"></span><?php esc_html_e( 'Tag', 'quick-meta-keywords' ); ?>
-					<span class="qmk-key qmk-extra"></span><?php esc_html_e( 'Extra', 'quick-meta-keywords' ); ?>
-				</p>
-				<ul id="qmk-chips" class="qmk-chips"></ul>
-				<p class="qmk-code" id="qmk-code" aria-live="polite"></p>
-				<p class="qmk-count" id="qmk-count"></p>
-			</div>
-			<p class="description qmk-note"><?php esc_html_e( 'This is the tag added to the post\'s page head. Repeated words appear once. The catch-all "Uncategorized" category is left out.', 'quick-meta-keywords' ); ?></p>
+			<p class="qmk-code" id="qmk-code" aria-live="polite"></p>
+			<p class="description qmk-note"><?php esc_html_e( 'This exact tag is added to the post\'s page head.', 'quick-meta-keywords' ); ?></p>
 		</div>
 		</div>
 	</div>

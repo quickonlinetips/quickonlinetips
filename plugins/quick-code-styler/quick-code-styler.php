@@ -407,14 +407,14 @@ function quick_code_styler_admin_assets() {
 		// then round again (qcs-c1 to qcs-c5, in page order). The preview card is always teal.
 		'.qcs-c1>h2{background:#f0f6fc}.qcs-c2>h2{background:#edfaef}.qcs-c3>h2{background:#fcf9e8}' .
 		'.qcs-c4>h2{background:#fcf0f1}.qcs-c5>h2{background:#f5f0fc}.qcs-preview>h2{background:#e8f6f5}' .
-		// The preview is a live window, not a settings card: a dark frame with a faint dotted
+		// The preview is a live window, not a settings card: a dark teal frame with a faint dotted
 		// background, an eye icon and a Live badge, with the preview itself sitting on top like a screen.
-		'.qcs-preview{background:#2c3338 radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.5px) 0 0/16px 16px;border-color:#1d2327;box-shadow:0 2px 8px rgba(0,0,0,.18)}' .
-		'.qcs-preview>h2{display:flex;align-items:center;gap:8px;background:#1d2327;color:#f0f0f1;border-bottom-color:#3c434a}' .
-		'.qcs-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#4fd1c5}' .
-		'.qcs-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #4fd1c5;border-radius:10px;background:rgba(79,209,197,.12);color:#7ee0d6;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
-		'.qcs-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#4fd1c5}' .
-		'.qcs-preview>.description,.qcs-preview>p{color:#c3c4c7}.qcs-preview>.description a,.qcs-preview>p a{color:#72aee6}' .
+		'.qcs-preview{background:#134e4a radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.5px) 0 0/16px 16px;border-color:#0b2f2d;box-shadow:0 2px 8px rgba(0,0,0,.18)}' .
+		'.qcs-preview>h2{display:flex;align-items:center;gap:8px;background:#0d3b38;color:#f0fdfa;border-bottom-color:#1f6660}' .
+		'.qcs-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#5eead4}' .
+		'.qcs-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #5eead4;border-radius:10px;background:rgba(94,234,212,.12);color:#99f6e4;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
+		'.qcs-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#5eead4}' .
+		'.qcs-preview>.description,.qcs-preview>p{color:#cde9e5}.qcs-preview>.description a,.qcs-preview>p a{color:#9ad8ff}' .
 		'.qcs-card .form-table{margin-top:4px}.qcs-card .form-table th{padding-left:0;width:150px}' .
 		'.qcs-card .qcs-intro{margin:14px 0 0;color:#50575e}.qcs-card .description{margin:0 0 12px}' .
 		'#qcs-auto-note{margin:14px 0 12px}.qcs-side.qcs-card{padding-bottom:20px;margin-bottom:0;flex:1 1 400px;max-width:640px}.qcs-side #qcs-preview{margin-top:20px}' .

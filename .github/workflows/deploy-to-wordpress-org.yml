@@ -124,9 +124,12 @@ jobs:
           SLUG: ${{ steps.which.outputs.slug }}
         run: |
           DIR="plugins/$SLUG"
-          BUILD="$RUNNER_TEMP/build/$SLUG"
-          ASSETS="$RUNNER_TEMP/assets/$SLUG"
-          mkdir -p "$BUILD" "$ASSETS"
+          # Both folders must sit inside the checkout: the deploy action
+          # looks for the page images relative to it and silently skips
+          # them if the path is anywhere else.
+          BUILD=".wporg/build/$SLUG"
+          ASSETS=".wporg/assets/$SLUG"
+          mkdir -p "$BUILD"
 
           # The plugin itself: everything except the images that belong in assets.
           rsync -a \
@@ -135,15 +138,21 @@ jobs:
             --exclude '.DS_Store' \
             --exclude '.git*' \
             "$DIR/" "$BUILD/"
+          echo "Plugin files:"; (cd "$BUILD" && find . -type f | sort)
 
           # Banner, icon and screenshots for the WordPress.org plugin page.
+          # WordPress.org's assets folder is replaced as a whole (anything
+          # not sent is deleted there), so images are only sent when the
+          # plugin keeps its full set in the repo: an assets folder with the
+          # banner and icon, plus the screenshot-*.png files.
           if [ -d "$DIR/assets" ]; then
+            mkdir -p "$ASSETS"
             cp -R "$DIR/assets/." "$ASSETS/"
+            find "$DIR" -maxdepth 1 -name 'screenshot-*' -exec cp {} "$ASSETS/" \;
+            echo "Page images:"; (cd "$ASSETS" && find . -type f | sort)
+          else
+            echo "::warning::$DIR has no assets folder, so the plugin page images (banner, icon, screenshots) on WordPress.org are left as they are. Add an assets folder with the banner and icon to update them."
           fi
-          find "$DIR" -maxdepth 1 -name 'screenshot-*' -exec cp {} "$ASSETS/" \;
-
-          echo "Plugin files:";   (cd "$BUILD" && find . -type f | sort)
-          echo "Page images:";    (cd "$ASSETS" && find . -type f | sort)
 
           echo "BUILD_DIR=$BUILD" >> "$GITHUB_ENV"
           echo "ASSETS_DIR=$ASSETS" >> "$GITHUB_ENV"

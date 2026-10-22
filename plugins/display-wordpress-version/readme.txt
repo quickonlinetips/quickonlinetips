@@ -27,11 +27,14 @@ Add extra text after the line too, for footer credits, a copyright or a link to 
 
 Settings > Quick WordPress Version shows the WordPress version installed on your site, the latest version from WordPress.org, and whether an update is waiting, with a link to update. It uses the update check WordPress already does, so it adds no load to your site.
 
-Showing your exact version number tells everyone, including attackers, which version your site runs. That is why the default line has no number. If you do show it, keep WordPress up to date.
+Showing your exact version number tells everyone, including attackers, which version your site runs. That is why the default line has no number. If you do show the number, it is hidden by itself while a WordPress update is waiting, so your site never advertises an out-of-date version. It comes back as soon as you update.
 
 **Put the line where you want it**
 
-* **Automatically** at the very bottom of every page, centred, left or right
+* **Automatically** at the very bottom of every page, centred, left or right. This is all most sites need.
+
+Optional other ways, if you want the line somewhere else:
+
 * **Shortcode** `[quick_wp_version]` in a post, a page, or a Shortcode block in a block theme footer
 * **Widget** in any footer or sidebar widget area
 * **Template tag** `<?php quickversion(); ?>` for theme builders
@@ -56,6 +59,14 @@ This plugin was called Display WordPress Version until version 2.0. Sites alread
 
 Showing the exact number makes it easy for anyone to see which version you run, and to look for known problems in it. The default line, Powered by WordPress, shows no number. Showing only the main number (WordPress 7) gives away much less. If you show the full version, keep WordPress updated.
 
+= What do visitors see if my WordPress is out of date? =
+
+If you chose a line with a version number, visitors see just Powered by WordPress while an update is waiting. After you update, the number comes back by itself. You can turn this off in Settings > Quick WordPress Version, under When WordPress is out of date. Lines without a number never change.
+
+= Where does the WordPress link go? =
+
+To https://wordpress.org/, the official WordPress website. You can turn the link off.
+
 = Does this hide the version number from my page source? =
 
 No. This plugin only controls the line visitors see. WordPress itself also adds a version number to your page source. Security plugins can remove that if you want.
@@ -79,8 +90,8 @@ On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-v
 == Screenshots ==
 
 1. Settings show your installed and latest WordPress version, and what the line says, with a live preview.
-2. Choose where the line shows: automatically at the bottom of every page, or with the shortcode, widget or template tag.
-3. Use your own text with the version number, and add extra text such as credits or a copyright.
+2. The line appears by itself at the bottom of every page. Optional other ways to add it are kept separate.
+3. Use your own text and add extra text such as credits or a copyright.
 4. The line at the bottom of a site using the Twenty Twenty-Five theme.
 
 == Changelog ==
@@ -90,6 +101,7 @@ On the plugin page: https://www.quickonlinetips.com/archives/display-wordpress-v
 * Settings page shows your installed and latest WordPress version, and whether an update is waiting.
 * Choose the line: Powered by WordPress, main version only, full version, or your own text.
 * Extra text box for credits, a copyright or links.
+* While a WordPress update is waiting, the version number is hidden from visitors until you update.
 * The line can now be added automatically at the bottom of every page, with no theme files to edit.
 * New `[quick_wp_version]` shortcode and widget.
 * `quickversion()` still works and follows your choices.

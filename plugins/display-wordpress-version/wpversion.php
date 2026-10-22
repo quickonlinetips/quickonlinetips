@@ -535,6 +535,8 @@ function quick_wp_version_admin_assets() {
 		'.qwv-foot{padding:12px 20px;background:#f6f7f7;border-top:1px solid #dcdcde;font-size:13px;color:#50575e}' .
 		'.qwv-line{position:relative;margin:14px 12px 12px;padding:12px 14px;border:2px solid #2271b1;border-radius:6px;background:#f0f6fc;font-size:14px;color:#1d2327;text-align:center}' .
 		'.qwv-line a{color:#2271b1}' .
+		// The line itself, shown read-only between the Before and After boxes.
+		'.qwv-middle{padding:7px 12px;background:#f6f7f7;border:1px dashed #c3c4c7;border-radius:4px;color:#1d2327}.qwv-middle a{pointer-events:none}' .
 		'.qwv-tag{position:absolute;top:-11px;left:12px;padding:1px 9px;border-radius:10px;background:#2271b1;color:#fff;font-size:11px;font-weight:600;line-height:18px}' .
 		'#qwv-where{margin:12px 0 0}' .
 		'@media (max-width:1279px){.qwv-wrap{gap:20px}.qwv-side{order:-1;position:static}}'
@@ -580,6 +582,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		var mark = data.marks[ value( 'sep' ) ];
 		var glue = mark ? ' ' + mark + ' ' : ' ';
 		preview.innerHTML = ( before ? before + glue : '' ) + line + ( after ? glue + after : '' );
+		document.getElementById( 'qwv-middle' ).innerHTML = line;
 		preview.parentNode.style.textAlign = value( 'align' ) || 'center';
 		var note = value( 'footer' ) ? data.whereOn : data.whereOff;
 		if ( hidden ) {
@@ -770,19 +773,25 @@ function quick_wp_version_render_page() {
 
 			<div class="qwv-card qwv-c3">
 				<h2><?php esc_html_e( 'Text around the line (optional)', 'display-wordpress-version' ); ?></h2>
-				<p class="qwv-intro"><?php esc_html_e( 'Add your own words before or after the line, such as a copyright or a credit to your host. The mark below joins them up, so there is no need to type one.', 'display-wordpress-version' ); ?></p>
+				<p class="qwv-intro"><?php esc_html_e( 'Your line stays in the middle. Add your own words before it, after it, or both, such as a copyright or a credit to your host. Links and simple HTML are fine.', 'display-wordpress-version' ); ?></p>
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><label for="qwv-before"><?php esc_html_e( 'Text before', 'display-wordpress-version' ); ?></label></th>
+						<th scope="row"><label for="qwv-before"><?php esc_html_e( '1. Before your line', 'display-wordpress-version' ); ?></label></th>
 						<td>
 							<input type="text" id="qwv-before" class="large-text" name="<?php echo esc_attr( $name . '[before]' ); ?>" value="<?php echo esc_attr( $settings['before'] ); ?>" placeholder="<?php echo esc_attr( __( 'For example:', 'display-wordpress-version' ) . ' © ' . gmdate( 'Y' ) . ' ' . get_bloginfo( 'name' ) ); ?>">
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="qwv-after"><?php esc_html_e( 'Text after', 'display-wordpress-version' ); ?></label></th>
+						<th scope="row"><?php esc_html_e( '2. Your line', 'display-wordpress-version' ); ?></th>
+						<td>
+							<div id="qwv-middle" class="qwv-middle"></div>
+							<p class="description"><?php esc_html_e( 'Chosen in What to show above.', 'display-wordpress-version' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="qwv-after"><?php esc_html_e( '3. After your line', 'display-wordpress-version' ); ?></label></th>
 						<td>
 							<input type="text" id="qwv-after" class="large-text" name="<?php echo esc_attr( $name . '[after]' ); ?>" value="<?php echo esc_attr( $settings['after'] ); ?>" placeholder="<?php esc_attr_e( 'For example: Hosted by …', 'display-wordpress-version' ); ?>">
-							<p class="description"><?php esc_html_e( 'Links and simple HTML are fine in both boxes.', 'display-wordpress-version' ); ?></p>
 						</td>
 					</tr>
 					<tr>

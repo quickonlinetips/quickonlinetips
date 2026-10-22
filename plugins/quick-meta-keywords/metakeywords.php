@@ -275,14 +275,21 @@ function quick_meta_keywords_admin_assets() {
 		// then round again (qmk-c1 to qmk-c5, in page order). The preview card is always teal.
 		'.qmk-c1>h2{background:#f0f6fc}.qmk-c2>h2{background:#edfaef}.qmk-c3>h2{background:#fcf9e8}' .
 		'.qmk-c4>h2{background:#fcf0f1}.qmk-c5>h2{background:#f5f0fc}.qmk-preview>h2{background:#e8f6f5}' .
+		// The preview is a live window, not a settings card: tinted, dotted background, teal frame,
+		// an eye icon and a Live badge, with the preview itself sitting on top like a screen.
+		'.qmk-preview{background:#f2f8f7 radial-gradient(#cfe5e2 1px,transparent 1.5px) 0 0/16px 16px;border-color:#7fbfb8;box-shadow:0 2px 6px rgba(10,125,114,.1)}' .
+		'.qmk-preview>h2{display:flex;align-items:center;gap:8px;border-bottom-color:#b5dbd6}' .
+		'.qmk-preview>h2:before{content:"\f177";font:normal 20px/1 dashicons;color:#0a7d72}' .
+		'.qmk-live{margin-left:auto;position:relative;padding:2px 8px 2px 18px;border:1px solid #7fbfb8;border-radius:10px;background:#fff;color:#0a7d72;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}' .
+		'.qmk-live:before{content:"";position:absolute;left:7px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#1aa58f}' .
 		'.qmk-card .form-table{margin-top:4px}.qmk-card .form-table th{padding-left:0;width:150px}' .
 		'.qmk-card .qmk-intro{margin:14px 0 0;color:#50575e}.qmk-card .description{margin:6px 0 0}' .
 		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.
 		'.qmk-side{flex:1 1 400px;max-width:640px;position:sticky;top:46px;padding-bottom:20px;margin-bottom:0}' .
 		'@media (max-width:1279px){.qmk-wrap{gap:20px}.qmk-side{order:-1;position:static}}' .
-		'.qmk-box{margin-top:20px}' .
+		'.qmk-box{margin-top:20px;padding:16px 18px;background:#fff;border:1px solid #dcdcde;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.qmk-note{margin-top:12px!important}' .
 		'#qmk-extra{width:100%}' .
-		'.qmk-pick{margin:0 0 10px}.qmk-pick label{display:block;margin:0 0 6px;font-weight:600}.qmk-pick select{width:100%;max-width:100%}.qmk-legend{margin:0 0 10px;color:#50575e}' .
+		'#qmk-post{width:100%;max-width:100%}.qmk-for{margin:0 0 8px;color:#50575e}.qmk-for strong{color:#1d2327}.qmk-legend{margin:0 0 10px;color:#50575e}' .
 		'.qmk-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;padding:0;list-style:none}' .
 		'.qmk-chips li{margin:0;padding:3px 10px;border-radius:12px;font-size:12px;line-height:18px;border:1px solid}' .
 		'.qmk-chips .qmk-cat{background:#f0f6fc;border-color:#9ec2e6;color:#0a4b78}' .
@@ -313,6 +320,7 @@ function quick_meta_keywords_admin_assets() {
 	// Same rules as the plugin: trimmed, no blanks, no repeats ignoring capitals.
 	function build() {
 		var post = data.posts[ picker.value ] || data.posts[ 0 ];
+		document.getElementById( 'qmk-title' ).textContent = post.title;
 		var seen = {};
 		var list = [];
 
@@ -471,20 +479,30 @@ function quick_meta_keywords_render_page() {
 				</p>
 			</div>
 
+			<div class="qmk-card qmk-c3">
+				<h2><?php esc_html_e( 'Post to preview', 'quick-meta-keywords' ); ?></h2>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><label for="qmk-post"><?php esc_html_e( 'Post', 'quick-meta-keywords' ); ?></label></th>
+						<td>
+							<select id="qmk-post">
+								<?php foreach ( $posts as $index => $post ) : ?>
+									<option value="<?php echo esc_attr( $index ); ?>"><?php echo esc_html( $post['title'] ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<p class="description"><?php esc_html_e( 'Pick any of your recent posts to see its tag in the preview. This choice is only for the preview and is not saved.', 'quick-meta-keywords' ); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+
 			<?php submit_button(); ?>
 		</form>
 
 		<div class="qmk-side qmk-card qmk-preview">
-			<h2><?php esc_html_e( 'Preview', 'quick-meta-keywords' ); ?></h2>
+			<h2><?php esc_html_e( 'Preview', 'quick-meta-keywords' ); ?> <span class="qmk-live"><?php esc_html_e( 'Live', 'quick-meta-keywords' ); ?></span></h2>
 			<div class="qmk-box">
-				<p class="qmk-pick">
-					<label for="qmk-post"><?php esc_html_e( 'Show the tag for', 'quick-meta-keywords' ); ?></label>
-					<select id="qmk-post">
-						<?php foreach ( $posts as $index => $post ) : ?>
-							<option value="<?php echo esc_attr( $index ); ?>"><?php echo esc_html( $post['title'] ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</p>
+				<p class="qmk-for"><?php esc_html_e( 'Keywords tag for', 'quick-meta-keywords' ); ?> <strong id="qmk-title"><?php echo esc_html( $posts[0]['title'] ); ?></strong></p>
 				<p class="qmk-legend" aria-hidden="true">
 					<span class="qmk-key qmk-cat"></span><?php esc_html_e( 'Category', 'quick-meta-keywords' ); ?>
 					<span class="qmk-key qmk-tag"></span><?php esc_html_e( 'Tag', 'quick-meta-keywords' ); ?>
@@ -493,8 +511,8 @@ function quick_meta_keywords_render_page() {
 				<ul id="qmk-chips" class="qmk-chips"></ul>
 				<p class="qmk-code" id="qmk-code" aria-live="polite"></p>
 				<p class="qmk-count" id="qmk-count"></p>
-				<p class="description"><?php esc_html_e( 'This is the tag added to the post\'s page head. Repeated words appear once. The catch-all "Uncategorized" category is left out.', 'quick-meta-keywords' ); ?></p>
 			</div>
+			<p class="description qmk-note"><?php esc_html_e( 'This is the tag added to the post\'s page head. Repeated words appear once. The catch-all "Uncategorized" category is left out.', 'quick-meta-keywords' ); ?></p>
 		</div>
 		</div>
 	</div>

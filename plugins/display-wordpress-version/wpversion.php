@@ -402,7 +402,8 @@ function quick_wp_version_admin_assets() {
 	wp_enqueue_style( 'quick-wp-version-admin' );
 	wp_add_inline_style(
 		'quick-wp-version-admin',
-		'.qwv-wrap{max-width:720px}' .
+		'.qwv-wrap{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}' .
+		'.qwv-main{max-width:640px;flex:1 1 480px}' .
 		'.qwv-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 8px}' .
 		'.qwv-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
 		// Heading colours change from card to card in a fixed order: blue, green, yellow, pink, purple,
@@ -417,7 +418,22 @@ function quick_wp_version_admin_assets() {
 		'.qwv-ok{background:#edfaef;color:#00650d}.qwv-old{background:#fcf0e1;color:#8a4a00}.qwv-unknown{background:#f0f0f1;color:#50575e}' .
 		'.qwv-card .form-table td fieldset label{display:block;margin:0 0 10px;line-height:1.6}.qwv-card fieldset code{font-size:12px}' .
 		'#qwv-custom-text{margin:4px 0 0 24px;width:calc(100% - 24px)}#qwv-custom-wrap .description{margin-left:24px}' .
-		'#qwv-preview{margin:16px 0 12px;padding:14px 16px;background:#f6f7f7;border:1px dashed #c3c4c7;border-radius:4px;font-size:14px}'
+		'.qwv-card .qwv-intro{margin:14px 0 0;color:#50575e}' .
+		// Preview card: beside the form and sticky on wide screens, above it on narrow ones.
+		'.qwv-side{flex:1 1 400px;max-width:640px;position:sticky;top:46px;padding-bottom:20px;margin-bottom:0}' .
+		// The preview is a small website, with the line highlighted at the very bottom.
+		'.qwv-site{margin-top:20px;border:1px solid #c3c4c7;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06)}' .
+		'.qwv-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#f0f0f1;border-bottom:1px solid #dcdcde}' .
+		'.qwv-bar i{width:10px;height:10px;border-radius:50%;background:#c3c4c7}' .
+		'.qwv-bar span{flex:1;margin-left:8px;padding:3px 10px;background:#fff;border-radius:12px;font-size:12px;color:#646970;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}' .
+		'.qwv-page{padding:18px 20px 22px}.qwv-page strong{display:block;font-size:17px;color:#1d2327;margin-bottom:12px}' .
+		'.qwv-page b{display:block;height:9px;border-radius:5px;background:#e6e8ea;margin:0 0 9px}' .
+		'.qwv-foot{padding:12px 20px;background:#f6f7f7;border-top:1px solid #dcdcde;font-size:13px;color:#50575e}' .
+		'.qwv-line{position:relative;margin:14px 12px 12px;padding:12px 14px;border:2px solid #2271b1;border-radius:6px;background:#f0f6fc;font-size:14px;color:#1d2327;text-align:center}' .
+		'.qwv-line a{color:#2271b1}' .
+		'.qwv-tag{position:absolute;top:-11px;left:12px;padding:1px 9px;border-radius:10px;background:#2271b1;color:#fff;font-size:11px;font-weight:600;line-height:18px}' .
+		'#qwv-where{margin:12px 0 0}' .
+		'@media (max-width:1279px){.qwv-wrap{gap:20px}.qwv-side{order:-1;position:static}}'
 	);
 
 	// Live preview. It only shows how the line will look; nothing is saved until Save Changes.
@@ -449,8 +465,17 @@ document.addEventListener( 'DOMContentLoaded', function () {
 
 		var extra = value( 'extra' ).trim();
 		preview.innerHTML = line + ( extra ? ' ' + extra : '' );
+		preview.parentNode.style.textAlign = value( 'align' ) || 'center';
+		document.getElementById( 'qwv-where' ).textContent = value( 'footer' ) ? data.whereOn : data.whereOff;
 		document.getElementById( 'qwv-custom-wrap' ).style.opacity = show === 'custom' ? 1 : 0.6;
 	}
+
+	// Links in the preview are only for show.
+	document.getElementById( 'qwv-site' ).addEventListener( 'click', function ( event ) {
+		if ( event.target.closest( 'a' ) ) {
+			event.preventDefault();
+		}
+	} );
 
 	form.addEventListener( 'input', update );
 	form.addEventListener( 'change', update );
@@ -472,6 +497,8 @@ JS;
 				'plain'   => __( 'Powered by %s', 'display-wordpress-version' ),
 				/* translators: 1: the word WordPress, 2: version number */
 				'number'  => __( 'Powered by %1$s %2$s', 'display-wordpress-version' ),
+				'whereOn' => __( 'This is how the line looks at the very bottom of every page.', 'display-wordpress-version' ),
+				'whereOff' => __( 'The automatic line is off. The line looks like this wherever you place the shortcode, widget or template tag.', 'display-wordpress-version' ),
 			)
 		) . ';' . $script
 	);
@@ -500,9 +527,12 @@ function quick_wp_version_render_page() {
 		'full'  => sprintf( __( 'Powered by %1$s %2$s', 'display-wordpress-version' ), 'WordPress', $installed ),
 	);
 	?>
-	<div class="wrap qwv-wrap">
+	<div class="wrap">
 		<h1><?php esc_html_e( 'Quick WordPress Version', 'display-wordpress-version' ); ?></h1>
+		<p><?php esc_html_e( 'See which WordPress your site runs, and choose the Powered by WordPress line your visitors see. The preview updates as you go.', 'display-wordpress-version' ); ?></p>
 
+		<div class="qwv-wrap">
+		<div class="qwv-main">
 		<div class="qwv-card qwv-c1">
 			<h2><?php esc_html_e( 'Your WordPress', 'display-wordpress-version' ); ?></h2>
 			<div class="qwv-versions">
@@ -596,8 +626,6 @@ function quick_wp_version_render_page() {
 						</td>
 					</tr>
 				</table>
-				<p style="margin:0"><strong><?php esc_html_e( 'Preview', 'display-wordpress-version' ); ?></strong></p>
-				<div id="qwv-preview"><?php echo quick_wp_version_line( $settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts. ?></div>
 			</div>
 
 			<div class="qwv-card qwv-c3">
@@ -657,6 +685,30 @@ function quick_wp_version_render_page() {
 
 			<?php submit_button(); ?>
 		</form>
+		</div>
+
+		<div class="qwv-side qwv-card qwv-preview">
+			<h2><?php esc_html_e( 'Preview', 'display-wordpress-version' ); ?></h2>
+			<div class="qwv-site" id="qwv-site" aria-label="<?php esc_attr_e( 'Preview of your site', 'display-wordpress-version' ); ?>">
+				<div class="qwv-bar"><i></i><i></i><i></i><span><?php echo esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ); ?></span></div>
+				<div class="qwv-page">
+					<strong><?php echo esc_html( get_bloginfo( 'name' ) ); ?></strong>
+					<b style="width:92%"></b><b style="width:85%"></b><b style="width:60%"></b>
+				</div>
+				<div class="qwv-foot">
+					<?php
+					/* translators: 1: current year, 2: site name */
+					echo esc_html( sprintf( __( '© %1$s %2$s · Your theme\'s footer', 'display-wordpress-version' ), gmdate( 'Y' ), get_bloginfo( 'name' ) ) );
+					?>
+				</div>
+				<div class="qwv-line" style="text-align:<?php echo esc_attr( $settings['align'] ); ?>">
+					<span class="qwv-tag"><?php esc_html_e( 'Your line', 'display-wordpress-version' ); ?></span>
+					<span id="qwv-preview"><?php echo quick_wp_version_line( $settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts. ?></span>
+				</div>
+			</div>
+			<p class="description" id="qwv-where"></p>
+		</div>
+		</div>
 	</div>
 	<?php
 }

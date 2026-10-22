@@ -404,7 +404,11 @@ function quick_wp_version_admin_assets() {
 		'quick-wp-version-admin',
 		'.qwv-wrap{max-width:720px}' .
 		'.qwv-card{box-sizing:border-box;background:#fff;border:1px solid #c3c4c7;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.04);margin:0 0 20px;padding:0 20px 8px}' .
-		'.qwv-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f6f7f7;border-radius:4px 4px 0 0;font-size:15px}' .
+		'.qwv-card>h2{margin:0 -20px;padding:12px 20px;border-bottom:1px solid #dcdcde;background:#f0f6fc;border-radius:4px 4px 0 0;font-size:15px}' .
+		// Heading colours change from card to card in a fixed order: blue, green, yellow, pink, purple,
+		// then round again (qwv-c1 to qwv-c5, in page order). The preview card is always teal.
+		'.qwv-c1>h2{background:#f0f6fc}.qwv-c2>h2{background:#edfaef}.qwv-c3>h2{background:#fcf9e8}' .
+		'.qwv-c4>h2{background:#fcf0f1}.qwv-c5>h2{background:#f5f0fc}.qwv-preview>h2{background:#e8f6f5}' .
 		'.qwv-card .form-table{margin-top:4px}.qwv-card .form-table th{padding-left:0;width:170px}' .
 		'.qwv-versions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 12px}' .
 		'.qwv-versions div{flex:1 1 150px;border:1px solid #dcdcde;border-radius:4px;padding:10px 14px}' .
@@ -499,7 +503,7 @@ function quick_wp_version_render_page() {
 	<div class="wrap qwv-wrap">
 		<h1><?php esc_html_e( 'Quick WordPress Version', 'display-wordpress-version' ); ?></h1>
 
-		<div class="qwv-card">
+		<div class="qwv-card qwv-c1">
 			<h2><?php esc_html_e( 'Your WordPress', 'display-wordpress-version' ); ?></h2>
 			<div class="qwv-versions">
 				<div>
@@ -537,7 +541,7 @@ function quick_wp_version_render_page() {
 		<form id="qwv-form" method="post" action="options.php">
 			<?php settings_fields( 'quick_wp_version' ); ?>
 
-			<div class="qwv-card">
+			<div class="qwv-card qwv-c2">
 				<h2><?php esc_html_e( 'What to show', 'display-wordpress-version' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
@@ -596,7 +600,7 @@ function quick_wp_version_render_page() {
 				<div id="qwv-preview"><?php echo quick_wp_version_line( $settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped parts. ?></div>
 			</div>
 
-			<div class="qwv-card">
+			<div class="qwv-card qwv-c3">
 				<h2><?php esc_html_e( 'Where to show it', 'display-wordpress-version' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>

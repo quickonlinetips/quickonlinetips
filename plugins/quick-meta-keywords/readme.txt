@@ -41,7 +41,7 @@ Go to Settings > Quick META Keywords to turn categories and tags on or off and a
 * No database tables, no tracking, no ads, no upsells.
 * Delete the plugin and its settings are removed too.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/ More SEO tips: https://www.quickonlinetips.com/archives/category/search-engine-optimization/
 
 **Where META keywords fit in 2026**
 

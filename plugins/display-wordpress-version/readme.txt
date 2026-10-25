@@ -49,7 +49,7 @@ Tiny: no extra stylesheet or JavaScript on your site, and nothing loaded from ou
 
 Sites already using `quickversion()` from the original plugin keep working.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/ More WordPress tips: https://www.quickonlinetips.com/archives/tag/wordpress/
 
 == Installation ==
 

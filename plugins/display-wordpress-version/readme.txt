@@ -29,7 +29,7 @@ Add your own text before or after the line too, such as a copyright or a link to
 
 Settings > Quick WordPress Version shows the WordPress version installed on your site, the latest version from WordPress.org, and whether an update is waiting, with a link to update. It uses the update check WordPress already does, so it adds no load to your site.
 
-Showing your exact version number tells everyone, including attackers, which version your site runs. That is why the default line has no number. If you do show the number, it is hidden by itself while a WordPress update is waiting, so your site never advertises an out-of-date version. It comes back as soon as you update.
+Showing your exact version number tells everyone, including attackers, which version your site runs. That is why the default line has no number. If you do show the number, it is hidden by itself while a WordPress update is waiting, so your site never advertises an out-of-date version. It comes back as soon as you update. For more ways to keep your site updated and secure, see our [WordPress tips](https://www.quickonlinetips.com/archives/tag/wordpress/).
 
 **Put the line where you want it**
 
@@ -49,7 +49,7 @@ Tiny: no extra stylesheet or JavaScript on your site, and nothing loaded from ou
 
 Sites already using `quickversion()` from the original plugin keep working.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/ More WordPress tips: https://www.quickonlinetips.com/archives/tag/wordpress/
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/
 
 == Installation ==
 

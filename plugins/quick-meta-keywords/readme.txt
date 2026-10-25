@@ -41,7 +41,7 @@ Go to Settings > Quick META Keywords to turn categories and tags on or off and a
 * No database tables, no tracking, no ads, no upsells.
 * Delete the plugin and its settings are removed too.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/ More SEO tips: https://www.quickonlinetips.com/archives/category/search-engine-optimization/
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/
 
 **Where META keywords fit in 2026**
 
@@ -53,7 +53,7 @@ It still earns its place:
 * **A clear topic label.** Every post gets a short, accurate summary of its topics in the page source, taken from the categories and tags you already chose.
 * **Clean and honest by design.** Your real categories and tags keep the tag relevant, with no stuffing.
 
-Keep it short and true to each post, and it does its job quietly in the background.
+Keep it short and true to each post, and it does its job quietly in the background. For what helps your rankings today, see our [SEO guides](https://www.quickonlinetips.com/archives/category/search-engine-optimization/).
 
 == Installation ==
 

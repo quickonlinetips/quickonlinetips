@@ -22,7 +22,7 @@ Out of the box, every post in your feed ends like this:
 
 *© 2026 Your Blog Name. All Rights Reserved.* (your blog name linked to your site)
 
-Those links tell readers and search engines where the article came from, even on a site that copied it.
+Those links tell readers and search engines where the article came from, even on a site that copied it. For more ways to protect your site and your content, see our [security guides](https://www.quickonlinetips.com/archives/category/security/).
 
 **Choose your own wording**
 
@@ -51,7 +51,7 @@ Prefer your own words? Write the whole notice yourself, with HTML and handy plac
 
 Formerly called Simple Feed Copyright. Updating keeps your feed exactly as it was until you change a setting.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/ More security tips: https://www.quickonlinetips.com/archives/category/security/
+Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/
 
 == Installation ==
 

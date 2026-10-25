@@ -35,7 +35,7 @@ It works with the standard WordPress Code block and classic `<pre>` code, so the
 * Turn off the colours and the Copy button and it loads no JavaScript at all.
 * No special block or shortcode, so nothing breaks if you ever switch it off. Your code simply goes back to your theme's style.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/quick-code-styler-wordpress-plugin/
+Made by Quick Online Tips, tech help that works since 2004. See the [Quick Code Styler plugin page](https://www.quickonlinetips.com/archives/quick-code-styler-wordpress-plugin/) for more.
 
 == Installation ==
 

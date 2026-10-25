@@ -51,7 +51,7 @@ Prefer your own words? Write the whole notice yourself, with HTML and handy plac
 
 Formerly called Simple Feed Copyright. Updating keeps your feed exactly as it was until you change a setting.
 
-Made by Quick Online Tips, tech help that works since 2004. Plugin page: https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/
+Made by Quick Online Tips, tech help that works since 2004. See the [Quick Feed Copyright plugin page](https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/) for more.
 
 == Installation ==
 

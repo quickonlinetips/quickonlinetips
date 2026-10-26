@@ -37,6 +37,7 @@
 | **Quick META Keywords** | [WordPress.org](https://wordpress.org/plugins/quick-meta-keywords/) | [Plugin page](https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/) | [plugins/quick-meta-keywords](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-meta-keywords) |
 | **Display WordPress Version** | [WordPress.org](https://wordpress.org/plugins/display-wordpress-version/) | [Plugin page](https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/) | [plugins/display-wordpress-version](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/display-wordpress-version) |
 | **Quick Code Styler** 🆕 | Coming soon | Code blocks with syntax colours and a Copy button | [plugins/quick-code-styler](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-code-styler) |
+| **Quick Code Inserter** 🆕 | Coming soon | Paste any code and pick where it goes on your site | [plugins/quick-code-inserter](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-code-inserter) |
 
 🛠️ All of them are being updated for 2026, and their code lives here on GitHub.
 

@@ -318,8 +318,9 @@ add_filter( 'body_class', 'quickpic_body_classes' );
 // Load stylesheets
 function quickpic_scripts() {
 
-	// The theme's version, read from style.css, so it never goes stale.
-	$version = wp_get_theme( get_template() )->get( 'Version' );
+	// Theme version plus the file's last change time, so browsers fetch fresh CSS
+	// after every update, even when the version number stays the same.
+	$version = wp_get_theme( get_template() )->get( 'Version' ) . '.' . filemtime( get_template_directory() . '/style.css' );
 
 	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickpic', get_stylesheet_uri(), array(), $version );

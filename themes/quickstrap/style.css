@@ -1072,18 +1072,25 @@ input[type="submit"]:hover,
 	padding: 0;
 }
 
-.commentlist .children {
-	margin: 6px 0 0 14px;
-	border-left: 1px solid var(--qs-border);
-	padding-left: 10px;
+/* Comments: no boxes, just a thin line between them, like the original
+   QuickStrap. Replies are indented under a light line on the left */
+.commentlist > li {
+	padding: 12px 0;
+	border-top: 1px solid var(--qs-border);
 }
 
-/* Each comment: a compact box, 6px apart */
-.commentlist .comment-body {
-	border: 1px solid var(--qs-border);
-	border-radius: 6px;
-	padding: 8px 12px;
-	margin: 0 0 6px;
+.commentlist > li:last-child {
+	border-bottom: 1px solid var(--qs-border);
+}
+
+.commentlist .children {
+	margin: 10px 0 0 6px;
+	padding-left: 14px;
+	border-left: 1px solid var(--qs-border);
+}
+
+.commentlist .children > li {
+	padding: 8px 0 0;
 }
 
 .comment-content p {
@@ -1094,8 +1101,9 @@ input[type="submit"]:hover,
 	margin-bottom: 0;
 }
 
-.commentlist .bypostauthor > .comment-body {
-	background: var(--qs-soft);
+/* The post's author: name in the accent colour */
+.commentlist .bypostauthor > .comment-body .fn {
+	color: var(--qs-link);
 }
 
 .comment-author .avatar {

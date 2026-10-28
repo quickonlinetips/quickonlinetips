@@ -50,7 +50,7 @@ QuickPress is distributed under the terms of the GNU GPL.
 	--qp-soft: #f6f6f6;
 	--qp-bg: #fff;
 	--qp-page-bg: #ede8e2; /* around the page on wide screens */
-	--qp-link: var(--qp-brand);
+	--qp-link: color-mix(in srgb, var(--qp-brand) 60%, #0050b4); /* a richer blue than the header */
 	--qp-band: var(--qp-brand); /* the header band */
 	--qp-on-brand: #fff;
 	--qp-on-accent: #fff;

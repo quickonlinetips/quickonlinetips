@@ -47,6 +47,27 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'align-wide' );
+
+		// Starter content: on a brand-new site, the Customizer offers ready
+		// sidebar widgets (as blocks), a few pages and a main menu. Nothing is
+		// saved until the owner clicks Publish, and existing sites never see it.
+		add_theme_support( 'starter-content', array(
+			'widgets'   => array(
+				'sidebar' => array(
+					'search'     => array( 'block', array( 'content' => '<!-- wp:search {"showLabel":false} /-->' ) ),
+					'recent'     => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Posts', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-posts /-->' ) ),
+					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories /-->' ) ),
+					'archives'   => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Archives', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:archives /-->' ) ),
+				),
+			),
+			'posts'     => array( 'about', 'contact' ),
+			'nav_menus' => array(
+				'primary' => array(
+					'name'  => __( 'Main Menu', 'quickchic' ),
+					'items' => array( 'link_home', 'page_about', 'page_contact' ),
+				),
+			),
+		) );
 	}
 endif; // quickchic_setup
 add_action( 'after_setup_theme', 'quickchic_setup' );

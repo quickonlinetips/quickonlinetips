@@ -124,6 +124,32 @@ figcaption,
 	padding: 0;
 }
 
+/* Block styles from the editor's Styles panel */
+.is-style-qpic-accent,
+.wp-block-quote.is-style-qpic-accent {
+	margin: 1.5em 0;
+	padding: 2px 0 2px 16px;
+	border-left: 4px solid var(--qpic-accent);
+	color: #333;
+	font-size: 1.1em;
+}
+
+.is-style-qpic-soft-box {
+	margin: 1.5em 0;
+	padding: 14px 18px;
+	background: #f6f6f6;
+	border-left: 3px solid var(--qpic-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.is-style-qpic-soft-box > :first-child {
+	margin-top: 0;
+}
+
+.is-style-qpic-soft-box > :last-child {
+	margin-bottom: 0;
+}
+
 /* Same width as the post column on the site */
 .wp-block {
 	max-width: 660px;

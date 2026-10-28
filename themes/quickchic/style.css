@@ -916,15 +916,14 @@ a.page-numbers:hover {
 	margin: 3px 0;
 }
 
-/* Footer widgets: up to three columns on a soft panel with a pink top edge */
+/* Footer widgets: up to three columns, then a line, then the copyright */
 .footer-widgets {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 20px 30px;
-	margin: -15px -5px 20px;
-	padding: 20px;
-	background: var(--qc-soft);
-	border-top: 3px solid var(--qc-accent);
+	padding: 10px 15px 25px;
+	border-bottom: 1px solid var(--qc-border);
+	margin-bottom: 15px;
 	text-align: left;
 	line-height: 1.4;
 }

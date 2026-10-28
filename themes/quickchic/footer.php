@@ -14,6 +14,8 @@
 			</div>
 		<?php endif; ?>
 
+		<div class="site-info">
+
 		<?php
 		if ( has_nav_menu( 'footer' ) ) {
 			wp_nav_menu( array(
@@ -35,6 +37,8 @@
 		<p class="credits">
 			<a href="https://wordpress.org/themes/quickchic/" rel="nofollow">QuickChic Theme</a> &bull; <?php esc_html_e( 'Powered by WordPress', 'quickchic' ); ?>
 		</p>
+
+		</div>
 
 	</footer>
 

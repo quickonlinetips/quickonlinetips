@@ -192,6 +192,11 @@ body {
 	padding: 25px 40px;
 }
 
+/* Wide template: a wider page for big photos */
+.qpic-wide #page {
+	max-width: 1180px;
+}
+
 
 /* 4. Typography
 ------------------------------------- */

@@ -246,10 +246,26 @@ function quickpic_colors_css() {
 	return $css ? ':root{' . $css . '}' : '';
 }
 
-// Body class when the owner switched dark mode off.
+// Is this post or page using the Wide template?
+function quickpic_is_wide() {
+	return is_singular() && is_page_template( 'template-wide.php' );
+}
+
+// Wide pages get a wider content area for embeds and large images.
+function quickpic_wide_content_width() {
+	if ( quickpic_is_wide() ) {
+		$GLOBALS['content_width'] = 1060;
+	}
+}
+add_action( 'template_redirect', 'quickpic_wide_content_width' );
+
+// Body classes: dark mode switched off, Wide template.
 function quickpic_body_classes( $classes ) {
 	if ( ! get_theme_mod( 'quickpic_dark_mode', true ) ) {
 		$classes[] = 'qpic-light-only';
+	}
+	if ( quickpic_is_wide() ) {
+		$classes[] = 'qpic-wide';
 	}
 	return $classes;
 }

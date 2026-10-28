@@ -14,7 +14,14 @@
 			</a>
 		<?php endif; ?>
 
-		<?php the_excerpt(); ?>
+		<?php
+		if ( quickpic_show_full_posts() ) {
+			// Full post, up to a More block if the post has one.
+			the_content( esc_html__( 'Read More', 'quickpic' ) . ' &raquo;' );
+		} else {
+			the_excerpt();
+		}
+		?>
 
 	</div>
 

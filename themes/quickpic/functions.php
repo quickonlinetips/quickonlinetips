@@ -274,11 +274,31 @@ function quickpic_editor_colors( $settings ) {
 }
 add_filter( 'block_editor_settings_all', 'quickpic_editor_colors' );
 
-// The "Read More" link after excerpts.
-function quickpic_excerpt_more( $more ) {
+// The "Read More" link used after excerpts.
+function quickpic_read_more_link() {
 	return ' &bull; <a class="read-more" href="' . esc_url( get_permalink( get_the_ID() ) ) . '">' . esc_html__( 'Read More', 'quickpic' ) . ' &raquo;</a>';
 }
+
+// After an automatic excerpt that was cut short.
+function quickpic_excerpt_more( $more ) {
+	return quickpic_read_more_link();
+}
 add_filter( 'excerpt_more', 'quickpic_excerpt_more' );
+
+// WordPress leaves out the link in two cases where the post does go on:
+// a hand-written excerpt (the Excerpt box in the editor), and a post with a
+// More block early on, whose excerpt stops there. Add it in both, so every
+// post that continues ends with Read More.
+function quickpic_manual_excerpt_more( $excerpt ) {
+	if ( is_admin() || is_feed() || ! in_the_loop() || false !== strpos( $excerpt, 'class="read-more"' ) ) {
+		return $excerpt;
+	}
+	if ( has_excerpt() || false !== strpos( get_post_field( 'post_content', get_the_ID() ), '<!--more' ) ) {
+		return $excerpt . quickpic_read_more_link();
+	}
+	return $excerpt;
+}
+add_filter( 'get_the_excerpt', 'quickpic_manual_excerpt_more', 20 );
 
 // Post date, author, comments and categories line, used in lists and single posts
 function quickpic_post_meta( $show_comments = true ) {
@@ -359,6 +379,71 @@ function quickpic_customize_register( $wp_customize ) {
 	) );
 }
 add_action( 'customize_register', 'quickpic_customize_register' );
+
+/*
+ * Customizer: Appearance > Customize > Post Lists
+ * - Show excerpts (default) or full posts on the home page and archives.
+ * - Excerpt length in words (WordPress's default is 55).
+ * Search results always show excerpts.
+ */
+function quickpic_customize_post_lists( $wp_customize ) {
+
+	$wp_customize->add_section( 'quickpic_post_lists', array(
+		'title'       => __( 'Post Lists', 'quickpic' ),
+		'description' => __( 'How posts appear on the home page and in category, tag, date and author archives.', 'quickpic' ),
+		'priority'    => 45,
+	) );
+
+	$wp_customize->add_setting( 'quickpic_list_display', array(
+		'default'           => 'excerpt',
+		'sanitize_callback' => 'quickpic_sanitize_list_display',
+	) );
+	$wp_customize->add_control( 'quickpic_list_display', array(
+		'type'        => 'radio',
+		'label'       => __( 'Show', 'quickpic' ),
+		'description' => __( 'With full posts, add a More block in a post to choose where it breaks.', 'quickpic' ),
+		'section'     => 'quickpic_post_lists',
+		'choices'     => array(
+			'excerpt' => __( 'A short excerpt with Read More', 'quickpic' ),
+			'full'    => __( 'The full post', 'quickpic' ),
+		),
+	) );
+
+	$wp_customize->add_setting( 'quickpic_excerpt_length', array(
+		'default'           => 55,
+		'sanitize_callback' => 'quickpic_sanitize_excerpt_length',
+	) );
+	$wp_customize->add_control( 'quickpic_excerpt_length', array(
+		'type'        => 'number',
+		'label'       => __( 'Excerpt length (words)', 'quickpic' ),
+		'description' => __( 'Between 10 and 200. WordPress uses 55.', 'quickpic' ),
+		'section'     => 'quickpic_post_lists',
+		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
+	) );
+}
+add_action( 'customize_register', 'quickpic_customize_post_lists' );
+
+function quickpic_sanitize_list_display( $value ) {
+	return 'full' === $value ? 'full' : 'excerpt';
+}
+
+function quickpic_sanitize_excerpt_length( $value ) {
+	return max( 10, min( 200, absint( $value ) ) );
+}
+
+// Should this post list show full posts? Search results always use excerpts.
+function quickpic_show_full_posts() {
+	return ! is_search() && 'full' === get_theme_mod( 'quickpic_list_display', 'excerpt' );
+}
+
+// The excerpt length chosen in Customize > Post Lists.
+function quickpic_excerpt_length( $length ) {
+	if ( is_admin() ) {
+		return $length;
+	}
+	return quickpic_sanitize_excerpt_length( get_theme_mod( 'quickpic_excerpt_length', 55 ) );
+}
+add_filter( 'excerpt_length', 'quickpic_excerpt_length' );
 
 // The theme's two colours: the saved one, or the default.
 function quickpic_colors() {

@@ -77,6 +77,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Customize > Post Lists: excerpts or full posts, and the excerpt length
 * Read More also shows after hand-written excerpts
 * Print styles
+* Block styles (Accent bar for quotes, Soft box for groups) and two block patterns (newsletter sign-up box, about the author)
 * Block widgets work out of the box; no Classic Widgets plugin needed
 * Sidebar shows Search, Recent Posts and Categories until you add widgets
 * Starter content for new sites: sidebar widgets, three footer columns, About and Contact pages, main menu

@@ -197,6 +197,36 @@ function quickchic_block_styles() {
 }
 add_action( 'init', 'quickchic_block_styles' );
 
+/*
+ * Block patterns: ready-made boxes in the editor's Patterns tab, under QuickChic.
+ * Handy in a post or in the Below Posts widget area.
+ */
+function quickchic_block_patterns() {
+	register_block_pattern_category( 'quickchic', array( 'label' => __( 'QuickChic', 'quickchic' ) ) );
+
+	register_block_pattern( 'quickchic/newsletter-box', array(
+		'title'       => __( 'Newsletter sign-up box', 'quickchic' ),
+		'description' => __( 'A soft box asking readers to subscribe, with a button.', 'quickchic' ),
+		'categories'  => array( 'quickchic' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qc-soft-box"} --><div class="wp-block-group is-style-qc-soft-box">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'Enjoyed this post?', 'quickchic' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'Get new posts by email. No spam, unsubscribe any time.', 'quickchic' ) . '</p><!-- /wp:paragraph -->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'Subscribe', 'quickchic' ) . '</a></div><!-- /wp:button --></div><!-- /wp:buttons -->'
+			. '</div><!-- /wp:group -->',
+	) );
+
+	register_block_pattern( 'quickchic/about-author', array(
+		'title'       => __( 'About the author', 'quickchic' ),
+		'description' => __( 'A soft box with a short note about the writer.', 'quickchic' ),
+		'categories'  => array( 'quickchic' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qc-soft-box"} --><div class="wp-block-group is-style-qc-soft-box">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'About the author', 'quickchic' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you: what you write about, and why readers should come back.', 'quickchic' ) . '</p><!-- /wp:paragraph -->'
+			. '</div><!-- /wp:group -->',
+	) );
+}
+add_action( 'init', 'quickchic_block_patterns' );
+
 // The owner's accent colour in the editor too.
 function quickchic_editor_accent( $settings ) {
 	$accent = quickchic_accent_css();

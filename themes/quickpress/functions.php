@@ -279,7 +279,10 @@ function quickpress_shorten_long_lists( $block_content, $block ) {
 		return $block_content;
 	}
 	$classes = isset( $block['attrs']['className'] ) ? ' ' . $block['attrs']['className'] . ' ' : '';
-	if ( is_admin() || false === strpos( $classes, ' qp-short ' ) || ! empty( $block['attrs']['displayAsDropdown'] ) ) {
+	// qc-short is QuickChic's name for the same thing, so lists set up under
+	// QuickChic keep shortening after switching to QuickPress.
+	$marked = false !== strpos( $classes, ' qp-short ' ) || false !== strpos( $classes, ' qc-short ' );
+	if ( is_admin() || ! $marked || ! empty( $block['attrs']['displayAsDropdown'] ) ) {
 		return $block_content;
 	}
 

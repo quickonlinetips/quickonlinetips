@@ -450,6 +450,23 @@ dd {
 	color: var(--qp-accent-text);
 }
 
+/* The page you are on: a short accent bar under its menu link,
+   the same mark as under the site title */
+.main-menu li {
+	position: relative;
+}
+
+.main-menu .current-menu-item > a::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: -6px;
+	width: 22px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--qp-accent);
+}
+
 
 /* 6. Posts and pages
 ------------------------------------- */

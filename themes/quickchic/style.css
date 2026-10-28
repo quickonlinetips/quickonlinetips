@@ -55,7 +55,7 @@ QuickChic is distributed under the terms of the GNU GPL.
 	--qc-alt: #f9f9f9;
 	--qc-author: #fff8fe;
 	--qc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-	--qc-heading-font: Arial, Helvetica, sans-serif;
+	--qc-heading-font: var(--qc-font); /* the same system font, in bold. For the old look: Arial, Helvetica, sans-serif */
 	--qc-mono: ui-monospace, Menlo, Consolas, "Courier New", monospace;
 }
 
@@ -979,6 +979,10 @@ a.page-numbers:hover {
 
 #footer p {
 	margin: 3px 0;
+}
+
+.site-info {
+	padding-bottom: 20px;
 }
 
 /* Footer widgets: up to three columns, then a line, then the copyright */

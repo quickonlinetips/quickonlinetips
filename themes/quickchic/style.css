@@ -188,6 +188,38 @@ table {
 	padding: 20px;
 }
 
+/* Full width template: title and menu on top, then the post across the page */
+.qc-full-width .row {
+	grid-template-columns: 1fr;
+	grid-template-rows: auto;
+	grid-template-areas:
+		"header"
+		"content";
+}
+
+.qc-full-width #header {
+	border-left: 0;
+	border-bottom: 1px dotted var(--qc-accent);
+}
+
+.qc-full-width .main-menu {
+	border-top: 0;
+	margin-top: 8px;
+	padding-top: 0;
+}
+
+.qc-full-width .main-menu ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 18px;
+}
+
+.qc-full-width .main-menu li,
+.qc-full-width .main-menu ul ul {
+	display: contents;
+	font-size: 1em;
+}
+
 
 /* 4. Typography
 ------------------------------------- */

@@ -200,10 +200,26 @@ function quickchic_accent_css() {
 	return ':root{--qc-accent:' . $accent . ';}';
 }
 
-// Body class that switches dark mode off.
+// Is this post or page using the Full width template?
+function quickchic_is_full_width() {
+	return is_singular() && is_page_template( 'template-full-width.php' );
+}
+
+// Full width pages get a wider content area for embeds and large images.
+function quickchic_full_width_content_width() {
+	if ( quickchic_is_full_width() ) {
+		$GLOBALS['content_width'] = 960;
+	}
+}
+add_action( 'template_redirect', 'quickchic_full_width_content_width' );
+
+// Body classes: dark mode switched off, Full width template.
 function quickchic_body_classes( $classes ) {
 	if ( ! get_theme_mod( 'quickchic_dark_mode', true ) ) {
 		$classes[] = 'qc-light-only';
+	}
+	if ( quickchic_is_full_width() ) {
+		$classes[] = 'qc-full-width';
 	}
 	return $classes;
 }

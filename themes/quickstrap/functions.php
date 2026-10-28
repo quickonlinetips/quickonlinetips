@@ -219,6 +219,52 @@ function quickstrap_add_editor_styles() {
 }
 add_action( 'after_setup_theme', 'quickstrap_add_editor_styles' );
 
+/*
+ * Block styles: extra looks in the block editor's Styles panel.
+ * The CSS lives in style.css and custom-editor-style.css, so nothing extra loads.
+ */
+function quickstrap_block_styles() {
+	register_block_style( 'core/quote', array(
+		'name'  => 'qs-accent',
+		'label' => __( 'Accent bar', 'quickstrap' ),
+	) );
+	register_block_style( 'core/group', array(
+		'name'  => 'qs-soft-box',
+		'label' => __( 'Soft box', 'quickstrap' ),
+	) );
+}
+add_action( 'init', 'quickstrap_block_styles' );
+
+/*
+ * Block patterns: ready-made boxes in the editor's Patterns tab, under QuickStrap.
+ * Handy in a post or in the Below Posts widget area.
+ */
+function quickstrap_block_patterns() {
+	register_block_pattern_category( 'quickstrap', array( 'label' => __( 'QuickStrap', 'quickstrap' ) ) );
+
+	register_block_pattern( 'quickstrap/newsletter-box', array(
+		'title'       => __( 'Newsletter sign-up box', 'quickstrap' ),
+		'description' => __( 'A soft box asking readers to subscribe, with a button.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qs-soft-box"} --><div class="wp-block-group is-style-qs-soft-box">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'Enjoyed this post?', 'quickstrap' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'Get new posts by email. No spam, unsubscribe any time.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'Subscribe', 'quickstrap' ) . '</a></div><!-- /wp:button --></div><!-- /wp:buttons -->'
+			. '</div><!-- /wp:group -->',
+	) );
+
+	register_block_pattern( 'quickstrap/about-author', array(
+		'title'       => __( 'About the author', 'quickstrap' ),
+		'description' => __( 'A soft box with a short note about the writer.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qs-soft-box"} --><div class="wp-block-group is-style-qs-soft-box">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'About the author', 'quickstrap' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you: what you write about, and why readers should come back.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->'
+			. '</div><!-- /wp:group -->',
+	) );
+}
+add_action( 'init', 'quickstrap_block_patterns' );
+
 // The owner's colours in the editor too.
 function quickstrap_editor_colors( $settings ) {
 	$colors = quickstrap_colors_css();

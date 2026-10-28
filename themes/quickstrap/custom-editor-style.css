@@ -131,3 +131,29 @@ figcaption,
 	border: 0;
 	padding: 0;
 }
+
+/* Block styles from the editor's Styles panel */
+.is-style-qs-accent,
+.wp-block-quote.is-style-qs-accent {
+	margin: 1.5em 0;
+	padding: 2px 0 2px 16px;
+	border-left: 4px solid var(--qs-accent);
+	color: inherit;
+	font-size: 1.1em;
+}
+
+.is-style-qs-soft-box {
+	margin: 1.5em 0;
+	padding: 14px 18px;
+	background: var(--qs-soft);
+	border-left: 3px solid var(--qs-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.is-style-qs-soft-box > :first-child {
+	margin-top: 0;
+}
+
+.is-style-qs-soft-box > :last-child {
+	margin-bottom: 0;
+}

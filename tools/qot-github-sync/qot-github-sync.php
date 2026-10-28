@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       QOT GitHub Sync
  * Description:       Pull the latest QuickOnlineTips plugins and themes from GitHub with one click, and preview each plugin's readme.txt the way WordPress.org will show it. For test sites only.
- * Version:           1.1
+ * Version:           1.2
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Quick Online Tips
@@ -14,7 +14,8 @@
  * QOT Readme Preview: the plugin's readme.txt from GitHub laid out like its
  * WordPress.org page, with the banner, icon and screenshots, plus a few checks.
  *
- * This helper lives in the repo's tools/ folder, so it can update itself too.
+ * This helper lives in the repo's tools/ folder and updates itself: when the
+ * Version above is raised on GitHub, sites pull the new copy on their own.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -316,6 +317,123 @@ function qot_sync_delete( $dir ) {
 }
 
 /* ------------------------------------------------------------------ *
+ * Updating itself
+ * ------------------------------------------------------------------ */
+
+/*
+ * This tool keeps itself up to date. While you use the admin, it checks
+ * GitHub at most every 10 minutes (and every time you open its page). When
+ * the Version line in qot-github-sync.php on GitHub is higher than this
+ * copy's, it pulls itself like any other plugin. So whenever this file
+ * changes, raise its Version, or sites won't pick the change up.
+ */
+
+const QOT_SYNC_SELF = 'qot-github-sync';
+
+/**
+ * This copy's version.
+ *
+ * @return string
+ */
+function qot_sync_self_version() {
+	$data = get_file_data( __FILE__, array( 'Version' => 'Version' ) );
+	return (string) $data['Version'];
+}
+
+/**
+ * The version on GitHub. Read from raw.githubusercontent.com, which doesn't
+ * count against GitHub's hourly limit.
+ *
+ * @param string $branch Branch name.
+ * @return string Empty if GitHub couldn't be reached.
+ */
+function qot_sync_self_remote_version( $branch ) {
+	$response = wp_remote_get(
+		'https://raw.githubusercontent.com/' . QOT_SYNC_REPO . '/' . rawurlencode( $branch ) . '/tools/' . QOT_SYNC_SELF . '/' . QOT_SYNC_SELF . '.php',
+		array(
+			'timeout' => 10,
+			'headers' => array( 'User-Agent' => 'qot-github-sync' ),
+		)
+	);
+	if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+		$php = wp_remote_retrieve_body( $response );
+	} else {
+		// If that address can't be reached, ask the GitHub API instead.
+		$file = qot_sync_github( 'contents/tools/' . QOT_SYNC_SELF . '/' . QOT_SYNC_SELF . '.php?ref=' . rawurlencode( $branch ) );
+		if ( is_wp_error( $file ) || ! isset( $file['content'] ) ) {
+			return '';
+		}
+		$php = base64_decode( $file['content'] ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- GitHub sends file contents in base64.
+	}
+	if ( preg_match( '/^\s*\*?\s*Version:\s*(\S+)/mi', $php, $m ) ) {
+		return $m[1];
+	}
+	return '';
+}
+
+/**
+ * Pull this tool from GitHub if GitHub has a newer version.
+ *
+ * @param bool $force Check now, even if it was checked in the last 10 minutes.
+ * @return string Message when it updated itself, otherwise empty.
+ */
+function qot_sync_self_update( $force = false ) {
+	// Only when installed in its usual folder, so it never adds a second copy.
+	if ( basename( __DIR__ ) !== QOT_SYNC_SELF ) {
+		return '';
+	}
+	if ( ! $force && get_transient( 'qot_sync_self_checked' ) ) {
+		return '';
+	}
+	set_transient( 'qot_sync_self_checked', 1, 10 * MINUTE_IN_SECONDS );
+
+	$branch = get_option( 'qot_sync_branch', 'main' );
+	$mine   = qot_sync_self_version();
+	$latest = qot_sync_self_remote_version( $branch );
+	if ( '' === $latest || ! version_compare( $latest, $mine, '>' ) ) {
+		return '';
+	}
+
+	$result = qot_sync_run( 'tools', QOT_SYNC_SELF, $branch );
+	if ( is_wp_error( $result ) ) {
+		return '';
+	}
+	$message = 'QOT GitHub Sync updated itself from version ' . $mine . ' to ' . $latest . '.';
+	set_transient( 'qot_sync_self_notice', $message, HOUR_IN_SECONDS );
+	return $message;
+}
+
+add_action(
+	'admin_init',
+	function () {
+		if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		// Its own page checks for itself when it opens.
+		if ( isset( $_GET['page'] ) && 'qot-github-sync' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reads which page is open.
+			return;
+		}
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		qot_sync_self_update();
+	}
+);
+
+// Say once, on the next admin screen, that it updated itself.
+add_action(
+	'admin_notices',
+	function () {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$message = get_transient( 'qot_sync_self_notice' );
+		if ( $message ) {
+			delete_transient( 'qot_sync_self_notice' );
+			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+		}
+	}
+);
+
+/* ------------------------------------------------------------------ *
  * Admin pages
  * ------------------------------------------------------------------ */
 
@@ -379,6 +497,15 @@ function qot_sync_page() {
 		if ( 2 === count( $pull ) ) {
 			$result = qot_sync_run( $pull[0], $pull[1], $branch );
 			$notice = is_wp_error( $result ) ? array( 'error', $result->get_error_message() ) : array( 'success', $result );
+		}
+	}
+
+	// Check for a newer copy of this tool each time the page opens.
+	$updated = qot_sync_self_update( true );
+	if ( $updated ) {
+		delete_transient( 'qot_sync_self_notice' );
+		if ( ! $notice ) {
+			$notice = array( 'success', $updated );
 		}
 	}
 
@@ -454,7 +581,7 @@ function qot_sync_page() {
 						</tbody>
 					</table>
 				<?php endforeach; ?>
-				<p class="description" style="margin-top:16px">Plugins are activated after pulling. Themes are not: activate them in Appearance &gt; Themes. Plugin banners, icons and screenshots are skipped, since the site doesn't need them. <strong>Readme</strong> shows how a plugin's page will look on WordPress.org.</p>
+				<p class="description" style="margin-top:16px">This tool updates itself whenever a newer version is on GitHub<?php echo $updated ? '' : ' (this copy: version ' . esc_html( qot_sync_self_version() ) . ')'; ?>. Plugins are activated after pulling. Themes are not: activate them in Appearance &gt; Themes. Plugin banners, icons and screenshots are skipped, since the site doesn't need them. <strong>Readme</strong> shows how a plugin's page will look on WordPress.org.</p>
 			<?php endif; ?>
 		</form>
 	</div>

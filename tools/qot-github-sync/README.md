@@ -11,4 +11,12 @@ The Plugins screen also has a **Readme preview** link under each QOT plugin.
 
 The readme is read fresh from GitHub each time, so after a change is pushed, just reload the page.
 
-This helper sits in `tools/`, so it appears in its own list and can update itself with **Pull latest**.
+## Updating itself
+
+The tool keeps itself up to date. While you use the admin it checks GitHub at most every 10 minutes, and again each time you open its page. When the `Version` in `qot-github-sync.php` on GitHub is higher than the copy on the site, it pulls the new copy and says so in a green notice. **Pull latest** in its own row still works too.
+
+So whenever `qot-github-sync.php` changes, raise its `Version`. It only updates itself when it is installed in a folder named `qot-github-sync`.
+
+## Installing it
+
+Download [`tools/qot-github-sync.zip`](../qot-github-sync.zip) and upload it under Plugins > Add New > Upload Plugin. An older zip is fine: the tool updates itself to the latest version the first time you use the admin.

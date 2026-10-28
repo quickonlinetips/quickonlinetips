@@ -17,6 +17,9 @@
 					<?php endif; ?>
 				<?php endfor; ?>
 			</div>
+		<?php else : ?>
+			<?php // No widgets yet (a new site, or widgets parked in Inactive): show a few useful blocks. ?>
+			<?php quickpic_default_widgets(); ?>
 		<?php endif; ?>
 
 	</aside>

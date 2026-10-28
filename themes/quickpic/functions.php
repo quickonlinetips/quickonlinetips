@@ -82,6 +82,37 @@ function quickpic_widgets_init() {
 }
 add_action( 'widgets_init', 'quickpic_widgets_init' );
 
+/*
+ * Default bottom box widgets, shown only while all three Footer areas are
+ * empty: Recent Posts, Categories and Recent Comments side by side, so a new
+ * site (or one whose old widgets were parked in Inactive) never shows a bare
+ * green box. Built from WordPress's own blocks, so it needs no plugin and
+ * looks the same as the block widgets people add later in Appearance > Widgets.
+ * Search is left out because the box always has a search form at the top.
+ * As soon as any widget is added, this steps aside.
+ * A child theme can switch it off: add_filter( 'quickpic_show_default_widgets', '__return_false' );
+ */
+function quickpic_default_widgets() {
+	if ( ! apply_filters( 'quickpic_show_default_widgets', true ) ) {
+		return;
+	}
+
+	$columns = array(
+		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickpic' ), '<!-- wp:latest-posts /-->' ),
+		'widget_categories'      => array( __( 'Categories', 'quickpic' ), '<!-- wp:categories {"className":"qpic-short"} /-->' ),
+		'widget_recent_comments' => array( __( 'Recent Comments', 'quickpic' ), '<!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ),
+	);
+
+	echo '<div class="bottom-widgets">';
+	foreach ( $columns as $class => $column ) {
+		echo '<div class="bottom-column"><section class="widget ' . esc_attr( $class ) . '">';
+		echo '<h2 class="widget-title">' . esc_html( $column[0] ) . '</h2>';
+		echo do_blocks( $column[1] ); // phpcs:ignore WordPress.Security.EscapeOutput -- core blocks escape their own output.
+		echo '</section></div>';
+	}
+	echo '</div>';
+}
+
 // Editor style: posts look in the editor much like they do on the site.
 function quickpic_add_editor_styles() {
 	add_editor_style( 'custom-editor-style.css' );

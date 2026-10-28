@@ -544,6 +544,12 @@ dd {
 
 .post-thumb img {
 	display: block;
+	border-radius: 4px;
+}
+
+/* Thumbnails brighten a touch on hover, a hint that the photo opens the post */
+.post-thumb:hover img {
+	filter: brightness(1.08);
 }
 
 .post-image {
@@ -552,6 +558,7 @@ dd {
 
 .post-image img {
 	display: block;
+	border-radius: 4px;
 }
 
 figure {

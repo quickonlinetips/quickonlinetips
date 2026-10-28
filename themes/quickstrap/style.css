@@ -735,6 +735,110 @@ figcaption {
 	margin-bottom: 0;
 }
 
+/* Bootstrap looks from the Styles panel: Alert (info, success, warning) and
+   Card for a Group block. Bootstrap's own colours, so dark mode follows;
+   the second value in each var() is for the editor, where Bootstrap isn't loaded */
+.is-style-qs-alert-info,
+.is-style-qs-alert-success,
+.is-style-qs-alert-warning {
+	margin: 1.5em 0;
+	padding: 1rem 1.15rem;
+	border: 1px solid;
+	border-radius: var(--bs-border-radius, 0.375rem);
+}
+
+.is-style-qs-alert-info {
+	color: var(--bs-info-text-emphasis, #055160);
+	background: var(--bs-info-bg-subtle, #cff4fc);
+	border-color: var(--bs-info-border-subtle, #9eeaf9);
+}
+
+.is-style-qs-alert-success {
+	color: var(--bs-success-text-emphasis, #0a3622);
+	background: var(--bs-success-bg-subtle, #d1e7dd);
+	border-color: var(--bs-success-border-subtle, #a3cfbb);
+}
+
+.is-style-qs-alert-warning {
+	color: var(--bs-warning-text-emphasis, #664d03);
+	background: var(--bs-warning-bg-subtle, #fff3cd);
+	border-color: var(--bs-warning-border-subtle, #ffe69c);
+}
+
+/* Links and headings in an alert take its colour, like Bootstrap's .alert-link */
+:is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning) :is(a, h2, h3, h4) {
+	color: inherit;
+}
+
+:is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning) a {
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+.is-style-qs-card {
+	margin: 1.5em 0;
+	padding: 1rem 1.25rem;
+	background: var(--bs-body-bg, #fff);
+	border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+	border-radius: var(--bs-border-radius-lg, 0.5rem);
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+:is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning, .is-style-qs-card) > :first-child {
+	margin-top: 0;
+}
+
+:is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning, .is-style-qs-card) > :last-child {
+	margin-bottom: 0;
+}
+
+/* Cards side by side in Columns: same height, no extra space */
+.wp-block-column > .is-style-qs-card:only-child {
+	height: 100%;
+	margin: 0;
+}
+
+/* A hero box (from the "Hero box" pattern): centred, roomy, soft background */
+.qs-hero {
+	margin: 1.5em 0;
+	padding: 2.25rem 1.5rem;
+	text-align: center;
+	background: var(--qs-soft);
+	border-radius: var(--bs-border-radius-lg, 0.5rem);
+}
+
+.qs-hero > :first-child {
+	margin-top: 0;
+}
+
+.qs-hero > :last-child {
+	margin-bottom: 0;
+}
+
+.qs-hero .wp-block-buttons {
+	justify-content: center;
+}
+
+/* Outline buttons (the Button block's Outline style) look like Bootstrap's
+   .btn-outline-primary: accent border and text, filled on hover */
+.wp-block-button.is-style-outline > .wp-block-button__link {
+	border: 1px solid var(--qs-accent);
+	padding: calc(0.667em + 1px) calc(1.333em + 1px);
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background) {
+	background: transparent;
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
+	color: var(--qs-accent);
+}
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover {
+	background: var(--qs-accent);
+	color: var(--qs-on-accent, #fff);
+}
+
 /* Blocks with their own background colour: keep text off the edges */
 .entry :is(p, h2, h3, h4, .wp-block-group, .wp-block-column, .wp-block-columns).has-background {
 	padding: 1em 1.25em;

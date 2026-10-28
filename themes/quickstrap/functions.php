@@ -279,6 +279,20 @@ function quickstrap_block_styles() {
 		'name'  => 'qs-soft-box',
 		'label' => __( 'Soft box', 'quickstrap' ),
 	) );
+
+	// Bootstrap's look without typing classes: pick a Group, then a style.
+	$group_styles = array(
+		'qs-card'          => __( 'Card', 'quickstrap' ),
+		'qs-alert-info'    => __( 'Alert: info', 'quickstrap' ),
+		'qs-alert-success' => __( 'Alert: success', 'quickstrap' ),
+		'qs-alert-warning' => __( 'Alert: warning', 'quickstrap' ),
+	);
+	foreach ( $group_styles as $name => $label ) {
+		register_block_style( 'core/group', array(
+			'name'  => $name,
+			'label' => $label,
+		) );
+	}
 }
 add_action( 'init', 'quickstrap_block_styles' );
 
@@ -307,6 +321,51 @@ function quickstrap_block_patterns() {
 		'content'     => '<!-- wp:group {"className":"is-style-qs-soft-box"} --><div class="wp-block-group is-style-qs-soft-box">'
 			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'About the author', 'quickstrap' ) . '</h3><!-- /wp:heading -->'
 			. '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you: what you write about, and why readers should come back.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->'
+			. '</div><!-- /wp:group -->',
+	) );
+
+	// Bootstrap-style patterns, built from core blocks and the styles above.
+	$card = function ( $title, $text ) {
+		return '<!-- wp:column --><div class="wp-block-column">'
+			. '<!-- wp:group {"className":"is-style-qs-card"} --><div class="wp-block-group is-style-qs-card">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html( $title ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html( $text ) . '</p><!-- /wp:paragraph -->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'Learn more', 'quickstrap' ) . '</a></div><!-- /wp:button --></div><!-- /wp:buttons -->'
+			. '</div><!-- /wp:group -->'
+			. '</div><!-- /wp:column -->';
+	};
+
+	register_block_pattern( 'quickstrap/three-cards', array(
+		'title'       => __( 'Three cards', 'quickstrap' ),
+		'description' => __( 'Three Bootstrap-style cards side by side, each with a heading, text and an outline button.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:columns --><div class="wp-block-columns">'
+			. $card( __( 'Fast', 'quickstrap' ), __( 'A sentence about the first thing you offer or write about.', 'quickstrap' ) )
+			. $card( __( 'Simple', 'quickstrap' ), __( 'A sentence about the second thing, short and to the point.', 'quickstrap' ) )
+			. $card( __( 'Free', 'quickstrap' ), __( 'A sentence about the third thing, and why readers will like it.', 'quickstrap' ) )
+			. '</div><!-- /wp:columns -->',
+	) );
+
+	register_block_pattern( 'quickstrap/hero', array(
+		'title'       => __( 'Hero box', 'quickstrap' ),
+		'description' => __( 'A big centred welcome with a headline, a short lead paragraph and two buttons.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:group {"className":"qs-hero"} --><div class="wp-block-group qs-hero">'
+			. '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Welcome to my site', 'quickstrap' ) . '</h2><!-- /wp:heading -->'
+			. '<!-- wp:paragraph {"className":"lead"} --><p class="lead">' . esc_html__( 'One or two sentences on what readers will find here and why it helps them.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons">'
+			. '<!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'Start here', 'quickstrap' ) . '</a></div><!-- /wp:button -->'
+			. '<!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'About me', 'quickstrap' ) . '</a></div><!-- /wp:button -->'
+			. '</div><!-- /wp:buttons -->'
+			. '</div><!-- /wp:group -->',
+	) );
+
+	register_block_pattern( 'quickstrap/notice', array(
+		'title'       => __( 'Notice', 'quickstrap' ),
+		'description' => __( 'A Bootstrap-style info alert for a note, tip or update.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qs-alert-info"} --><div class="wp-block-group is-style-qs-alert-info">'
+			. '<!-- wp:paragraph --><p><strong>' . esc_html__( 'Note:', 'quickstrap' ) . '</strong> ' . esc_html__( 'A short tip or update for your readers. Pick another Alert style in the Styles panel for success or warning.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->'
 			. '</div><!-- /wp:group -->',
 	) );
 }

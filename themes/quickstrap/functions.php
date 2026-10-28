@@ -54,6 +54,45 @@ if ( ! function_exists( 'quickstrap_setup' ) ) :
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'align-wide' );
+
+		// Starter content: on a brand-new site, the Customizer offers ready
+		// widgets (as blocks), a few pages and a main menu, so the whole design
+		// shows. Nothing is saved until the owner clicks Publish, and existing
+		// sites never see it.
+		$quickstrap_heading = function ( $text ) {
+			return '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html( $text ) . '</h2><!-- /wp:heading -->';
+		};
+		$quickstrap_search  = '<!-- wp:search ' . wp_json_encode( array(
+			'label'      => __( 'Search', 'quickstrap' ),
+			'showLabel'  => false,
+			'buttonText' => __( 'Search', 'quickstrap' ),
+		) ) . ' /-->';
+		add_theme_support( 'starter-content', array(
+			'widgets'   => array(
+				'right-sidebar' => array(
+					'search'     => array( 'block', array( 'content' => $quickstrap_search ) ),
+					'recent'     => array( 'block', array( 'content' => $quickstrap_heading( __( 'Recent Posts', 'quickstrap' ) ) . '<!-- wp:latest-posts /-->' ) ),
+					'categories' => array( 'block', array( 'content' => $quickstrap_heading( __( 'Categories', 'quickstrap' ) ) . '<!-- wp:categories {"className":"qs-short"} /-->' ) ),
+				),
+				// Footer columns, so a new site shows the footer too.
+				'footer-1'      => array(
+					'about_site' => array( 'block', array( 'content' => $quickstrap_heading( __( 'About This Site', 'quickstrap' ) ) . '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you and what you write about. Change this in Appearance > Widgets.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->' ) ),
+				),
+				'footer-2'      => array(
+					'comments' => array( 'block', array( 'content' => $quickstrap_heading( __( 'Recent Comments', 'quickstrap' ) ) . '<!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ) ),
+				),
+				'footer-3'      => array(
+					'pages' => array( 'block', array( 'content' => $quickstrap_heading( __( 'Pages', 'quickstrap' ) ) . '<!-- wp:page-list {"className":"qs-short"} /-->' ) ),
+				),
+			),
+			'posts'     => array( 'about', 'contact' ),
+			'nav_menus' => array(
+				'header-nav' => array(
+					'name'  => __( 'Main Menu', 'quickstrap' ),
+					'items' => array( 'link_home', 'page_about', 'page_contact' ),
+				),
+			),
+		) );
 	}
 endif; // quickstrap_setup
 add_action( 'after_setup_theme', 'quickstrap_setup' );

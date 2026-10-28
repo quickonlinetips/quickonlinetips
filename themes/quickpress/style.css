@@ -58,6 +58,7 @@ QuickPress is distributed under the terms of the GNU GPL.
 	--qp-menu: color-mix(in srgb, var(--qp-brand) 20%, #fff);
 	--qp-footer: color-mix(in srgb, var(--qp-brand) 80%, #000);
 	--qp-footer-tint: color-mix(in srgb, var(--qp-brand) 8%, #fff); /* behind footer widgets */
+	--qp-page-edge: rgba(0, 0, 0, 0.07); /* hairline around the page on wide screens */
 	--qp-field: #fff;
 	--qp-field-border: #bbb;
 	--qp-alt: #f9f9f9;
@@ -89,6 +90,7 @@ QuickPress is distributed under the terms of the GNU GPL.
 		--qp-menu: color-mix(in srgb, var(--qp-brand) 25%, #1c1c1c);
 		--qp-footer: color-mix(in srgb, var(--qp-brand) 45%, #000);
 		--qp-footer-tint: color-mix(in srgb, var(--qp-brand) 14%, #171717);
+		--qp-page-edge: rgba(255, 255, 255, 0.08);
 		--qp-field: #1f1f1f;
 		--qp-field-border: #555;
 		--qp-alt: #1d1d1d;
@@ -174,6 +176,7 @@ table {
 	max-width: 1000px;
 	margin: 0 auto;
 	background: var(--qp-bg);
+	box-shadow: 0 0 0 1px var(--qp-page-edge), 0 2px 14px var(--qp-page-edge); /* lifts the page off the background */
 }
 
 .row {
@@ -1354,6 +1357,7 @@ button:focus-visible {
 
 	#page {
 		max-width: none;
+		box-shadow: none;
 	}
 
 	.row {

@@ -704,16 +704,18 @@ figcaption {
 ------------------------------------- */
 
 .bottom-box {
-	padding: 20px 25px 25px;
+	padding: 25px 25px 25px;
 	background: var(--qpic-band);
 	color: var(--qpic-band-text);
 	font-size: 1.05em;
 	line-height: 1.45;
 }
 
+/* The search panel: a deeper shade of the box's own green, so it reads as
+   part of the box rather than a black slab dropped into it */
 .bottom-search {
-	padding: 10px 14px;
-	background: var(--qpic-frame);
+	padding: 18px 14px;
+	background: color-mix(in srgb, var(--qpic-band) 55%, #000);
 	border-radius: 6px;
 }
 

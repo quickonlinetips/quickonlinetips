@@ -31,6 +31,7 @@ QuickPic is distributed under the terms of the GNU GPL
 11. Footer
 12. Accessibility
 13. Phones and tablets
+14. Print
 ------------------------------------- */
 
 
@@ -1151,5 +1152,90 @@ button:focus-visible {
 
 	.post-thumb img {
 		width: 80px;
+	}
+}
+
+
+/* 14. Print
+   Printing a post gives clean text: no frame, menu, widgets or comment form.
+------------------------------------- */
+
+@media print {
+
+	body {
+		color: #000;
+		background: #fff;
+		font-size: 12pt;
+		padding: 0;
+	}
+
+	#page {
+		max-width: none;
+		border: 0;
+		border-radius: 0;
+	}
+
+	#header {
+		padding: 0 0 10px;
+		background: none;
+		color: #000;
+		text-align: left;
+		border-bottom: 1px solid #000;
+	}
+
+	.site-title::after {
+		display: none;
+	}
+
+	.site-title a,
+	.description {
+		color: #000;
+	}
+
+	.column {
+		padding: 0;
+	}
+
+	.main-menu,
+	.bottom-box,
+	.after-post,
+	.footer-menu,
+	.post-nav,
+	.pagination,
+	.comment-respond,
+	.reply,
+	.skip-link,
+	.credits {
+		display: none;
+	}
+
+	.site-info {
+		background: none;
+		color: #000;
+		text-align: left;
+	}
+
+	a {
+		color: #000;
+	}
+
+	/* Show where links in the post go */
+	.entry a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.85em;
+		word-break: break-all;
+	}
+
+	img,
+	figure,
+	pre,
+	blockquote {
+		break-inside: avoid;
+	}
+
+	h1,
+	h2,
+	h3 {
+		break-after: avoid;
 	}
 }

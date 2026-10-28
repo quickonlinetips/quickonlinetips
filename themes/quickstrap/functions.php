@@ -276,14 +276,81 @@ function quickstrap_layout_content_width() {
 }
 add_action( 'template_redirect', 'quickstrap_layout_content_width' );
 
-// Body class for the Full width template.
+// Body classes: dark mode switched off, Full width template.
 function quickstrap_body_classes( $classes ) {
+	if ( ! get_theme_mod( 'quickstrap_dark_mode', true ) ) {
+		$classes[] = 'qs-light-only';
+	}
 	if ( quickstrap_is_full_width() ) {
 		$classes[] = 'qs-full-width';
 	}
 	return $classes;
 }
 add_filter( 'body_class', 'quickstrap_body_classes' );
+
+/*
+ * Customizer: Appearance > Customize > Colours
+ * - Header colour: the top bar behind the site title and menu.
+ * - Accent colour: links, buttons, page numbers and the small accent bars.
+ * - Dark mode: follow the reader's device setting (on by default) or stay light.
+ */
+function quickstrap_customize_register( $wp_customize ) {
+
+	$wp_customize->add_setting( 'quickstrap_brand_color', array(
+		'default'           => '#212529',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickstrap_brand_color', array(
+		'label'       => __( 'Header colour', 'quickstrap' ),
+		'description' => __( 'The top bar behind the site title and menu. Pick a dark colour so the white text stays readable on it.', 'quickstrap' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickstrap_accent_color', array(
+		'default'           => '#0d6efd',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickstrap_accent_color', array(
+		'label'       => __( 'Accent colour', 'quickstrap' ),
+		'description' => __( 'Links, buttons, page numbers and the small bars under the site title and widget headings.', 'quickstrap' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickstrap_dark_mode', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickstrap_dark_mode', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Dark mode for readers who use it', 'quickstrap' ),
+		'description' => __( 'Turns the site dark when the reader\'s phone or computer is set to dark. Untick to always stay light.', 'quickstrap' ),
+		'section'     => 'colors',
+	) );
+}
+add_action( 'customize_register', 'quickstrap_customize_register' );
+
+// The theme's two colours: the saved one, or the default.
+function quickstrap_colors() {
+	$brand  = sanitize_hex_color( get_theme_mod( 'quickstrap_brand_color', '#212529' ) );
+	$accent = sanitize_hex_color( get_theme_mod( 'quickstrap_accent_color', '#0d6efd' ) );
+	return array(
+		'brand'  => $brand ? $brand : '#212529',
+		'accent' => $accent ? $accent : '#0d6efd',
+	);
+}
+
+// The owner's colours as CSS, or '' when both are the defaults.
+function quickstrap_colors_css() {
+	$colors = quickstrap_colors();
+	$css    = '';
+	if ( '#212529' !== strtolower( $colors['brand'] ) ) {
+		$css .= '--qs-brand:' . $colors['brand'] . ';';
+	}
+	if ( '#0d6efd' !== strtolower( $colors['accent'] ) ) {
+		$css .= '--qs-accent:' . $colors['accent'] . ';';
+	}
+	return $css ? ':root{' . $css . '}' : '';
+}
 
 /*
  * Customizer: Appearance > Customize > Bootstrap Extras
@@ -333,6 +400,12 @@ function quickstrap_scripts() {
 	// Bootstrap first, then the theme's own small stylesheet on top of it.
 	wp_enqueue_style( 'quickstrap-bootstrap', get_template_directory_uri() . '/vendor/bootstrap/bootstrap.min.css', array(), QUICKSTRAP_BOOTSTRAP_VERSION );
 	wp_enqueue_style( 'quickstrap', get_stylesheet_uri(), array( 'quickstrap-bootstrap' ), $version );
+
+	// The owner's colours, if they picked any (a few bytes, no extra file).
+	$colors = quickstrap_colors_css();
+	if ( $colors ) {
+		wp_add_inline_style( 'quickstrap', $colors );
+	}
 
 	// Extras for owners who use them in their own posts and widgets,
 	// switched on in Customize > Bootstrap Extras. The theme itself needs neither.

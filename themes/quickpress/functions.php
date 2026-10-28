@@ -221,6 +221,79 @@ function quickpress_post_meta( $show_comments = true ) {
 	echo '</p>';
 }
 
+/*
+ * Customizer: Appearance > Customize > Colours
+ * - Header colour: the blue of the header band, menu bar, footer and links.
+ * - Accent colour: the pink of widget headings, buttons and highlights.
+ * - Dark mode: follow the reader's device setting (on by default) or stay light.
+ */
+function quickpress_customize_register( $wp_customize ) {
+
+	$wp_customize->add_setting( 'quickpress_brand_color', array(
+		'default'           => '#2a6496',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickpress_brand_color', array(
+		'label'       => __( 'Header colour', 'quickpress' ),
+		'description' => __( 'The header band, menu bar, footer and links. Pick a darker colour so white text stays readable on it.', 'quickpress' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickpress_accent_color', array(
+		'default'           => '#c32364',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickpress_accent_color', array(
+		'label'       => __( 'Accent colour', 'quickpress' ),
+		'description' => __( 'Widget headings, buttons and page numbers.', 'quickpress' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickpress_dark_mode', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickpress_dark_mode', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Dark mode for readers who use it', 'quickpress' ),
+		'description' => __( 'Turns the site dark when the reader\'s phone or computer is set to dark. Untick to always stay light.', 'quickpress' ),
+		'section'     => 'colors',
+	) );
+}
+add_action( 'customize_register', 'quickpress_customize_register' );
+
+// The theme's two colours: the saved one, or the default.
+function quickpress_colors() {
+	$brand  = sanitize_hex_color( get_theme_mod( 'quickpress_brand_color', '#2a6496' ) );
+	$accent = sanitize_hex_color( get_theme_mod( 'quickpress_accent_color', '#c32364' ) );
+	return array(
+		'brand'  => $brand ? $brand : '#2a6496',
+		'accent' => $accent ? $accent : '#c32364',
+	);
+}
+
+// The owner's colours as CSS, or '' when both are the defaults.
+function quickpress_colors_css() {
+	$colors = quickpress_colors();
+	$css    = '';
+	if ( '#2a6496' !== strtolower( $colors['brand'] ) ) {
+		$css .= '--qp-brand:' . $colors['brand'] . ';';
+	}
+	if ( '#c32364' !== strtolower( $colors['accent'] ) ) {
+		$css .= '--qp-accent:' . $colors['accent'] . ';';
+	}
+	return $css ? ':root{' . $css . '}' : '';
+}
+
+// Body classes: dark mode switched off.
+function quickpress_body_classes( $classes ) {
+	if ( ! get_theme_mod( 'quickpress_dark_mode', true ) ) {
+		$classes[] = 'qp-light-only';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'quickpress_body_classes' );
+
 // Load stylesheets
 function quickpress_scripts() {
 
@@ -228,6 +301,12 @@ function quickpress_scripts() {
 
 	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickpress', get_stylesheet_uri(), array(), $version );
+
+	// The owner's colours, if they picked any (a few bytes, no extra file).
+	$colors = quickpress_colors_css();
+	if ( $colors ) {
+		wp_add_inline_style( 'quickpress', $colors );
+	}
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

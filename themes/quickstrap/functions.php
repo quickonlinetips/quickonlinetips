@@ -103,6 +103,41 @@ function quickstrap_widgets_init() {
 }
 add_action( 'widgets_init', 'quickstrap_widgets_init' );
 
+/*
+ * Default sidebar, shown only while the right sidebar has no widgets.
+ * New sites park WordPress's own default widgets in Inactive, so without this
+ * a new site would show an empty column. Built from WordPress's own blocks,
+ * so it needs no plugin and looks the same as the block widgets people add
+ * later in Appearance > Widgets. As soon as a widget is added, it steps aside.
+ * A child theme can switch it off: add_filter( 'quickstrap_show_default_sidebar', '__return_false' );
+ */
+function quickstrap_default_sidebar() {
+	if ( ! apply_filters( 'quickstrap_show_default_sidebar', true ) ) {
+		return;
+	}
+
+	$search = '<!-- wp:search ' . wp_json_encode( array(
+		'label'      => __( 'Search', 'quickstrap' ),
+		'showLabel'  => false,
+		'buttonText' => __( 'Search', 'quickstrap' ),
+	) ) . ' /-->';
+
+	$sections = array(
+		'widget_search'         => array( '', $search ),
+		'widget_recent_entries' => array( __( 'Recent Posts', 'quickstrap' ), '<!-- wp:latest-posts /-->' ),
+		'widget_categories'     => array( __( 'Categories', 'quickstrap' ), '<!-- wp:categories {"className":"qs-short"} /-->' ),
+	);
+
+	foreach ( $sections as $class => $section ) {
+		echo '<section class="widget ' . esc_attr( $class ) . '">';
+		if ( $section[0] ) {
+			echo '<h2 class="widget-title">' . esc_html( $section[0] ) . '</h2>';
+		}
+		echo do_blocks( $section[1] ); // phpcs:ignore WordPress.Security.EscapeOutput -- core blocks escape their own output.
+		echo '</section>';
+	}
+}
+
 // Main menu links get Bootstrap's nav-link class, so they look like a Bootstrap navbar.
 function quickstrap_menu_link_class( $atts, $item, $args ) {
 	if ( isset( $args->theme_location ) && 'header-nav' === $args->theme_location ) {

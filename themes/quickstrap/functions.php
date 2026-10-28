@@ -211,6 +211,44 @@ function quickstrap_body_classes( $classes ) {
 }
 add_filter( 'body_class', 'quickstrap_body_classes' );
 
+/*
+ * Customizer: Appearance > Customize > Bootstrap Extras
+ * The theme itself needs no JavaScript and no icon font. These two switches
+ * load Bootstrap's JavaScript and Font Awesome for owners who use them in
+ * their own posts and widgets (a dropdown, a modal, <i class="fa-solid fa-star"></i>).
+ */
+function quickstrap_customize_extras( $wp_customize ) {
+
+	$wp_customize->add_section( 'quickstrap_extras', array(
+		'title'       => __( 'Bootstrap Extras', 'quickstrap' ),
+		'description' => __( 'QuickStrap needs neither of these. Switch one on only if your own posts or widgets use it; each adds a file for every visitor to download.', 'quickstrap' ),
+		'priority'    => 46,
+	) );
+
+	$wp_customize->add_setting( 'quickstrap_bootstrap_js', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickstrap_bootstrap_js', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Load Bootstrap\'s JavaScript', 'quickstrap' ),
+		'description' => __( 'For Bootstrap dropdowns, modals, carousels, tooltips and collapses in your posts. About 80 KB.', 'quickstrap' ),
+		'section'     => 'quickstrap_extras',
+	) );
+
+	$wp_customize->add_setting( 'quickstrap_font_awesome', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickstrap_font_awesome', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Load Font Awesome icons', 'quickstrap' ),
+		'description' => __( 'For Font Awesome icons you add to posts or widgets. About 90 KB, plus the icon fonts.', 'quickstrap' ),
+		'section'     => 'quickstrap_extras',
+	) );
+}
+add_action( 'customize_register', 'quickstrap_customize_extras' );
+
 // Load styles and scripts
 function quickstrap_scripts() {
 
@@ -222,8 +260,14 @@ function quickstrap_scripts() {
 	wp_enqueue_style( 'quickstrap-bootstrap', get_template_directory_uri() . '/vendor/bootstrap/bootstrap.min.css', array(), QUICKSTRAP_BOOTSTRAP_VERSION );
 	wp_enqueue_style( 'quickstrap', get_stylesheet_uri(), array( 'quickstrap-bootstrap' ), $version );
 
-	wp_enqueue_style( 'quickstrap-fontawesome', get_template_directory_uri() . '/vendor/font-awesome/css/all.min.css', array(), QUICKSTRAP_FONTAWESOME_VERSION );
-	wp_enqueue_script( 'quickstrap-bootstrap', get_template_directory_uri() . '/vendor/bootstrap/bootstrap.bundle.min.js', array(), QUICKSTRAP_BOOTSTRAP_VERSION, true );
+	// Extras for owners who use them in their own posts and widgets,
+	// switched on in Customize > Bootstrap Extras. The theme itself needs neither.
+	if ( get_theme_mod( 'quickstrap_font_awesome', false ) ) {
+		wp_enqueue_style( 'quickstrap-fontawesome', get_template_directory_uri() . '/vendor/font-awesome/css/all.min.css', array(), QUICKSTRAP_FONTAWESOME_VERSION );
+	}
+	if ( get_theme_mod( 'quickstrap_bootstrap_js', false ) ) {
+		wp_enqueue_script( 'quickstrap-bootstrap', get_template_directory_uri() . '/vendor/bootstrap/bootstrap.bundle.min.js', array(), QUICKSTRAP_BOOTSTRAP_VERSION, true );
+	}
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

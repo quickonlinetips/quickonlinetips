@@ -55,7 +55,7 @@ QuickChic is distributed under the terms of the GNU GPL.
 	--qc-alt: #f9f9f9;
 	--qc-author: #fff8fe;
 	--qc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-	--qc-heading-font: var(--qc-font); /* the same system font, in bold. For the old look: Arial, Helvetica, sans-serif */
+	--qc-heading-font: var(--qc-font); /* the same system font, in bold */
 	--qc-mono: ui-monospace, Menlo, Consolas, "Courier New", monospace;
 }
 
@@ -613,6 +613,40 @@ figcaption {
 	padding: 0;
 }
 
+/* Query Loop and post blocks inside a post: a compact list in a light box,
+   so the listed posts don't look like the page's own post titles */
+.entry .wp-block-query {
+	margin: 1.5em 0;
+	padding: 12px 16px;
+	border: 1px solid var(--qc-border);
+	border-radius: 6px;
+}
+
+.entry .wp-block-post-template {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.entry .wp-block-post-template > li {
+	margin: 0 0 12px;
+}
+
+.entry .wp-block-query .wp-block-post-title {
+	font-size: 1.1em;
+	margin: 0 0 2px;
+}
+
+.entry .wp-block-post-date {
+	font-size: 0.85em;
+	color: var(--qc-muted);
+}
+
+.entry .wp-block-query-pagination {
+	margin-top: 10px;
+	gap: 6px;
+}
+
 /* Blocks with their own background colour: keep text off the edges */
 .entry :is(p, h2, h3, h4, .wp-block-group, .wp-block-column, .wp-block-columns).has-background {
 	padding: 1em 1.25em;
@@ -652,24 +686,6 @@ figcaption {
 }
 
 /* Block widgets (the default in Appearance > Widgets) */
-
-/* Details block (Categories, Archives): a title that opens to a list, no JavaScript */
-.wp-block-details summary {
-	cursor: pointer;
-	font-family: var(--qc-heading-font);
-	font-size: 1.15em;
-	font-weight: bold;
-	list-style-position: outside;
-	margin-left: 1em;
-}
-
-.wp-block-details summary::marker {
-	color: var(--qc-accent);
-}
-
-.wp-block-details[open] summary {
-	margin-bottom: 6px;
-}
 
 #sidebar .wp-block-group__inner-container > * {
 	margin-top: 0;

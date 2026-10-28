@@ -1,0 +1,23 @@
+/*
+Theme Name:   QuickChic Child
+Theme URI:    https://www.quickonlinetips.com/archives/quickchic-wordpress-theme/
+Description:  A blank child theme for QuickChic. Add your own CSS below and your own PHP in functions.php; your changes stay safe when QuickChic updates.
+Author:       QuickOnlineTips
+Author URI:   https://www.quickonlinetips.com/
+Template:     quickchic
+Version:      1.1
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
+License:      GNU General Public License v2 or later
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  quickchic-child
+*/
+
+/* Your CSS goes below. QuickChic's colours are CSS variables, so you can
+   change them here, for example:
+
+:root {
+	--qc-accent: #0a7c86;
+}
+*/

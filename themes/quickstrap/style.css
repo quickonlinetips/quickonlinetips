@@ -1291,6 +1291,28 @@ a:focus-visible {
 		padding-top: 1.5rem;
 		border-top: 1px solid var(--qs-border);
 	}
+
+	/* Lists in it (Categories, Pages, Archives, Recent Posts) run in columns,
+	   so they don't stretch across the page as one long thin strip. The
+	   "N more" line spans all columns, and the opened list runs in columns too */
+	.sidebar-left .widget > ul,
+	.sidebar-left .widget > ol,
+	.sidebar-left .wp-block-categories,
+	.sidebar-left .wp-block-page-list,
+	.sidebar-left .wp-block-archives,
+	.sidebar-left .wp-block-latest-posts,
+	.sidebar-left .qs-more > details > ul {
+		columns: 170px 4;
+		column-gap: 30px;
+	}
+
+	.sidebar-left li {
+		break-inside: avoid;
+	}
+
+	.sidebar-left li.qs-more {
+		column-span: all;
+	}
 }
 
 @media (max-width: 767.98px) {

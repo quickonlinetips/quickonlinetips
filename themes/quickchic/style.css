@@ -689,6 +689,22 @@ figcaption {
 	margin: 0 0 3px;
 }
 
+/* "12 more" at the end of a long list (sidebar and footer): opens in place, no JavaScript */
+.qc-more summary {
+	cursor: pointer;
+	color: var(--qc-link);
+	font-weight: 600;
+	list-style-position: inside;
+}
+
+.qc-more summary::marker {
+	color: var(--qc-accent);
+}
+
+.qc-more details[open] summary {
+	margin-bottom: 3px;
+}
+
 /* Block widgets (the default in Appearance > Widgets) */
 
 #sidebar .wp-block-group__inner-container > * {

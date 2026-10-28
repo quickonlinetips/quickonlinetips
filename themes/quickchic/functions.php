@@ -191,6 +191,76 @@ function quickchic_editor_accent( $settings ) {
 }
 add_filter( 'block_editor_settings_all', 'quickchic_editor_accent' );
 
+/*
+ * Long lists in the sidebar and footer: show the first 10 items, then
+ * "12 more" that opens the rest in place. Works on the Categories, Pages
+ * and Archives blocks. Plain HTML <details>, so no JavaScript.
+ * Lists inside posts are left alone.
+ * Change the number in a child theme: add_filter( 'quickchic_list_limit', fn() => 15 );
+ * Use 0 to always show the full list.
+ */
+function quickchic_shorten_long_lists( $block_content, $block ) {
+	$blocks = array( 'core/categories', 'core/page-list', 'core/archives' );
+	if ( empty( $block['blockName'] ) || ! in_array( $block['blockName'], $blocks, true ) ) {
+		return $block_content;
+	}
+	if ( is_admin() || doing_filter( 'the_content' ) || ! empty( $block['attrs']['displayAsDropdown'] ) ) {
+		return $block_content;
+	}
+
+	$limit = (int) apply_filters( 'quickchic_list_limit', 10 );
+	if ( $limit < 1 || substr_count( $block_content, '<li' ) <= $limit || ! class_exists( 'DOMDocument' ) ) {
+		return $block_content;
+	}
+
+	$doc       = new DOMDocument();
+	$old_state = libxml_use_internal_errors( true );
+	$doc->loadHTML( '<?xml encoding="utf-8"?><div id="qc-list">' . $block_content . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $old_state );
+
+	$xpath = new DOMXPath( $doc );
+	$wrap  = $xpath->query( '//div[@id="qc-list"]' )->item( 0 );
+	$list  = $wrap ? $xpath->query( './/ul', $wrap )->item( 0 ) : null;
+	if ( ! $list ) {
+		return $block_content;
+	}
+
+	// Only the top-level items count; sub-items stay with their parent.
+	$items = array();
+	foreach ( $list->childNodes as $node ) {
+		if ( XML_ELEMENT_NODE === $node->nodeType && 'li' === $node->nodeName ) {
+			$items[] = $node;
+		}
+	}
+	$extra = count( $items ) - $limit;
+	if ( $extra < 1 ) {
+		return $block_content;
+	}
+
+	$more_item = $doc->createElement( 'li' );
+	$more_item->setAttribute( 'class', 'qc-more' );
+	$details = $doc->createElement( 'details' );
+	$summary = $doc->createElement( 'summary' );
+	/* translators: %d: number of hidden list items */
+	$summary->appendChild( $doc->createTextNode( sprintf( _n( '%d more', '%d more', $extra, 'quickchic' ), $extra ) ) );
+	$rest = $doc->createElement( 'ul' );
+	foreach ( array_slice( $items, $limit ) as $item ) {
+		$rest->appendChild( $item ); // Moves the item into the hidden list.
+	}
+	$details->appendChild( $summary );
+	$details->appendChild( $rest );
+	$more_item->appendChild( $details );
+	$list->appendChild( $more_item );
+
+	$html = '';
+	foreach ( $wrap->childNodes as $node ) {
+		$html .= $doc->saveHTML( $node );
+	}
+	return $html;
+}
+add_filter( 'render_block', 'quickchic_shorten_long_lists', 10, 2 );
+
 // Read more link after excerpts
 function quickchic_excerpt_more( $more ) {
 	return ' &bull; <a class="read-more" href="' . esc_url( get_permalink( get_the_ID() ) ) . '">' . esc_html__( 'Read More', 'quickchic' ) . ' &raquo;</a>';

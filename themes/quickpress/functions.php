@@ -124,9 +124,8 @@ function quickpress_scripts() {
 
 	$version = wp_get_theme( get_template() )->get( 'Version' );
 
-	wp_enqueue_style( 'quickpress-normalize', get_template_directory_uri() . '/css/normalize.css', array(), '8.0.1' );
+	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickpress', get_stylesheet_uri(), array(), $version );
-	wp_enqueue_style( 'quickpress-quickgrid', get_template_directory_uri() . '/css/quickgrid.css', array(), $version );
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

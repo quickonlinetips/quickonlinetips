@@ -60,6 +60,10 @@ Appearance > Widgets has five areas: Sidebar, Below Posts (under each single pos
 
 Yes. Appearance > Customize > Post Lists lets you show a short excerpt with Read More (the default) or the full post, and set the excerpt length in words. With full posts, add a More block in a post to choose where it breaks. Search results always show excerpts.
 
+= How do I add social icons? =
+
+Create a menu in Appearance > Menus with links to your profiles (for example https://www.instagram.com/yourname) and assign it to Footer Menu. Links to well-known networks show as small icons; other links stay as text.
+
 = Can I turn off dark mode? =
 
 Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it".
@@ -77,6 +81,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Customize > Post Lists: excerpts or full posts, and the excerpt length
 * Read More also shows after hand-written excerpts
 * Print styles
+* Social links in the Footer Menu show as small icons (X, Facebook, Instagram, LinkedIn, YouTube, GitHub, Pinterest, TikTok, Threads, Bluesky, Mastodon, Reddit, WhatsApp, Telegram, email, RSS)
 * Block styles (Accent bar for quotes, Soft box for groups) and two block patterns (newsletter sign-up box, about the author)
 * Block widgets work out of the box; no Classic Widgets plugin needed
 * Sidebar shows Search, Recent Posts and Categories until you add widgets
@@ -104,6 +109,7 @@ QuickChic bundles no third-party resources.
 
 == Resources ==
 
+* Social icons in inc/social-icons.php: Simple Icons (https://simpleicons.org), CC0 1.0; LinkedIn and Email icons from the Twenty Twenty theme by the WordPress team, GPLv2 or later.
 * screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later. Photos shown in the screenshot:
 * Pink flowers, by Roman Khadka, CC0, https://wordpress.org/photos/photo/3066ae0a92/
 * Laptop and coffee on a balcony, by Virendra Kumar Yadav, CC0, https://wordpress.org/photos/photo/2867a10c66/

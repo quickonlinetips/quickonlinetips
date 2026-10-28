@@ -27,6 +27,12 @@
 
 </article>
 
+<?php if ( quickstrap_show_between_posts() ) : ?>
+	<aside class="between-posts" aria-label="<?php esc_attr_e( 'Between posts', 'quickstrap' ); ?>">
+		<?php dynamic_sidebar( 'between-posts' ); ?>
+	</aside>
+<?php endif; ?>
+
 <?php endwhile; else : ?>
 
 <article class="no-results">

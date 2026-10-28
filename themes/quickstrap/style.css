@@ -964,6 +964,27 @@ figcaption {
 }
 
 
+/* Between Posts widgets: a block in the post list after the third post,
+   separated from the posts by the same thin line */
+.between-posts {
+	margin: 0 0 1.75rem;
+	padding-bottom: 1.25rem;
+	border-bottom: 1px solid var(--qs-border);
+}
+
+.between-posts .widget {
+	margin: 0 0 1rem;
+}
+
+.between-posts .widget:last-child,
+.between-posts .widget > :last-child {
+	margin-bottom: 0;
+}
+
+.between-posts .widget > :first-child {
+	margin-top: 0;
+}
+
 /* Below Posts widgets: a soft box under the post */
 .after-post {
 	margin: 25px 0;
@@ -1497,6 +1518,7 @@ a:focus-visible {
 	.sidebar,
 	.top-post,
 	.after-post,
+	.between-posts,
 	.footer-widgets,
 	.footer-menu,
 	.post-nav,

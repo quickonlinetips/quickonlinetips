@@ -136,6 +136,12 @@ function quickstrap_widgets_init() {
 		'description' => __( 'Shown under the post on each single post, before the comments: a newsletter sign-up, an author note, related links. Empty means hidden.', 'quickstrap' ),
 	) ) );
 
+	register_sidebar( array_merge( $wrappers, array(
+		'name'        => __( 'Between Posts', 'quickstrap' ),
+		'id'          => 'between-posts',
+		'description' => __( 'Shown in post lists (home page, categories, tags, search) after the third post: a newsletter box, a notice, a sponsor message. Empty means hidden.', 'quickstrap' ),
+	) ) );
+
 	// Footer: up to three columns. Only the ones with widgets are shown.
 	for ( $i = 1; $i <= 3; $i++ ) {
 		register_sidebar( array_merge( $wrappers, array(
@@ -643,6 +649,21 @@ function quickstrap_post_meta( $show_comments = true ) {
  * The posts come first in the page's HTML, which helps screen readers and
  * search engines; Bootstrap's order classes put the columns in place.
  */
+
+/*
+ * Between Posts widget area: after the third post in a list, only when it has
+ * widgets and more posts follow. Change the position in a child theme:
+ * add_filter( 'quickstrap_between_posts_after', fn() => 5 );
+ */
+function quickstrap_show_between_posts() {
+	global $wp_query;
+	if ( is_singular() || ! in_the_loop() || ! is_main_query() || ! is_active_sidebar( 'between-posts' ) ) {
+		return false;
+	}
+	$after    = max( 1, (int) apply_filters( 'quickstrap_between_posts_after', 3 ) );
+	$position = $wp_query->current_post + 1;
+	return $position === $after && $position < $wp_query->post_count;
+}
 
 // Is this post or page using the Full width template?
 function quickstrap_is_full_width() {

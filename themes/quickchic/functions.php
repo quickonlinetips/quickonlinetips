@@ -56,7 +56,7 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 				'sidebar' => array(
 					'search'     => array( 'block', array( 'content' => '<!-- wp:search {"showLabel":false} /-->' ) ),
 					'recent'     => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Posts', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-posts /-->' ) ),
-					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories /-->' ) ),
+					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories {"className":"qc-short"} /-->' ) ),
 				),
 				// The three footer columns, so a new site shows the whole design.
 				'footer-1' => array(
@@ -66,7 +66,7 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 					'comments' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Comments', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ) ),
 				),
 				'footer-3' => array(
-					'pages' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Pages', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:page-list /-->' ) ),
+					'pages' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Pages', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:page-list {"className":"qc-short"} /-->' ) ),
 				),
 			),
 			'posts'     => array( 'about', 'contact' ),
@@ -139,7 +139,7 @@ function quickchic_default_sidebar() {
 			'buttonText' => __( 'Search', 'quickchic' ),
 		) ) . ' /-->' ),
 		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickchic' ), '<!-- wp:latest-posts /-->' ),
-		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ),
+		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories {"className":"qc-short"} /-->' ),
 	);
 
 	foreach ( $sections as $class => $section ) {
@@ -192,19 +192,21 @@ function quickchic_editor_accent( $settings ) {
 add_filter( 'block_editor_settings_all', 'quickchic_editor_accent' );
 
 /*
- * Long lists in the sidebar and footer: show the first 10 items, then
- * "12 more" that opens the rest in place. Works on the Categories, Pages
- * and Archives blocks. Plain HTML <details>, so no JavaScript.
- * Lists inside posts are left alone.
+ * Long lists in the theme's own starter widgets (Categories in the sidebar,
+ * Pages in the footer): show the first 10 items, then "12 more" that opens
+ * the rest in place. Plain HTML <details>, so no JavaScript.
+ * Only blocks with the CSS class "qc-short" are shortened, so lists an
+ * owner adds themselves always show in full. (Owners can opt in by adding
+ * qc-short under the block's Advanced > Additional CSS class.)
  * Change the number in a child theme: add_filter( 'quickchic_list_limit', fn() => 15 );
- * Use 0 to always show the full list.
  */
 function quickchic_shorten_long_lists( $block_content, $block ) {
 	$blocks = array( 'core/categories', 'core/page-list', 'core/archives' );
 	if ( empty( $block['blockName'] ) || ! in_array( $block['blockName'], $blocks, true ) ) {
 		return $block_content;
 	}
-	if ( is_admin() || doing_filter( 'the_content' ) || ! empty( $block['attrs']['displayAsDropdown'] ) ) {
+	$classes = isset( $block['attrs']['className'] ) ? ' ' . $block['attrs']['className'] . ' ' : '';
+	if ( is_admin() || false === strpos( $classes, ' qc-short ' ) || ! empty( $block['attrs']['displayAsDropdown'] ) ) {
 		return $block_content;
 	}
 

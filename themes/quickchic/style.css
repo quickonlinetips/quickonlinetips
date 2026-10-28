@@ -346,12 +346,26 @@ hr {
 	border-left: 4px dotted var(--qc-line);
 }
 
+/* The site title: bigger and heavier than any post heading,
+   with a short accent bar underneath so it reads as the name of the site */
 .site-title {
 	font-family: var(--qc-heading-font);
-	font-size: clamp(1.4em, 1.2em + 0.8vw, 1.6em);
-	font-weight: bold;
-	line-height: 1.2;
+	font-size: clamp(1.65em, 1.35em + 1.2vw, 2.05em);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
 	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.site-title::after {
+	content: "";
+	display: block;
+	width: 42px;
+	height: 4px;
+	margin-top: 9px;
+	border-radius: 2px;
+	background: var(--qc-accent);
 }
 
 .site-title a {
@@ -375,8 +389,9 @@ hr {
 }
 
 .description {
-	margin: 5px 0 0;
+	margin: 8px 0 0;
 	font-size: 0.95em;
+	line-height: 1.4;
 	color: var(--qc-muted);
 }
 

@@ -685,6 +685,45 @@ figcaption {
 }
 
 
+/* Below Posts widgets: a soft box under the post */
+
+.after-post {
+	margin: 25px 0;
+	padding: 14px 18px;
+	background: var(--qpic-soft);
+	border-left: 3px solid var(--qpic-accent);
+	border-radius: 0 6px 6px 0;
+	line-height: 1.5;
+}
+
+.after-post .widget {
+	margin: 0 0 14px;
+}
+
+.after-post .widget:last-child {
+	margin-bottom: 0;
+}
+
+/* Below Posts headings stay plain: the box already has an accent edge */
+.after-post h2,
+.after-post .widget-title {
+	display: block;
+	font-size: 1.15em;
+	margin: 0 0 6px;
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+.after-post p {
+	margin: 0 0 8px;
+}
+
+.after-post > .widget > :last-child,
+.after-post p:last-child {
+	margin-bottom: 0;
+}
+
+
 /* 9. Comments and forms
 ------------------------------------- */
 

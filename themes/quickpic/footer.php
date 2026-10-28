@@ -7,9 +7,9 @@
 			<?php get_search_form(); ?>
 		</div>
 
-		<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) ) : ?>
+		<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) || is_active_sidebar( 'footer-3' ) ) : ?>
 			<div class="bottom-widgets">
-				<?php for ( $quickpic_i = 1; $quickpic_i <= 2; $quickpic_i++ ) : ?>
+				<?php for ( $quickpic_i = 1; $quickpic_i <= 3; $quickpic_i++ ) : ?>
 					<?php if ( is_active_sidebar( 'footer-' . $quickpic_i ) ) : ?>
 						<div class="bottom-column">
 							<?php dynamic_sidebar( 'footer-' . $quickpic_i ); ?>

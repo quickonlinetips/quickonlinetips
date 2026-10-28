@@ -52,21 +52,33 @@ if ( ! function_exists( 'quickpic_setup' ) ) :
 endif; // quickpic_setup
 add_action( 'after_setup_theme', 'quickpic_setup' );
 
-// Widget areas in the green box at the bottom of every page, side by side.
-// The ids stay the same so existing widgets stay put.
+// Widget areas in the green box at the bottom of every page: up to three
+// columns side by side. The ids footer-1 and footer-2 stay the same so
+// existing widgets stay put; footer-3 is new.
 function quickpic_widgets_init() {
-	for ( $i = 1; $i <= 2; $i++ ) {
+	for ( $i = 1; $i <= 3; $i++ ) {
 		register_sidebar( array(
-			/* translators: %d: footer column number */
+			/* translators: %d: footer column number, 1 to 3 */
 			'name'          => sprintf( __( 'Footer %d', 'quickpic' ), $i ),
 			'id'            => 'footer-' . $i,
-			'description'   => __( 'A column in the green box at the bottom of every page, under the search box.', 'quickpic' ),
+			'description'   => __( 'A column in the green box at the bottom of every page, under the search box. Only columns with widgets are shown.', 'quickpic' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
 			'before_title'  => '<h2 class="widget-title">',
 			'after_title'   => '</h2>',
 		) );
 	}
+
+	// Below each post: newsletter sign-up, author note, related links, an ad.
+	register_sidebar( array(
+		'name'          => __( 'Below Posts', 'quickpic' ),
+		'id'            => 'after-post',
+		'description'   => __( 'Shown under the post on each single post, before the comments. Empty means hidden.', 'quickpic' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
 }
 add_action( 'widgets_init', 'quickpic_widgets_init' );
 

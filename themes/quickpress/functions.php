@@ -8,6 +8,9 @@
  * @package QuickPress
  */
 
+// Icons for social links in the Footer Menu.
+require get_template_directory() . '/inc/social-icons.php';
+
 // Width of the main content column, used by WordPress for embeds and large images.
 if ( ! isset( $content_width ) ) {
 	$content_width = 620;

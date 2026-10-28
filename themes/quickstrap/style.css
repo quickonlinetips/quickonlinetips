@@ -554,6 +554,50 @@ figcaption {
 }
 
 
+/* Query Loop and post blocks inside a post: a compact list in a light box,
+   so the listed posts don't look like the page's own post titles */
+.entry .wp-block-query {
+	margin: 1.5em 0;
+	padding: 12px 16px;
+	border: 1px solid var(--qs-border);
+	border-radius: 6px;
+}
+
+.entry .wp-block-post-template {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.entry .wp-block-post-template > li {
+	margin: 0 0 12px;
+}
+
+.entry .wp-block-query .wp-block-post-title {
+	font-size: 1.1em;
+	margin: 0 0 2px;
+}
+
+.entry .wp-block-post-date {
+	font-size: 0.85em;
+	color: var(--qs-muted);
+}
+
+.entry .wp-block-query-pagination {
+	margin-top: 10px;
+	gap: 6px;
+}
+
+.entry .wp-block-query-pagination a {
+	text-decoration: none;
+}
+
+/* Blocks with their own background colour: keep text off the edges */
+.entry :is(p, h2, h3, h4, .wp-block-group, .wp-block-column, .wp-block-columns).has-background {
+	padding: 1em 1.25em;
+	border-radius: 6px;
+}
+
 /* 7. Sidebars
 ------------------------------------- */
 
@@ -1087,5 +1131,82 @@ a:focus-visible {
 
 	.post-thumb img {
 		width: 80px;
+	}
+}
+
+
+/* 13. Print
+   Printing a post gives clean text: no menu, sidebars, widgets or comment form.
+------------------------------------- */
+
+@media print {
+
+	body {
+		color: #000;
+		background: #fff;
+		font-size: 12pt;
+	}
+
+	.site-header {
+		display: block;
+		padding: 0 0 10px;
+		margin-bottom: 20px;
+		background: none;
+		box-shadow: none;
+		border-bottom: 1px solid #000;
+	}
+
+	.site-title a,
+	.site-description {
+		color: #000;
+	}
+
+	.content {
+		width: 100%;
+	}
+
+	.navbar-toggler,
+	.main-menu,
+	.sidebar,
+	.top-post,
+	.after-post,
+	.footer-widgets,
+	.footer-menu,
+	.post-nav,
+	.pagination,
+	.comment-respond,
+	.reply,
+	.skip-link,
+	.credits {
+		display: none !important;
+	}
+
+	.site-footer {
+		background: none;
+		border: 0;
+	}
+
+	a {
+		color: #000;
+	}
+
+	/* Show where links in the post go */
+	.entry a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.85em;
+		word-break: break-all;
+	}
+
+	img,
+	figure,
+	pre,
+	blockquote {
+		break-inside: avoid;
+	}
+
+	h1,
+	h2,
+	h3 {
+		break-after: avoid;
 	}
 }

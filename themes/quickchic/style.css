@@ -164,7 +164,7 @@ table {
 body {
 	font-family: var(--qc-font);
 	font-size: 100%;
-	line-height: 1.6;
+	line-height: 1.5;
 	color: var(--qc-text);
 	background: var(--qc-bg);
 	border-top: 10px solid var(--qc-accent);
@@ -179,7 +179,7 @@ h6 {
 	font-family: var(--qc-heading-font);
 	font-weight: bold;
 	line-height: 1.25;
-	margin: 1.5em 0 0.5em;
+	margin: 1.2em 0 0.4em;
 }
 
 h1 {
@@ -328,7 +328,7 @@ hr {
 }
 
 .main-menu li {
-	margin: 4px 0;
+	margin: 2px 0;
 }
 
 .main-menu ul ul {
@@ -349,7 +349,7 @@ hr {
 ------------------------------------- */
 
 #content {
-	font-size: 1.0625em;
+	font-size: 1em;
 }
 
 #content main > :first-child,
@@ -359,11 +359,11 @@ hr {
 }
 
 #content article {
-	margin: 0 0 40px;
+	margin: 0 0 30px;
 }
 
 .page-header {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 .archive-description {
@@ -371,18 +371,19 @@ hr {
 }
 
 .entry-title {
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 }
 
 .post-meta {
-	margin: 0 0 10px;
+	margin: 0 0 6px;
+	line-height: 1.4;
 	font-size: 0.85em;
 	color: var(--qc-muted);
 }
 
 .entry {
 	border-top: 1px solid var(--qc-border);
-	padding-top: 5px;
+	line-height: 1.6;
 	display: flow-root; /* keeps floated images inside the post */
 }
 
@@ -393,6 +394,10 @@ hr {
 
 .entry a:hover {
 	text-decoration-thickness: 2px;
+}
+
+.entry > :first-child {
+	margin-top: 10px;
 }
 
 .read-more {
@@ -534,17 +539,19 @@ figcaption {
 
 #sidebar {
 	border-left: 4px dotted #f3f3f3;
-	font-size: 0.95em;
+	padding-top: 5px;
+	font-size: 0.9em;
+	line-height: 1.4;
 }
 
 .widget {
-	margin: 0 0 30px;
+	margin: 0 0 22px;
 }
 
 .widget-title,
 #sidebar h2 {
 	font-size: 1.15em;
-	margin: 0 0 8px;
+	margin: 0 0 6px;
 }
 
 #sidebar ul {
@@ -554,11 +561,11 @@ figcaption {
 }
 
 #sidebar li {
-	margin: 0 0 6px;
+	margin: 0 0 3px;
 }
 
 #sidebar ul ul {
-	margin: 6px 0 0 12px;
+	margin: 3px 0 0 12px;
 }
 
 #sidebar select {
@@ -642,8 +649,8 @@ input[type="submit"]:hover {
 .commentlist .comment-body {
 	border: 1px solid var(--qc-border);
 	border-radius: 8px;
-	padding: 1em;
-	margin-bottom: 15px;
+	padding: 0.8em 1em;
+	margin-bottom: 10px;
 }
 
 .commentlist > .comment:nth-child(even) > .comment-body {
@@ -761,15 +768,15 @@ a.page-numbers:hover {
 ------------------------------------- */
 
 #footer {
-	margin: 20px 0 10px;
-	padding: 20px 5px;
+	margin: 20px 0 0;
+	padding: 15px 5px 0;
 	border-top: 1px dotted var(--qc-accent);
 	text-align: center;
 	font-size: 0.9em;
 }
 
 #footer p {
-	margin: 5px 0;
+	margin: 3px 0;
 }
 
 .footer-menu ul {

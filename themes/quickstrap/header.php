@@ -13,8 +13,8 @@
 
 <?php do_action( 'quickstrap_before_header' ); // Hooks for child themes: see "Building on QuickStrap" in readme.txt. ?>
 
-<header id="masthead" class="site-header navbar navbar-expand-lg navbar-dark">
-	<div class="container">
+<header id="masthead" class="site-header navbar navbar-expand-lg<?php echo quickstrap_light_header() ? '' : ' navbar-dark'; ?>">
+	<div class="<?php echo esc_attr( quickstrap_container_class() ); ?>">
 
 		<div class="site-branding">
 			<?php the_custom_logo(); ?>
@@ -64,6 +64,6 @@
 
 <?php do_action( 'quickstrap_after_header' ); ?>
 
-<div id="page" class="container">
+<div id="page" class="<?php echo esc_attr( quickstrap_container_class() ); ?>">
 	<?php do_action( 'quickstrap_before_content' ); // Full width, above the posts and sidebars. ?>
 	<div class="row">

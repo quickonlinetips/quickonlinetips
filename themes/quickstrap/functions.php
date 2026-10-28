@@ -530,6 +530,22 @@ function quickstrap_customize_layout( $wp_customize ) {
 			'swap'   => __( 'Swapped: Right Sidebar on the left, Left Sidebar on the right', 'quickstrap' ),
 		),
 	) );
+
+	$wp_customize->add_setting( 'quickstrap_full_width', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickstrap_full_width', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Full-width page', 'quickstrap' ),
+		'description' => __( 'Stretch the top bar, posts, sidebars and footer to the edges of big screens (Bootstrap\'s .container-fluid) instead of a centred page.', 'quickstrap' ),
+		'section'     => 'quickstrap_layout',
+	) );
+}
+
+// Bootstrap container: centred (.container, the default) or edge to edge (.container-fluid).
+function quickstrap_container_class() {
+	return get_theme_mod( 'quickstrap_full_width', false ) ? 'container-fluid px-lg-4' : 'container';
 }
 add_action( 'customize_register', 'quickstrap_customize_layout' );
 
@@ -729,6 +745,11 @@ function quickstrap_search_block( $block_content, $block ) {
 }
 add_filter( 'render_block', 'quickstrap_search_block', 10, 2 );
 
+// Light top bar (Customize > Colours)?
+function quickstrap_light_header() {
+	return (bool) get_theme_mod( 'quickstrap_light_header', false );
+}
+
 // Is this post or page using the Full width template?
 function quickstrap_is_full_width() {
 	return is_singular() && is_page_template( 'full-width.php' );
@@ -816,6 +837,9 @@ function quickstrap_body_classes( $classes ) {
 	if ( quickstrap_is_full_width() ) {
 		$classes[] = 'qs-full-width';
 	}
+	if ( quickstrap_light_header() ) {
+		$classes[] = 'qs-light-header';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'quickstrap_body_classes' );
@@ -837,6 +861,17 @@ function quickstrap_customize_register( $wp_customize ) {
 		'description' => __( 'The top bar behind the site title and menu. Pick a dark colour so the white text stays readable on it.', 'quickstrap' ),
 		'section'     => 'colors',
 	) ) );
+
+	$wp_customize->add_setting( 'quickstrap_light_header', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickstrap_light_header', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Light top bar', 'quickstrap' ),
+		'description' => __( 'Bootstrap\'s light navbar: a light grey bar with dark text. The Header colour above is then not used.', 'quickstrap' ),
+		'section'     => 'colors',
+	) );
 
 	$wp_customize->add_setting( 'quickstrap_accent_color', array(
 		'default'           => '#0d6efd',

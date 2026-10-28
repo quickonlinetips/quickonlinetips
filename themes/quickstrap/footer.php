@@ -8,7 +8,7 @@
 
 	<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) || is_active_sidebar( 'footer-3' ) ) : ?>
 		<div class="footer-widgets">
-			<div class="container">
+			<div class="<?php echo esc_attr( quickstrap_container_class() ); ?>">
 				<div class="row">
 					<?php for ( $quickstrap_i = 1; $quickstrap_i <= 3; $quickstrap_i++ ) : ?>
 						<?php if ( is_active_sidebar( 'footer-' . $quickstrap_i ) ) : ?>
@@ -23,7 +23,7 @@
 	<?php endif; ?>
 
 	<div class="site-info">
-		<div class="container">
+		<div class="<?php echo esc_attr( quickstrap_container_class() ); ?>">
 
 			<?php
 			if ( has_nav_menu( 'footer-nav' ) ) {

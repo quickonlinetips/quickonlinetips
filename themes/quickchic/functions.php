@@ -278,11 +278,26 @@ function quickchic_shorten_long_lists( $block_content, $block ) {
 }
 add_filter( 'render_block', 'quickchic_shorten_long_lists', 10, 2 );
 
-// Read more link after excerpts
-function quickchic_excerpt_more( $more ) {
+// The "Read More" link used after excerpts.
+function quickchic_read_more_link() {
 	return ' &bull; <a class="read-more" href="' . esc_url( get_permalink( get_the_ID() ) ) . '">' . esc_html__( 'Read More', 'quickchic' ) . ' &raquo;</a>';
 }
+
+// After an automatic excerpt that was cut short.
+function quickchic_excerpt_more( $more ) {
+	return quickchic_read_more_link();
+}
 add_filter( 'excerpt_more', 'quickchic_excerpt_more' );
+
+// After a hand-written excerpt (the Excerpt box in the editor), which
+// WordPress shows without a link, so every post in a list ends the same way.
+function quickchic_manual_excerpt_more( $excerpt ) {
+	if ( is_admin() || is_feed() || ! in_the_loop() || ! has_excerpt() ) {
+		return $excerpt;
+	}
+	return $excerpt . quickchic_read_more_link();
+}
+add_filter( 'get_the_excerpt', 'quickchic_manual_excerpt_more', 20 );
 
 // Post date, author, comments and categories line, used in lists and single posts
 function quickchic_post_meta( $show_comments = true ) {

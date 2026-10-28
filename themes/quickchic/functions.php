@@ -161,6 +161,54 @@ function quickchic_post_meta( $show_comments = true ) {
 	echo '</p>';
 }
 
+/*
+ * Customizer: Appearance > Customize > Colours
+ * - Accent colour: the pink used for links, buttons and borders.
+ * - Dark mode: follow the reader's device setting (on by default) or stay light.
+ */
+function quickchic_customize_register( $wp_customize ) {
+
+	$wp_customize->add_setting( 'quickchic_accent_color', array(
+		'default'           => '#c32364',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickchic_accent_color', array(
+		'label'       => __( 'Accent colour', 'quickchic' ),
+		'description' => __( 'Links, buttons, menus and borders.', 'quickchic' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickchic_dark_mode', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickchic_dark_mode', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Dark mode for readers who use it', 'quickchic' ),
+		'description' => __( 'Turns the site dark when the reader\'s phone or computer is set to dark. Untick to always stay light.', 'quickchic' ),
+		'section'     => 'colors',
+	) );
+}
+add_action( 'customize_register', 'quickchic_customize_register' );
+
+// The accent colour, or '' when it is the default pink.
+function quickchic_accent_css() {
+	$accent = sanitize_hex_color( get_theme_mod( 'quickchic_accent_color', '#c32364' ) );
+	if ( ! $accent || '#c32364' === strtolower( $accent ) ) {
+		return '';
+	}
+	return ':root{--qc-accent:' . $accent . ';}';
+}
+
+// Body class that switches dark mode off.
+function quickchic_body_classes( $classes ) {
+	if ( ! get_theme_mod( 'quickchic_dark_mode', true ) ) {
+		$classes[] = 'qc-light-only';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'quickchic_body_classes' );
+
 // Load stylesheets
 function quickchic_scripts() {
 
@@ -169,6 +217,12 @@ function quickchic_scripts() {
 
 	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickchic', get_stylesheet_uri(), array(), $version );
+
+	// The owner's accent colour, if they picked one (a few bytes, no extra file).
+	$accent = quickchic_accent_css();
+	if ( $accent ) {
+		wp_add_inline_style( 'quickchic', $accent );
+	}
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

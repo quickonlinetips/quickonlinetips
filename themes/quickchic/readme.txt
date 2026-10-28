@@ -21,9 +21,7 @@ QuickChic is for people who want a clean blog that loads instantly and never get
 
 Features: main menu and footer menu, custom logo, custom background, featured images, sticky posts, threaded comments, numbered pagination, Skip to content link, translation ready.
 
-To change the accent colour, add this in Appearance > Customize > Additional CSS and pick your own colour:
-
-`:root { --qc-accent: #0a7c86; }`
+To change the pink accent colour, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
 More about the theme: https://www.quickonlinetips.com/archives/quickchic-wordpress-theme/
 

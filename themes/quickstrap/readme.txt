@@ -7,14 +7,16 @@ Stable tag: 1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A fast Bootstrap blog theme with one, two or three columns: no JavaScript, nothing to set up, Bootstrap's classes ready for your posts.
+A free Bootstrap 5 WordPress starter theme: Bootstrap's own markup, no JavaScript, no build step. Activate and write, or build on it.
 
 == Description ==
 
-QuickStrap is for bloggers and small sites who like Bootstrap's clean look, want room for widgets on both sides, and don't want a slow, cluttered page. Your readers get your posts first and fast, and you can use Bootstrap's buttons, cards, alerts and grid right inside your posts.
+QuickStrap is a Bootstrap 5 WordPress starter theme for developers, freelancers and bloggers who know Bootstrap and want a clean, fast base without a toolchain. There is no npm, Sass, webpack or jQuery to set up: Bootstrap 5.3.8 is bundled, the theme adds one small stylesheet, and nothing runs in the visitor's browser. Use it as it is for a blog, news or job site, or treat it as the starting point for your own theme with a child theme.
 
-* **Ultra light and fast.** Bootstrap's stylesheet plus one small theme stylesheet. No JavaScript and no web fonts out of the box.
-* **Plug and play.** Activate it and start writing. There is no options panel to learn.
+* **Bootstrap 5, the real thing.** The templates use Bootstrap's own markup: the navbar, the grid, .pagination, .input-group, .form-control and .btn btn-primary. Change a Bootstrap variable or class and the whole theme follows, and every Bootstrap class works in your posts.
+* **No JavaScript, no build step.** The phone menu button and the dropdown sub-menus work with plain HTML and CSS. Bootstrap's JavaScript, Bootstrap Icons and Font Awesome are one tick away in Customize > Bootstrap Extras when you need them.
+* **Made to build on.** Ten action hooks, five filters, helper functions for the grid and container, CSS variables for the colours, and a blank child theme. See "Building on QuickStrap" below.
+* **Plug and play.** Activate it and the site already looks finished: default widgets fill both sidebars until you add your own. There is no options panel to learn.
 * **Familiar and simple.** Set up widgets and menus in the usual Appearance > Widgets and Menus screens. Posts written in the block editor look just right.
 * **One, two or three columns.** Posts in the middle, a right sidebar, and an optional left sidebar. Leave the left one empty and the posts widen to fill its space. Customize > Layout widens the left sidebar or swaps the two sides. On tablets and phones nothing is hidden: the sidebars move below the posts.
 * **Bootstrap with a click.** Card and Alert styles for the Group block, Bootstrap-style outline buttons, and ready-made Three cards, Hero box, Call to action, FAQ and Notice patterns. Bootstrap's classes still work in your posts too.

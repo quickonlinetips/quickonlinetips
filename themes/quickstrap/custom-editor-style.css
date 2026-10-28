@@ -1,2 +1,133 @@
-body#tinymce.wp-editor {
-  }
+/*
+ * QuickStrap editor style: posts in the block editor look much like they do
+ * on the site. WordPress scopes these rules to the editor automatically.
+ */
+
+body {
+	--qs-accent: #0d6efd;
+	--qs-text: #212529;
+	--qs-muted: #6c757d;
+	--qs-border: #dee2e6;
+	--qs-soft: #f8f9fa;
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--qs-text);
+}
+
+/* The width of the posts column on the site */
+.wp-block {
+	max-width: 856px;
+}
+
+.wp-block[data-align="wide"],
+.wp-block[data-align="full"] {
+	max-width: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	line-height: 1.25;
+	margin: 1.4em 0 0.5em;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.2rem; }
+h5,
+h6 { font-size: 1.05rem; }
+
+/* The post title */
+.editor-post-title__input,
+.editor-post-title {
+	font-size: 2.2rem;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+a {
+	color: var(--qs-accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+blockquote {
+	margin: 1.5em 0;
+	padding: 0 0 0 20px;
+	border-left: 4px solid var(--qs-border);
+	color: var(--qs-muted);
+}
+
+pre,
+code,
+kbd {
+	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	font-size: 0.875em;
+}
+
+pre {
+	background: var(--qs-soft);
+	border: 1px solid var(--qs-border);
+	border-radius: 6px;
+	padding: 10px 12px;
+	white-space: pre-wrap;
+}
+
+code {
+	background: var(--qs-soft);
+	padding: 1px 4px;
+	border-radius: 3px;
+	color: #d63384;
+}
+
+pre code {
+	background: none;
+	padding: 0;
+	color: inherit;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table th,
+table td {
+	padding: 6px 8px;
+	border: 1px solid var(--qs-border);
+}
+
+table th {
+	background: var(--qs-soft);
+}
+
+figcaption,
+.wp-caption-text,
+.gallery-caption {
+	font-size: 0.85em;
+	color: var(--qs-muted);
+	text-align: center;
+}
+
+.wp-block-button__link,
+.wp-element-button {
+	background: var(--qs-accent);
+	color: #fff;
+	border-radius: 6px;
+	text-decoration: none;
+}
+
+.wp-block-pullquote {
+	border-top: 3px solid var(--qs-accent);
+	border-bottom: 3px solid var(--qs-accent);
+}
+
+.wp-block-pullquote blockquote {
+	border: 0;
+	padding: 0;
+}

@@ -193,8 +193,41 @@ add_filter( 'nav_menu_link_attributes', 'quickstrap_menu_link_class', 10, 3 );
 function quickstrap_add_editor_styles() {
 	add_theme_support( 'editor-styles' );
 	add_editor_style( 'custom-editor-style.css' );
+
+	// The theme's own colours in the block editor's colour picker,
+	// instead of WordPress's general rainbow.
+	$colors = quickstrap_colors();
+	add_theme_support( 'editor-color-palette', array(
+		array( 'name' => __( 'Accent', 'quickstrap' ), 'slug' => 'accent', 'color' => $colors['accent'] ),
+		array( 'name' => __( 'Header', 'quickstrap' ), 'slug' => 'brand', 'color' => $colors['brand'] ),
+		array( 'name' => __( 'Text', 'quickstrap' ), 'slug' => 'text', 'color' => '#212529' ),
+		array( 'name' => __( 'Grey', 'quickstrap' ), 'slug' => 'grey', 'color' => '#6c757d' ),
+		array( 'name' => __( 'Light grey', 'quickstrap' ), 'slug' => 'light-grey', 'color' => '#f8f9fa' ),
+		array( 'name' => __( 'White', 'quickstrap' ), 'slug' => 'white', 'color' => '#ffffff' ),
+	) );
+
+	// Text sizes in the editor, in step with the theme's 15px post text.
+	add_theme_support( 'editor-font-sizes', array(
+		array( 'name' => __( 'Small', 'quickstrap' ), 'slug' => 'small', 'size' => 13 ),
+		array( 'name' => __( 'Normal', 'quickstrap' ), 'slug' => 'normal', 'size' => 15 ),
+		array( 'name' => __( 'Large', 'quickstrap' ), 'slug' => 'large', 'size' => 20 ),
+		array( 'name' => __( 'Extra large', 'quickstrap' ), 'slug' => 'x-large', 'size' => 26 ),
+	) );
+
+	// No gradient presets: they don't suit the theme's flat look.
+	add_theme_support( 'editor-gradient-presets', array() );
 }
 add_action( 'after_setup_theme', 'quickstrap_add_editor_styles' );
+
+// The owner's colours in the editor too.
+function quickstrap_editor_colors( $settings ) {
+	$colors = quickstrap_colors_css();
+	if ( $colors && isset( $settings['styles'] ) && is_array( $settings['styles'] ) ) {
+		$settings['styles'][] = array( 'css' => str_replace( ':root', 'body', $colors ) );
+	}
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'quickstrap_editor_colors' );
 
 // The "Read More" link used after excerpts.
 function quickstrap_read_more_link() {

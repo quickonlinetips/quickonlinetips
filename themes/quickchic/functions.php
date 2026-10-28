@@ -65,6 +65,39 @@ function quickchic_widgets_init() {
 }
 add_action( 'widgets_init', 'quickchic_widgets_init' );
 
+/*
+ * Default sidebar, shown only while the Sidebar has no widgets.
+ * Built from WordPress's own blocks, so it needs no plugin and looks the same
+ * as the block widgets people add later in Appearance > Widgets.
+ * As soon as any widget is added, this steps aside.
+ * A child theme can switch it off: add_filter( 'quickchic_show_default_sidebar', '__return_false' );
+ */
+function quickchic_default_sidebar() {
+	if ( ! apply_filters( 'quickchic_show_default_sidebar', true ) ) {
+		return;
+	}
+
+	$sections = array(
+		'widget_search'          => array( '', '<!-- wp:search ' . wp_json_encode( array(
+			'label'      => __( 'Search', 'quickchic' ),
+			'showLabel'  => false,
+			'buttonText' => __( 'Search', 'quickchic' ),
+		) ) . ' /-->' ),
+		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickchic' ), '<!-- wp:latest-posts /-->' ),
+		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ),
+		'widget_archive'         => array( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ),
+	);
+
+	foreach ( $sections as $class => $section ) {
+		echo '<section class="widget ' . esc_attr( $class ) . '">';
+		if ( $section[0] ) {
+			echo '<h2 class="widget-title">' . esc_html( $section[0] ) . '</h2>';
+		}
+		echo do_blocks( $section[1] ); // phpcs:ignore WordPress.Security.EscapeOutput -- core blocks escape their own output.
+		echo '</section>';
+	}
+}
+
 // Editor style: posts look in the editor much like they do on the site.
 function quickchic_add_editor_styles() {
 	add_theme_support( 'editor-styles' );

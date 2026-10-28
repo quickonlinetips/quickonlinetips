@@ -1,45 +1,61 @@
-</div> <!-- end row -->
+	</div> <!-- end row -->
 
-<!-- Bottom Box -->
-<div id="bottombox">
+	<!-- Bottom box: the green band with a search box and widgets -->
+	<aside id="bottombox" class="bottom-box" aria-label="<?php esc_attr_e( 'More from this site', 'quickpic' ); ?>">
 
-	
-	<div id="adbox">
-        <?php get_search_form(); ?>
-    </div>
+		<div id="adbox" class="bottom-search">
+			<?php get_search_form(); ?>
+		</div>
 
-    <?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) ) : ?>
-    <div class="bottom-widgets">
-        <?php for ( $quickpic_i = 1; $quickpic_i <= 2; $quickpic_i++ ) : ?>
-            <?php if ( is_active_sidebar( 'footer-' . $quickpic_i ) ) : ?>
-                <div class="bottom-column">
-                    <?php dynamic_sidebar( 'footer-' . $quickpic_i ); ?>
-                </div>
-            <?php endif; ?>
-        <?php endfor; ?>
-    </div>
-    <?php endif; ?>
-    <!-- /Boxes -->
+		<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) ) : ?>
+			<div class="bottom-widgets">
+				<?php for ( $quickpic_i = 1; $quickpic_i <= 2; $quickpic_i++ ) : ?>
+					<?php if ( is_active_sidebar( 'footer-' . $quickpic_i ) ) : ?>
+						<div class="bottom-column">
+							<?php dynamic_sidebar( 'footer-' . $quickpic_i ); ?>
+						</div>
+					<?php endif; ?>
+				<?php endfor; ?>
+			</div>
+		<?php endif; ?>
+
+	</aside>
+	<!-- /bottombox -->
+
+	<footer id="footer">
+
+		<div class="site-info">
+
+		<?php
+		if ( has_nav_menu( 'footer' ) ) {
+			wp_nav_menu( array(
+				'theme_location'       => 'footer',
+				'container'            => 'nav',
+				'container_class'      => 'footer-menu',
+				'container_aria_label' => __( 'Footer menu', 'quickpic' ),
+				'depth'                => 1,
+			) );
+		}
+		?>
+
+		<p>
+			&copy; <?php esc_html_e( 'Copyright', 'quickpic' ); ?>
+			<?php echo esc_html( wp_date( 'Y' ) ); ?> &ndash;
+			<?php bloginfo( 'name' ); ?>
+		</p>
+
+		<p class="credits">
+			<a href="https://wordpress.org/themes/quickpic/" rel="nofollow">QuickPic Theme</a> &bull; <?php esc_html_e( 'Powered by WordPress', 'quickpic' ); ?>
+		</p>
+
+		</div>
+
+	</footer>
+
 </div>
-<!-- /Bottom Box -->
+<!-- /page -->
 
-<footer id="footer">
-
-    <p>
-        &copy;
-        <?php _e('Copyright', 'quickpic'); ?>
-        <?php echo date('Y'); ?> -
-        <?php bloginfo('name'); ?>
-    </p>
-    <p class="credits">
-        <a href="https://wordpress.org/themes/quickpic/" rel="nofollow">QuickPic Theme</a> &bull; <?php esc_html_e( 'Powered by WordPress', 'quickpic' ); ?>
-    </p>
-    <?php wp_footer(); ?>
-
-</footer>
-</div>
-</div>
-
+<?php wp_footer(); ?>
 </body>
 
 </html>

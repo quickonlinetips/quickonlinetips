@@ -1,42 +1,31 @@
-<?php if (have_posts()): while (have_posts()) : the_post(); ?>
+<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 
-<article <?php post_class() ?> id="post-<?php the_ID(); ?>">
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-    <h2>
-        <a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>">
-            <?php the_title(); ?>
-        </a>
-    </h2>
-    <small><?php the_time(get_option('date_format')); ?> | 
-	<?php _e( 'By ', 'quickpic' ); the_author(); ?> |
-   	<?php comments_popup_link('No Comments', '1 Comment', '% Comments'); ?> 
-	| <?php _e( 'Filed in: ', 'quickpic' ); the_category(', '); ?>. <?php edit_post_link('Edit'); ?>  </small>
+	<h2 class="entry-title"><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 
+	<?php quickpic_post_meta(); ?>
 
-    <div class="entry">
+	<div class="entry">
 
-        <!-- post thumbnail -->
-        <?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>
-        <p class="alignright">
-            <a class="thumbnail" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
-                <?php the_post_thumbnail( 'thumbnail' );  ?>
-            </a>
-        </p>
-        <?php endif; ?>
-        <!-- /post thumbnail -->
+		<?php if ( has_post_thumbnail() ) : ?>
+			<a class="post-thumb alignright" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+				<?php the_post_thumbnail( 'thumbnail' ); ?>
+			</a>
+		<?php endif; ?>
 
-        <?php the_excerpt(); ?> 
-    </div>
- 
+		<?php the_excerpt(); ?>
+
+	</div>
+
 </article>
 
-<?php endwhile; ?>
-<?php else: ?>
+<?php endwhile; else : ?>
 
-<article>
-    <h2>
-        <?php _e( 'Content Not Found', 'quickpic'); ?>
-    </h2>
+<article class="no-results">
+	<h2><?php esc_html_e( 'Nothing Found', 'quickpic' ); ?></h2>
+	<p><?php esc_html_e( 'Nothing matched here. Try a search instead.', 'quickpic' ); ?></p>
+	<?php get_search_form(); ?>
 </article>
 
 <?php endif; ?>

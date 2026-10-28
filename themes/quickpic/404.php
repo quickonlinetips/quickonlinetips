@@ -1,19 +1,16 @@
 <?php get_header(); ?>
-<div id="content" class="narrowcolumn column">
 
-    <main>
-        <section>
-            <article id="post-404">
-                <h1>
-                    <?php _e( 'Page Not Found', 'quickpic' ); ?>
-                </h1>
+<div id="content" class="content column">
+	<main>
 
-                <?php get_search_form(); ?>
+		<article id="post-404" class="no-results">
+			<h1 class="page-title"><?php esc_html_e( 'Page Not Found', 'quickpic' ); ?></h1>
+			<p><?php esc_html_e( 'The page you were looking for is not here. Try a search, or go to the home page.', 'quickpic' ); ?></p>
+			<?php get_search_form(); ?>
+			<p><a href="<?php echo esc_url( home_url( '/' ) ); ?>">&larr; <?php esc_html_e( 'Home', 'quickpic' ); ?></a></p>
+		</article>
 
-            </article>
-        </section>
-    </main>
-
+	</main>
 </div>
 
 <?php get_footer(); ?>

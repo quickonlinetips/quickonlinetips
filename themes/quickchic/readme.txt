@@ -15,7 +15,7 @@ QuickChic is for people who want a clean blog that loads instantly and never get
 
 * **Ultra light and fast.** One small stylesheet, no JavaScript, no web fonts, no frameworks.
 * **Plug and play.** Activate it and start writing. There is no options panel to learn.
-* **Classic theme, block-ready.** Sidebar widgets are blocks, edited in the normal Appearance > Widgets screen, so you never need the Classic Widgets or Classic Editor plugins. It is not a block theme, but posts written in the block editor look right.
+* **Familiar and simple.** Set up widgets and menus in the usual Appearance > Widgets and Menus screens. Posts written in the block editor look just right.
 * **Simple layout.** Posts on the left; site title, menu and widgets on the right. On phones the title and menu come first, then posts, then widgets.
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.

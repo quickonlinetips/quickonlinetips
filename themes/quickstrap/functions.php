@@ -130,27 +130,32 @@ function quickstrap_credits() {
 	}
 	add_action('wp_footer', 'quickstrap_credits');
 
-// load javascript
+// Bootstrap and Font Awesome live in vendor/ and are refreshed with
+// tools/update-quickstrap-vendor.sh, which also updates these numbers.
+define( 'QUICKSTRAP_BOOTSTRAP_VERSION', '5.3.8' );
+define( 'QUICKSTRAP_FONTAWESOME_VERSION', '7.3.1' );
+
+// load styles and scripts
 	function quickstrap_scripts() {
-	wp_enqueue_style( 'quickstrap-bootstrap', 
-			get_template_directory_uri() . '/css/bootstrap.min.css', 
-			array(), 
-			'5.3.0'
+	wp_enqueue_style( 'quickstrap-bootstrap',
+			get_template_directory_uri() . '/vendor/bootstrap/bootstrap.min.css',
+			array(),
+			QUICKSTRAP_BOOTSTRAP_VERSION
 			);
-		wp_enqueue_style( 'quickstrap', 
-			get_stylesheet_uri(), 
-			array(), 
+		wp_enqueue_style( 'quickstrap',
+			get_stylesheet_uri(),
+			array(),
 			'1.3'
 			);
-	wp_enqueue_style( 'quickstrap-fontawesome', 
-			get_template_directory_uri() . '/font-awesome/css/all.min.css', 
-			array(), 
-			'5.13.0'
+	wp_enqueue_style( 'quickstrap-fontawesome',
+			get_template_directory_uri() . '/vendor/font-awesome/css/all.min.css',
+			array(),
+			QUICKSTRAP_FONTAWESOME_VERSION
 			);
-	wp_enqueue_script( 'quickstrap-bootstrap', 
-			get_template_directory_uri() . '/js/bootstrap.min.js', 
-			array(), 
-			'5.3.0', 
+	wp_enqueue_script( 'quickstrap-bootstrap',
+			get_template_directory_uri() . '/vendor/bootstrap/bootstrap.bundle.min.js',
+			array(),
+			QUICKSTRAP_BOOTSTRAP_VERSION,
 			true
 			);
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ){

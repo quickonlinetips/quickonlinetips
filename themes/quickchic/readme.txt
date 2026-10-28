@@ -36,6 +36,10 @@ Yes for writing posts and pages: block content is styled to match the theme. Qui
 
 Go to Appearance > Menus, create a menu and tick Main Menu (under the site title) or Footer Menu.
 
+= Why does a new site already show widgets and a menu? =
+
+On a brand-new WordPress install, QuickChic offers starter content in Appearance > Customize: sidebar widgets, three footer columns (About, Recent Comments, Pages), About and Contact pages and a main menu, so you see the whole design straight away. Nothing is saved until you click Publish, and sites that already have content never see it. Edit or remove any of it in Appearance > Widgets.
+
 = Do I need the Classic Widgets plugin? =
 
 No. QuickChic uses the block widgets WordPress gives every site. Add any block (Search, Latest Posts, Categories, Paragraph, Image and more) in Appearance > Widgets.
@@ -69,7 +73,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Print styles
 * Block widgets work out of the box; no Classic Widgets plugin needed
 * Sidebar shows Search, Recent Posts, Categories and Archives until you add widgets
-* Starter content for new sites: sidebar widgets, About and Contact pages, main menu
+* Starter content for new sites: sidebar widgets, three footer columns, About and Contact pages, main menu
 * One stylesheet instead of three; normalize.css replaced by a much smaller reset
 * Site title now shows on phones (it was hidden), at the top of the page
 * Main Menu and Footer Menu, custom logo

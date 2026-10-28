@@ -59,6 +59,16 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories /-->' ) ),
 					'archives'   => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Archives', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:archives /-->' ) ),
 				),
+				// The three footer columns, so a new site shows the whole design.
+				'footer-1' => array(
+					'about_site' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'About This Site', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:paragraph --><p>' . esc_html__( 'A few words about you and what you write about. Change this in Appearance > Widgets.', 'quickchic' ) . '</p><!-- /wp:paragraph -->' ) ),
+				),
+				'footer-2' => array(
+					'comments' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Comments', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ) ),
+				),
+				'footer-3' => array(
+					'pages' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Pages', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:page-list /-->' ) ),
+				),
 			),
 			'posts'     => array( 'about', 'contact' ),
 			'nav_menus' => array(

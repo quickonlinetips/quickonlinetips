@@ -177,9 +177,43 @@ function quickpress_default_widgets( $sections ) {
 
 // Editor style: posts look in the editor much like they do on the site.
 function quickpress_add_editor_styles() {
+	add_theme_support( 'editor-styles' );
 	add_editor_style( 'custom-editor-style.css' );
+
+	// The theme's own colours in the block editor's colour picker,
+	// instead of WordPress's general rainbow.
+	$colors = quickpress_colors();
+	add_theme_support( 'editor-color-palette', array(
+		array( 'name' => __( 'Header blue', 'quickpress' ), 'slug' => 'brand', 'color' => $colors['brand'] ),
+		array( 'name' => __( 'Accent', 'quickpress' ), 'slug' => 'accent', 'color' => $colors['accent'] ),
+		array( 'name' => __( 'Text', 'quickpress' ), 'slug' => 'text', 'color' => '#333333' ),
+		array( 'name' => __( 'Grey', 'quickpress' ), 'slug' => 'grey', 'color' => '#707070' ),
+		array( 'name' => __( 'Light grey', 'quickpress' ), 'slug' => 'light-grey', 'color' => '#f6f6f6' ),
+		array( 'name' => __( 'White', 'quickpress' ), 'slug' => 'white', 'color' => '#ffffff' ),
+	) );
+
+	// Text sizes in the editor, in step with the theme's 14.5px post text.
+	add_theme_support( 'editor-font-sizes', array(
+		array( 'name' => __( 'Small', 'quickpress' ), 'slug' => 'small', 'size' => 12.5 ),
+		array( 'name' => __( 'Normal', 'quickpress' ), 'slug' => 'normal', 'size' => 14.5 ),
+		array( 'name' => __( 'Large', 'quickpress' ), 'slug' => 'large', 'size' => 19 ),
+		array( 'name' => __( 'Extra large', 'quickpress' ), 'slug' => 'x-large', 'size' => 25 ),
+	) );
+
+	// No gradient presets: they don't suit the theme's flat look.
+	add_theme_support( 'editor-gradient-presets', array() );
 }
-add_action( 'admin_init', 'quickpress_add_editor_styles' );
+add_action( 'after_setup_theme', 'quickpress_add_editor_styles' );
+
+// The owner's colours in the editor too.
+function quickpress_editor_colors( $settings ) {
+	$colors = quickpress_colors_css();
+	if ( $colors && isset( $settings['styles'] ) && is_array( $settings['styles'] ) ) {
+		$settings['styles'][] = array( 'css' => str_replace( ':root', 'body', $colors ) );
+	}
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'quickpress_editor_colors' );
 
 // The "Read More" link used after excerpts.
 function quickpress_read_more_link() {

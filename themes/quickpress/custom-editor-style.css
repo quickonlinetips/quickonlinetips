@@ -1,3 +1,141 @@
+/*
+QuickPress editor style: posts look in the editor the way they will on the site.
+WordPress scopes these rules to the editor, so they never load on the front end.
+*/
+
+body {
+	--qp-brand: #2a6496;
+	--qp-accent: #c32364;
+	--qp-text: #333;
+	--qp-muted: #666;
+	--qp-border: #ddd;
+	--qp-soft: #f6f6f6;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-size: 14.5px; /* the post text size on the site */
+	line-height: 1.6;
+	color: var(--qp-text);
+	background: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-weight: bold;
+	line-height: 1.25;
+	margin: 1.2em 0 0.4em;
+}
+
+h1 { font-size: 1.9em; }
+h2 { font-size: 1.6em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1.1em; }
+
+/* The post title */
+.editor-post-title,
+.editor-post-title__input {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.9em;
+	font-weight: bold;
+	line-height: 1.25;
+}
+
+a {
+	color: var(--qp-brand);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+blockquote {
+	margin: 1.5em 0;
+	padding: 0 0 0 20px;
+	border-left: 4px solid color-mix(in srgb, var(--qp-brand) 50%, #fff);
+	color: var(--qp-muted);
+}
+
+blockquote cite {
+	display: block;
+	margin-top: 5px;
+	font-size: 0.9em;
+}
+
+pre {
+	background: var(--qp-soft);
+	border: 1px solid var(--qp-border);
+	padding: 10px 12px;
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+code {
+	background: var(--qp-soft);
+	padding: 1px 4px;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+pre code {
+	background: none;
+	padding: 0;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid var(--qp-border);
+	margin: 2em 0;
+}
+
+table th,
+table td {
+	padding: 6px 8px;
+	border: 1px solid var(--qp-border);
+	text-align: left;
+}
+
+table th {
+	background: var(--qp-soft);
+}
+
+figcaption,
+.wp-caption-text {
+	font-size: 0.85em;
+	color: var(--qp-muted);
+	text-align: center;
+}
+
+.wp-block-button__link,
+.wp-element-button {
+	background: var(--qp-accent);
+	color: #fff;
+	border-radius: 6px;
+	text-decoration: none;
+}
+
+.wp-block-pullquote {
+	border-top: 3px solid var(--qp-accent);
+	border-bottom: 3px solid var(--qp-accent);
+}
+
+.wp-block-pullquote blockquote {
+	border: 0;
+	padding: 0;
+}
+
+/* Same width as the post column on the site */
+.wp-block {
+	max-width: 620px;
+}
+
+.wp-block[data-align="wide"],
+.wp-block[data-align="full"] {
+	max-width: 620px;
+}
+
+/* Classic editor */
 body#tinymce.wp-editor {
-    margin: 10px;
+	max-width: 620px;
+	margin: 10px;
 }

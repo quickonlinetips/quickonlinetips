@@ -65,11 +65,12 @@ function quickchic_widgets_init() {
 }
 add_action( 'widgets_init', 'quickchic_widgets_init' );
 
-// Editor style
+// Editor style: posts look in the editor much like they do on the site.
 function quickchic_add_editor_styles() {
+	add_theme_support( 'editor-styles' );
 	add_editor_style( 'custom-editor-style.css' );
 }
-add_action( 'admin_init', 'quickchic_add_editor_styles' );
+add_action( 'after_setup_theme', 'quickchic_add_editor_styles' );
 
 // Read more link after excerpts
 function quickchic_excerpt_more( $more ) {
@@ -112,23 +113,8 @@ function quickchic_scripts() {
 	// Theme version from style.css, so browsers fetch fresh CSS after every update.
 	$version = wp_get_theme( get_template() )->get( 'Version' );
 
-	wp_enqueue_style( 'quickchic-normalize',
-		get_template_directory_uri() . '/css/normalize.css',
-		array(),
-		'8.0.1'
-	);
-
-	wp_enqueue_style( 'quickchic',
-		get_stylesheet_uri(),
-		array(),
-		$version
-	);
-
-	wp_enqueue_style( 'quickchic-quickgrid',
-		get_template_directory_uri() . '/css/quickgrid.css',
-		array(),
-		'1.0'
-	);
+	// The whole theme is one small stylesheet.
+	wp_enqueue_style( 'quickchic', get_stylesheet_uri(), array(), $version );
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

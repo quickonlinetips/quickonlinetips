@@ -112,4 +112,7 @@ QuickPress is distributed under the terms of the GNU GPL v2 or later.
 == Resources ==
 
 * Social icons in inc/social-icons.php: Simple Icons (https://simpleicons.org), CC0 1.0; LinkedIn and Email icons from the Twenty Twenty theme by the WordPress team, GPLv2 or later.
-* screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later.
+* screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later. Photos shown in the screenshot:
+* City skyline above a green park, by Joel Peralta, CC0, https://wordpress.org/photos/photo/8766a7044c/
+* Green mountain hills under a cloudy sky, by gaby21, CC0, https://wordpress.org/photos/photo/1226a7538f/
+* Wooden desk with a mug, notebook and plants, by Tawhid Sadman, CC0, https://wordpress.org/photos/photo/19869638f8/

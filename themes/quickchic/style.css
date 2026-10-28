@@ -598,6 +598,12 @@ figcaption {
 	padding: 0;
 }
 
+/* Blocks with their own background colour: keep text off the edges */
+.entry :is(p, h2, h3, h4, .wp-block-group, .wp-block-column, .wp-block-columns).has-background {
+	padding: 1em 1.25em;
+	border-radius: 6px;
+}
+
 
 /* 8. Sidebar
 ------------------------------------- */

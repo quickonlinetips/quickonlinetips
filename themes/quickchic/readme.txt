@@ -19,7 +19,9 @@ QuickChic is for people who want a clean blog that loads instantly and never get
 * **Simple layout.** Posts on the left; site title, menu and widgets on the right. On phones the title and menu come first, then posts, then widgets.
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 
-Features: main menu and footer menu, custom logo, custom background, featured images, sticky posts, threaded comments, numbered pagination, Skip to content link, translation ready.
+* **Modern touches.** Automatic dark mode, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
+
+Features: accent colour picker, dark mode (can be switched off), Full width template for posts and pages, widget areas in the sidebar, below posts and in three footer columns, main menu and footer menu, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, starter content for new sites, Skip to content link, print styles, translation ready.
 
 To change the pink accent colour, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
@@ -43,9 +45,29 @@ No. QuickChic uses the block widgets WordPress gives every site. Add any block (
 
 Search, Recent Posts, Categories and Archives, so a new site never looks empty. As soon as you add your own widgets, they take over. If your old widgets were moved to Inactive when you switched themes, drag them into the Sidebar in Appearance > Widgets.
 
+= How do I make a page without the sidebar? =
+
+In the editor, open the Post (or Page) settings, find Template and pick "Full width, no sidebar".
+
+= Where can I add widgets? =
+
+Appearance > Widgets has five areas: Sidebar, Below Posts (under each single post, before the comments) and Footer 1, 2 and 3. Empty areas are hidden, so add only what you need.
+
+= Can I turn off dark mode? =
+
+Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it".
+
 == Changelog ==
 
 = 1.7 - October 2026 =
+* Automatic dark mode that follows the reader's device, with an off switch
+* Accent colour picker in Customize > Colours
+* Full width template for posts and pages
+* New widget areas: Below Posts and three footer columns
+* Editor looks like the site; theme colours and text sizes in the block editor
+* Text sizes scale smoothly from phone to desktop
+* Updated date shown on edited posts
+* Print styles
 * Block widgets work out of the box; no Classic Widgets plugin needed
 * Sidebar shows Search, Recent Posts, Categories and Archives until you add widgets
 * Starter content for new sites: sidebar widgets, About and Contact pages, main menu

@@ -64,7 +64,6 @@ body {
 	--qs-band: var(--qs-brand); /* the top bar itself (darker in dark mode) */
 	--qs-muted: var(--bs-secondary-color);
 	--qs-border: var(--bs-border-color);
-	--qs-line: var(--bs-border-color-translucent);
 	--qs-soft: var(--bs-tertiary-bg);
 	--qs-field: var(--bs-body-bg);
 	--qs-field-border: color-mix(in srgb, var(--bs-body-color) 28%, var(--bs-body-bg));
@@ -227,16 +226,6 @@ hr {
 	flex-basis: auto;
 }
 
-.site-title::after {
-	content: "";
-	display: block;
-	width: 42px;
-	height: 4px;
-	margin-top: 9px;
-	border-radius: 2px;
-	background: var(--qs-accent);
-}
-
 .site-title a,
 .site-title a:hover {
 	color: var(--qs-on-brand);
@@ -285,21 +274,15 @@ hr {
 	font-weight: 500;
 }
 
-/* The page you are on: a short accent bar under its menu link,
-   the same mark as under the site title */
+/* The page you are on, and the section it is in: Bootstrap's active
+   link colour (white), nothing more */
 .main-menu li {
 	position: relative;
 }
 
-.main-menu .current-menu-item > a::after {
-	content: "";
-	position: absolute;
-	left: var(--bs-navbar-nav-link-padding-x, 0);
-	bottom: 2px;
-	width: 22px;
-	height: 3px;
-	border-radius: 2px;
-	background: var(--qs-accent);
+.main-menu .current-menu-item > a,
+.main-menu .current-menu-ancestor > a {
+	color: var(--bs-navbar-active-color);
 }
 
 
@@ -329,24 +312,7 @@ hr {
 	opacity: 0.7;
 }
 
-/* The section you are in gets the accent bar too */
-.main-menu .current-menu-ancestor > a::after {
-	content: "";
-	position: absolute;
-	left: var(--bs-navbar-nav-link-padding-x, 0);
-	bottom: 2px;
-	width: 22px;
-	height: 3px;
-	border-radius: 2px;
-	background: var(--qs-accent);
-}
-
-/* Inside a sub-menu, the current page is white and bold instead */
-.main-menu .sub-menu .current-menu-item > a::after,
-.main-menu .sub-menu .current-menu-ancestor > a::after {
-	display: none;
-}
-
+/* Inside a sub-menu, the current page is bold too */
 .main-menu .sub-menu .current-menu-item > a {
 	color: var(--bs-navbar-active-color);
 	font-weight: 600;
@@ -521,7 +487,7 @@ hr {
 	padding: 12px 16px;
 	background: var(--qs-soft);
 	border-bottom: 0;
-	border-left: 3px solid var(--qs-accent);
+	border-left: 3px solid var(--qs-border);
 	border-radius: 0 6px 6px 0;
 }
 
@@ -869,15 +835,14 @@ figcaption {
 	margin: 0 0 1.75rem;
 }
 
-/* Widget headings, sidebars and footer alike: a short accent underline */
+/* Widget headings, sidebars and footer alike: plain and bold, like a
+   Bootstrap heading */
 .widget-title,
 .sidebar h2,
 .footer-widgets h2 {
-	display: inline-block;
-	font-size: 1.15em;
+	font-size: 1.1em;
+	font-weight: 600;
 	margin: 0 0 8px;
-	padding-bottom: 3px;
-	border-bottom: 2px solid var(--qs-accent);
 }
 
 .sidebar ul,
@@ -887,15 +852,9 @@ figcaption {
 	padding: 0;
 }
 
-/* Sidebar lists: one line per item with a light rule between,
-   the QuickStrap look since the first version */
+/* Sidebar lists: one item per line, a little space between, no rules */
 .sidebar li {
-	padding: 4px 0;
-	border-bottom: 1px solid var(--qs-line);
-}
-
-.sidebar li li:last-child {
-	border-bottom: 0;
+	padding: 3px 0;
 }
 
 .sidebar ul ul {
@@ -926,12 +885,6 @@ figcaption {
 .sidebar .qs-more > details > ul,
 .footer-widgets .qs-more > details > ul {
 	margin: 0;
-}
-
-/* The "more" line has no rule of its own; the opened items keep theirs */
-.sidebar li.qs-more,
-.sidebar .qs-more li:last-child {
-	border-bottom: 0;
 }
 
 /* Block widgets (the default in Appearance > Widgets) */
@@ -997,13 +950,13 @@ figcaption {
 	margin-top: 0;
 }
 
-/* Below Posts widgets: a soft box under the post */
+/* Below Posts widgets: a soft box under the post, like a Bootstrap card */
 .after-post {
 	margin: 25px 0;
 	padding: 14px 18px;
 	background: var(--qs-soft);
-	border-left: 3px solid var(--qs-accent);
-	border-radius: 0 6px 6px 0;
+	border: 1px solid var(--qs-border);
+	border-radius: var(--bs-border-radius-lg);
 }
 
 .after-post .widget {
@@ -1022,14 +975,10 @@ figcaption {
 	margin-bottom: 0;
 }
 
-/* Below Posts headings stay plain: the box already has an accent edge */
+/* Below Posts headings: a little tighter inside the box */
 .after-post h2,
 .after-post .widget-title {
-	display: block;
-	font-size: 1.15em;
 	margin: 0 0 6px;
-	padding-bottom: 0;
-	border-bottom: 0;
 }
 
 /* 8. Comments and forms
@@ -1412,11 +1361,6 @@ a:focus-visible {
 
 	.main-menu .navbar-nav {
 		padding-top: 10px;
-	}
-
-	.main-menu .current-menu-item > a::after,
-	.main-menu .current-menu-ancestor > a::after {
-		bottom: 4px;
 	}
 
 	/* The left sidebar sits below the posts and right sidebar here:

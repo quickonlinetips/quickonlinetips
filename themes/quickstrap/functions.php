@@ -759,7 +759,7 @@ add_filter( 'body_class', 'quickstrap_body_classes' );
 /*
  * Customizer: Appearance > Customize > Colours
  * - Header colour: the top bar behind the site title and menu.
- * - Accent colour: links, buttons, page numbers and the small accent bars.
+ * - Accent colour: links, buttons and page numbers.
  * - Dark mode: follow the reader's device setting (on by default) or stay light.
  */
 function quickstrap_customize_register( $wp_customize ) {
@@ -780,7 +780,7 @@ function quickstrap_customize_register( $wp_customize ) {
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickstrap_accent_color', array(
 		'label'       => __( 'Accent colour', 'quickstrap' ),
-		'description' => __( 'Links, buttons, page numbers and the small bars under the site title and widget headings.', 'quickstrap' ),
+		'description' => __( 'Links, buttons and page numbers.', 'quickstrap' ),
 		'section'     => 'colors',
 	) ) );
 

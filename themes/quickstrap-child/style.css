@@ -1,0 +1,30 @@
+/*
+Theme Name:   QuickStrap Child
+Theme URI:    https://www.quickonlinetips.com/archives/quickstrap-wordpress-theme/
+Description:  A blank child theme for QuickStrap. Add your own CSS below and your own PHP in functions.php; your changes stay safe when QuickStrap updates.
+Author:       QuickOnlineTips
+Author URI:   https://www.quickonlinetips.com/
+Template:     quickstrap
+Version:      1.1
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
+License:      GNU General Public License v2 or later
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  quickstrap-child
+*/
+
+/* Your CSS goes below. QuickStrap's colours are CSS variables, so you can
+   change them here, for example:
+
+:root {
+	--qs-brand: #1f3b57;
+	--qs-accent: #d35400;
+}
+
+   Bootstrap's own variables work too, for example a larger text size:
+
+:root {
+	--bs-body-font-size: 1rem;
+}
+*/

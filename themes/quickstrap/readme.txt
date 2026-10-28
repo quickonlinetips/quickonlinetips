@@ -22,7 +22,7 @@ QuickStrap is for bloggers and small sites who like Bootstrap's clean look, want
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode using Bootstrap's own dark colours, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
 
-Features: Bootstrap 5.3.8 included, header colour and accent colour pickers, dark mode (can be switched off), three sidebar layouts, Full width template for posts and pages, widget areas in the right and left sidebars, above and below posts, between posts in lists and in three footer columns, main menu with dropdown sub-menus and a phone menu button, all without JavaScript, footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, Bootstrap block styles (Card, Alerts, outline buttons) and patterns, starter content for new sites, optional Bootstrap JavaScript, Bootstrap Icons and Font Awesome, Skip to content link, print styles, translation ready.
+Features: Bootstrap 5.3.8 included, header colour and accent colour pickers, dark mode (can be switched off), light or dark top bar, centred or full-width page, three sidebar layouts, Full width template for posts and pages, widget areas in the right and left sidebars, above and below posts, between posts in lists and in three footer columns, main menu with dropdown sub-menus and a phone menu button, all without JavaScript, footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, Bootstrap block styles (Card, Alerts, outline buttons) and patterns, starter content for new sites, optional Bootstrap JavaScript, Bootstrap Icons and Font Awesome, Skip to content link, print styles, translation ready.
 
 To change the dark top bar or the blue accent, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
@@ -98,9 +98,50 @@ Create a menu in Appearance > Menus with links to your profiles (for example htt
 
 Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it".
 
+= Can I have a light top bar, or a full-width page? =
+
+Yes. Appearance > Customize > Colours > "Light top bar" switches to Bootstrap's light navbar (light grey with dark text). Appearance > Customize > Layout > "Full-width page" stretches the top bar, posts, sidebars and footer to the edges of big screens.
+
+= Can I use Bootstrap Icons? =
+
+Yes. Appearance > Customize > Bootstrap Extras > "Load Bootstrap Icons", then add an icon in a Custom HTML block or widget, for example <i class="bi bi-star"></i>. They load only when ticked.
+
 = How is Bootstrap updated? =
 
 The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonlinetips). A small script there, tools/update-quickstrap-vendor.sh, fetches a new Bootstrap, Bootstrap Icons or Font Awesome release from its GitHub release and copies in just the files the theme uses, so each QuickStrap release can ship the latest Bootstrap 5.
+
+== Building on QuickStrap ==
+
+QuickStrap is meant as a starting point. Make your changes in a child theme, so they survive updates: download the blank QuickStrap Child theme from https://www.quickonlinetips.com/archives/quickstrap-wordpress-theme/ and put your CSS in its style.css (it loads after Bootstrap and QuickStrap) and your PHP in its functions.php.
+
+Bootstrap: version 5.3.8 is in vendor/bootstrap. Page numbers, the search form (searchform.php) and the comment form use Bootstrap's own markup (.pagination, .input-group, .form-control, .btn btn-primary), so Bootstrap's variables restyle them. Columns come from Bootstrap's grid; quickstrap_column_class( 'content' | 'right' | 'left' ) returns their classes and quickstrap_container_class() returns .container or .container-fluid.
+
+Colours: change these CSS variables in a child theme (or use Customize > Colours):
+
+* --qs-brand: the top bar (default #212529)
+* --qs-accent: links, buttons, page numbers, .btn-primary (default #0d6efd)
+* --qs-on-brand and --qs-on-accent: text on those colours (default #fff)
+* --bs-body-font-size: base text size (default 0.9375rem, 15px)
+* Greys, borders and backgrounds come from Bootstrap's own --bs- variables, so dark mode follows them.
+
+Hooks (add_action in a child theme's functions.php):
+
+* quickstrap_before_header, quickstrap_header_end (inside the top bar, after the menu), quickstrap_after_header
+* quickstrap_before_content, quickstrap_after_content (full width, above and below the posts and sidebars)
+* quickstrap_before_post_content, quickstrap_after_post_content (single posts: under the title, after the text and tags)
+* quickstrap_before_footer, quickstrap_footer_start (in the footer, above the copyright), quickstrap_after_footer
+
+Example: add_action( 'quickstrap_after_post_content', function () { echo '<p class="alert alert-info">Thanks for reading!</p>'; } );
+
+Filters:
+
+* quickstrap_show_default_sidebar: return false to turn off the default sidebar widgets on empty sidebars
+* quickstrap_list_limit: lines shown in the theme's long starter lists before "N more" (default 10)
+* quickstrap_between_posts_after: the post after which Between Posts shows (default 3)
+* quickstrap_social_icons: return false to show footer menu links as text instead of icons
+* quickstrap_custom_background_args: the Custom Background defaults
+
+Body classes: qs-light-header (light top bar), qs-full-width (Full width template), qs-light-only (dark mode switched off).
 
 == Changelog ==
 
@@ -111,6 +152,9 @@ The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonline
 * Customize > Layout: narrow left sidebar (default), both sidebars the same width, or the two sides swapped
 * Group block styles Card, Alert: info, Alert: success and Alert: warning, Bootstrap-style outline buttons, and Three cards, Hero box, Call to action, FAQ (no JavaScript) and Notice patterns
 * New Between Posts widget area in post lists, after the third post
+* Page numbers, search form and comment form use Bootstrap's own markup; Bootstrap's primary buttons follow the Accent colour
+* Light top bar and Full-width page options
+* Ten action hooks for child themes, listed under Building on QuickStrap
 * Customize > Bootstrap Extras: switch Bootstrap's JavaScript or Font Awesome back on if your posts use them, or load Bootstrap Icons, Bootstrap's own icon set
 * The left sidebar no longer disappears on tablets and phones: it moves below the posts with its lists in columns; with no widgets the posts widen to fill its space
 * Automatic dark mode that follows the reader's device, using Bootstrap's own dark colours, with an off switch

@@ -1,7 +1,7 @@
 /*
 Theme Name: QuickChic
 Theme URI: https://www.quickonlinetips.com/archives/quickchic-wordpress-theme/
-Description: QuickChic is a classic two-column WordPress theme that is ultra light and fast. One small CSS file, no JavaScript, no page builder and no options panel: activate it and start writing. Clean reading layout with the site title and widgets in the right column, menus, custom logo, featured images, numbered pagination and accessible markup. A classic theme (not a block theme) that still styles block content in your posts.
+Description: QuickChic is a classic two-column WordPress theme that is ultra light and fast. One small CSS file, no JavaScript, no page builder and no options panel: activate it and start writing. Clean reading layout with the site title and widgets in the right column (block widgets work out of the box, no Classic Widgets plugin needed), menus, custom logo, featured images, numbered pagination and accessible markup. A classic theme (not a block theme) that still styles block content in your posts.
 Version: 1.7
 Requires at least: 6.0
 Tested up to: 7.1
@@ -554,7 +554,8 @@ figcaption {
 	margin: 0 0 6px;
 }
 
-#sidebar ul {
+#sidebar ul,
+#sidebar ol {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -562,6 +563,46 @@ figcaption {
 
 #sidebar li {
 	margin: 0 0 3px;
+}
+
+/* Block widgets (the default in Appearance > Widgets) */
+
+#sidebar .wp-block-group__inner-container > * {
+	margin-top: 0;
+}
+
+#sidebar .wp-block-search__label {
+	display: block;
+	font-weight: bold;
+	margin: 0 0 6px;
+}
+
+#sidebar .wp-block-search__inside-wrapper {
+	gap: 6px;
+}
+
+#sidebar .wp-block-search__input {
+	flex: 1;
+	min-width: 0;
+	border-radius: 4px;
+}
+
+#sidebar .wp-block-search__button {
+	margin: 0;
+}
+
+#sidebar .wp-block-latest-comments {
+	font-size: inherit;
+}
+
+#sidebar .wp-block-latest-comments__comment {
+	margin: 0 0 6px;
+	line-height: 1.4;
+}
+
+#sidebar .wp-block-latest-posts__post-date {
+	font-size: 0.9em;
+	color: var(--qc-muted);
 }
 
 #sidebar ul ul {

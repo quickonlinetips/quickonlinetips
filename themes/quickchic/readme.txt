@@ -15,7 +15,7 @@ QuickChic is for people who want a clean blog that loads instantly and never get
 
 * **Ultra light and fast.** One small stylesheet, no JavaScript, no web fonts, no frameworks.
 * **Plug and play.** Activate it and start writing. There is no options panel to learn.
-* **Classic theme.** Uses widgets and menus the classic way. It is not a block theme, but posts written in the block editor look right.
+* **Classic theme, block-ready.** Sidebar widgets are blocks, edited in the normal Appearance > Widgets screen, so you never need the Classic Widgets or Classic Editor plugins. It is not a block theme, but posts written in the block editor look right.
 * **Simple layout.** Posts on the left; site title, menu and widgets on the right. On phones the title and menu come first, then posts, then widgets.
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 
@@ -37,13 +37,20 @@ Yes for writing posts and pages: block content is styled to match the theme. Qui
 
 Go to Appearance > Menus, create a menu and tick Main Menu (under the site title) or Footer Menu.
 
-= Why is there no sidebar on my site? =
+= Do I need the Classic Widgets plugin? =
 
-The sidebar shows once you add widgets in Appearance > Widgets.
+No. QuickChic uses the block widgets WordPress gives every site. Add any block (Search, Latest Posts, Categories, Paragraph, Image and more) in Appearance > Widgets.
+
+= What shows in the sidebar before I add widgets? =
+
+Search, Recent Posts, Categories and Archives, so a new site never looks empty. As soon as you add your own widgets, they take over. If your old widgets were moved to Inactive when you switched themes, drag them into the Sidebar in Appearance > Widgets.
 
 == Changelog ==
 
 = 1.7 - October 2026 =
+* Block widgets work out of the box; no Classic Widgets plugin needed
+* Sidebar shows Search, Recent Posts, Categories and Archives until you add widgets
+* Starter content for new sites: sidebar widgets, About and Contact pages, main menu
 * One stylesheet instead of three; normalize.css replaced by a much smaller reset
 * Site title now shows on phones (it was hidden), at the top of the page
 * Main Menu and Footer Menu, custom logo

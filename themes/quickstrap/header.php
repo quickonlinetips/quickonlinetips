@@ -50,7 +50,7 @@
 				'container_class'      => 'collapse navbar-collapse main-menu',
 				'container_aria_label' => __( 'Main menu', 'quickstrap' ),
 				'menu_class'           => 'navbar-nav ms-lg-auto',
-				'depth'                => 1,
+				'depth'                => 3, // Sub-menus: dropdowns on wide screens, indented on phones.
 			) );
 			?>
 		<?php endif; ?>

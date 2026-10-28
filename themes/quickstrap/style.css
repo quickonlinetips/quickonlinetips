@@ -303,6 +303,111 @@ hr {
 }
 
 
+/* Sub-menus, no JavaScript. On wide screens a dropdown opens when the mouse
+   is over the item or a link inside it has keyboard focus; on phones and
+   tablets the sub-items are listed, indented, in the opened menu */
+.main-menu .sub-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0 0 0 1rem;
+}
+
+.main-menu .sub-menu .nav-link {
+	padding-top: 0.35rem;
+	padding-bottom: 0.35rem;
+	font-weight: 400;
+}
+
+.qs-arrow {
+	display: inline-block;
+	width: 0.42em;
+	height: 0.42em;
+	margin: 0 0 0.2em 0.45em;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: rotate(45deg);
+	opacity: 0.7;
+}
+
+/* The section you are in gets the accent bar too */
+.main-menu .current-menu-ancestor > a::after {
+	content: "";
+	position: absolute;
+	left: var(--bs-navbar-nav-link-padding-x, 0);
+	bottom: 2px;
+	width: 22px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--qs-accent);
+}
+
+/* Inside a sub-menu, the current page is white and bold instead */
+.main-menu .sub-menu .current-menu-item > a::after,
+.main-menu .sub-menu .current-menu-ancestor > a::after {
+	display: none;
+}
+
+.main-menu .sub-menu .current-menu-item > a {
+	color: var(--bs-navbar-active-color);
+	font-weight: 600;
+}
+
+@media (min-width: 992px) {
+
+	.main-menu .sub-menu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 1000;
+		display: none;
+		min-width: 210px;
+		padding: 6px 0;
+		background: var(--qs-band);
+		border-radius: 0 0 6px 6px;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+	}
+
+	/* Third level: opens to the side */
+	.main-menu .sub-menu .sub-menu {
+		top: -6px;
+		left: 100%;
+		border-radius: 6px;
+	}
+
+	.main-menu li:hover > .sub-menu,
+	.main-menu li:focus-within > .sub-menu {
+		display: block;
+	}
+
+	.main-menu .sub-menu .nav-link {
+		padding: 0.4rem 1rem;
+		white-space: nowrap;
+	}
+
+	.main-menu .sub-menu .nav-link:hover,
+	.main-menu .sub-menu .nav-link:focus-visible {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.main-menu .sub-menu .qs-arrow {
+		transform: rotate(-45deg);
+	}
+
+	/* A dropdown near the right edge opens to the left instead */
+	.main-menu .navbar-nav > li:last-child > .sub-menu,
+	.main-menu .navbar-nav > li:nth-last-child(2) > .sub-menu {
+		left: auto;
+		right: 0;
+	}
+
+	.main-menu .navbar-nav > li:last-child .sub-menu .sub-menu,
+	.main-menu .navbar-nav > li:nth-last-child(2) .sub-menu .sub-menu {
+		left: auto;
+		right: 100%;
+	}
+}
+
+
 /* 4. Layout
    Bootstrap's grid does the columns (see quickstrap_content_class() in
    functions.php). These rules only add breathing room.
@@ -1172,7 +1277,8 @@ a:focus-visible {
 		padding-top: 10px;
 	}
 
-	.main-menu .current-menu-item > a::after {
+	.main-menu .current-menu-item > a::after,
+	.main-menu .current-menu-ancestor > a::after {
 		bottom: 4px;
 	}
 

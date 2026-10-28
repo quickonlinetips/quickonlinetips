@@ -219,6 +219,23 @@ function quickstrap_menu_link_class( $atts, $item, $args ) {
 }
 add_filter( 'nav_menu_link_attributes', 'quickstrap_menu_link_class', 10, 3 );
 
+/*
+ * Sub-menus in the main menu, with no JavaScript.
+ * Menu items with sub-items get a small arrow, and the sub-items open:
+ * - on wide screens, as a dropdown when the mouse is over the item or a link
+ *   inside it has keyboard focus (CSS :hover and :focus-within);
+ * - on phones and tablets, always shown, indented, in the opened menu.
+ * Up to three levels (set by 'depth' in header.php).
+ */
+function quickstrap_menu_arrow( $title, $item, $args, $depth ) {
+	if ( isset( $args->theme_location ) && 'header-nav' === $args->theme_location
+		&& in_array( 'menu-item-has-children', (array) $item->classes, true ) ) {
+		$title .= '<span class="qs-arrow" aria-hidden="true"></span>';
+	}
+	return $title;
+}
+add_filter( 'nav_menu_item_title', 'quickstrap_menu_arrow', 10, 4 );
+
 // Editor style: posts look in the editor much like they do on the site.
 function quickstrap_add_editor_styles() {
 	add_theme_support( 'editor-styles' );

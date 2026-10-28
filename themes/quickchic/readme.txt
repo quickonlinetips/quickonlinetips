@@ -7,11 +7,11 @@ Stable tag: 1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A classic two-column WordPress theme that is ultra light and fast: one small CSS file, no JavaScript, no options panel.
+A fast, clean two-column blog theme for writers: one small stylesheet, no JavaScript, nothing to set up. Activate it and start writing.
 
 == Description ==
 
-QuickChic is for people who want a clean blog that loads instantly and never gets in the way.
+QuickChic is for writers, bloggers and small sites who want a clean blog that loads instantly and never gets in the way. Your readers see your words, not clutter, and you spend your time writing instead of learning a page builder.
 
 * **Ultra light and fast.** One small stylesheet, no JavaScript, no web fonts, no frameworks.
 * **Plug and play.** Activate it and start writing. There is no options panel to learn.

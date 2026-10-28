@@ -57,6 +57,7 @@ QuickPic is distributed under the terms of the GNU GPL.
 	--qpic-link: var(--qpic-accent);
 	--qpic-band: var(--qpic-brand);
 	--qpic-band-text: #ddd;    /* text in the bottom box */
+	--qpic-band-link: color-mix(in srgb, var(--qpic-highlight) 45%, #fff); /* links in the bottom box: soft yellow */
 	--qpic-on-brand: #fff;
 	--qpic-on-accent: #fff;
 	--qpic-field: #fff;
@@ -756,13 +757,17 @@ figcaption {
 	border-bottom: 2px solid color-mix(in srgb, var(--qpic-highlight) 55%, var(--qpic-band));
 }
 
+/* Links: soft yellow, so they stand apart from the light grey text around
+   them (the original QuickPic used yellow footer links too) */
 .bottom-box a {
-	color: color-mix(in srgb, var(--qpic-on-brand) 92%, var(--qpic-band));
+	color: var(--qpic-band-link);
 	font-weight: 600;
 }
 
 .bottom-box a:hover {
 	color: var(--qpic-highlight);
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 
 .bottom-box ul,

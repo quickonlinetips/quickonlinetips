@@ -228,16 +228,31 @@ function quickchic_shorten_long_lists( $block_content, $block ) {
 		return $block_content;
 	}
 
-	// Only the top-level items count; sub-items stay with their parent.
+	// Count every line, sub-items included, but never split an item from its own
+	// sub-items: show whole top-level items until the next would pass the limit.
 	$items = array();
 	foreach ( $list->childNodes as $node ) {
 		if ( XML_ELEMENT_NODE === $node->nodeType && 'li' === $node->nodeName ) {
 			$items[] = $node;
 		}
 	}
-	$extra = count( $items ) - $limit;
-	if ( $extra < 1 ) {
+	$shown_lines = 0;
+	$keep        = 0;
+	foreach ( $items as $item ) {
+		$lines = 1 + $item->getElementsByTagName( 'li' )->length;
+		if ( $keep > 0 && $shown_lines + $lines > $limit ) {
+			break;
+		}
+		$shown_lines += $lines;
+		$keep++;
+	}
+	$hidden = array_slice( $items, $keep );
+	if ( ! $hidden ) {
 		return $block_content;
+	}
+	$extra = 0;
+	foreach ( $hidden as $item ) {
+		$extra += 1 + $item->getElementsByTagName( 'li' )->length;
 	}
 
 	$more_item = $doc->createElement( 'li' );
@@ -247,7 +262,7 @@ function quickchic_shorten_long_lists( $block_content, $block ) {
 	/* translators: %d: number of hidden list items */
 	$summary->appendChild( $doc->createTextNode( sprintf( _n( '%d more', '%d more', $extra, 'quickchic' ), $extra ) ) );
 	$rest = $doc->createElement( 'ul' );
-	foreach ( array_slice( $items, $limit ) as $item ) {
+	foreach ( $hidden as $item ) {
 		$rest->appendChild( $item ); // Moves the item into the hidden list.
 	}
 	$details->appendChild( $summary );

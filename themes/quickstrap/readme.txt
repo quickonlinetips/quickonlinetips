@@ -22,7 +22,7 @@ QuickStrap is for bloggers and small sites who like Bootstrap's clean look, want
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode using Bootstrap's own dark colours, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
 
-Features: Bootstrap 5.3.8 included, header colour and accent colour pickers, dark mode (can be switched off), three sidebar layouts, Full width template for posts and pages, widget areas in the right and left sidebars, above and below posts, between posts in lists and in three footer columns, main menu with dropdown sub-menus and a phone menu button, all without JavaScript, footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, Bootstrap block styles (Card, Alerts, outline buttons) and patterns, starter content for new sites, optional Bootstrap JavaScript and Font Awesome icons, Skip to content link, print styles, translation ready.
+Features: Bootstrap 5.3.8 included, header colour and accent colour pickers, dark mode (can be switched off), three sidebar layouts, Full width template for posts and pages, widget areas in the right and left sidebars, above and below posts, between posts in lists and in three footer columns, main menu with dropdown sub-menus and a phone menu button, all without JavaScript, footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, Bootstrap block styles (Card, Alerts, outline buttons) and patterns, starter content for new sites, optional Bootstrap JavaScript, Bootstrap Icons and Font Awesome, Skip to content link, print styles, translation ready.
 
 To change the dark top bar or the blue accent, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
@@ -100,7 +100,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 
 = How is Bootstrap updated? =
 
-The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonlinetips). A small script there, tools/update-quickstrap-vendor.sh, fetches a new Bootstrap or Font Awesome release from its GitHub release and copies in just the files the theme uses, so each QuickStrap release can ship the latest Bootstrap 5.
+The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonlinetips). A small script there, tools/update-quickstrap-vendor.sh, fetches a new Bootstrap, Bootstrap Icons or Font Awesome release from its GitHub release and copies in just the files the theme uses, so each QuickStrap release can ship the latest Bootstrap 5.
 
 == Changelog ==
 
@@ -111,7 +111,7 @@ The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonline
 * Customize > Layout: narrow left sidebar (default), both sidebars the same width, or the two sides swapped
 * Group block styles Card, Alert: info, Alert: success and Alert: warning, Bootstrap-style outline buttons, and Three cards, Hero box and Notice patterns
 * New Between Posts widget area in post lists, after the third post
-* Customize > Bootstrap Extras: switch Bootstrap's JavaScript or Font Awesome back on if your posts use them
+* Customize > Bootstrap Extras: switch Bootstrap's JavaScript or Font Awesome back on if your posts use them, or load Bootstrap Icons, Bootstrap's own icon set
 * The left sidebar no longer disappears on tablets and phones: it moves below the posts with its lists in columns; with no widgets the posts widen to fill its space
 * Automatic dark mode that follows the reader's device, using Bootstrap's own dark colours, with an off switch
 * Header colour and accent colour pickers in Customize > Colours
@@ -146,6 +146,7 @@ QuickStrap is distributed under the terms of the GNU GPL v2 or later.
 == Resources ==
 
 * Bootstrap 5.3.8, https://getbootstrap.com, (C) 2011-2025 The Bootstrap Authors, MIT License (vendor/bootstrap/LICENSE).
+* Bootstrap Icons 1.13.2, https://icons.getbootstrap.com, (C) The Bootstrap Authors, MIT License (vendor/bootstrap-icons/LICENSE).
 * Font Awesome Free 7.3.1, https://fontawesome.com, (C) Fonticons, Inc. Icons CC BY 4.0, fonts SIL OFL 1.1, code MIT License (vendor/font-awesome/LICENSE.txt).
 * Social icons in inc/social-icons.php: Simple Icons (https://simpleicons.org), CC0 1.0; LinkedIn and Email icons from the Twenty Twenty theme by the WordPress team, GPLv2 or later.
 * screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later. Photos shown in the screenshot:

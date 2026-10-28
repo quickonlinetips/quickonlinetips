@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Refresh the Bootstrap and Font Awesome files bundled with QuickStrap.
+# Refresh the Bootstrap, Bootstrap Icons and Font Awesome files bundled with QuickStrap.
 #
 # Why this script: WordPress.org themes must ship their CSS and JavaScript
 # inside the theme (no CDN links), so every Bootstrap or Font Awesome update
@@ -9,8 +9,8 @@
 # fetches just those files with git and copies the few the theme uses.
 #
 # Usage (from the repo root):
-#   tools/update-quickstrap-vendor.sh                # newest Bootstrap 5.x and Font Awesome 7.x
-#   tools/update-quickstrap-vendor.sh 5.3.8 7.3.1    # exact versions
+#   tools/update-quickstrap-vendor.sh                     # newest Bootstrap 5.x, Font Awesome 7.x, Bootstrap Icons 1.x
+#   tools/update-quickstrap-vendor.sh 5.3.8 7.3.1 1.13.1  # exact versions
 #
 # It then updates the version numbers in themes/quickstrap/functions.php.
 # Check the result with `git status` and `git diff --stat`, test the theme,
@@ -22,6 +22,7 @@ set -euo pipefail
 
 BOOTSTRAP_MAJOR=5   # stay on Bootstrap 5; a new major version needs testing by hand
 FONTAWESOME_MAJOR=7
+ICONS_MAJOR=1
 
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 theme="$repo_root/themes/quickstrap"
@@ -38,8 +39,12 @@ bs_tag="v${1:-}"
 fa_tag="${2:-}"
 [ -z "$fa_tag" ] && fa_tag="$(newest_tag https://github.com/FortAwesome/Font-Awesome "^${FONTAWESOME_MAJOR}\.[0-9]+\.[0-9]+$")"
 
-echo "Bootstrap:    $bs_tag"
-echo "Font Awesome: $fa_tag"
+bi_tag="v${3:-}"
+[ "$bi_tag" = "v" ] && bi_tag="$(newest_tag https://github.com/twbs/icons "^v${ICONS_MAJOR}\.[0-9]+\.[0-9]+$")"
+
+echo "Bootstrap:       $bs_tag"
+echo "Font Awesome:    $fa_tag"
+echo "Bootstrap Icons: $bi_tag"
 
 fetch() { # $1 repo URL, $2 tag, $3 folder, rest: paths to check out
 	local url="$1" tag="$2" dir="$3"
@@ -52,9 +57,11 @@ fetch https://github.com/twbs/bootstrap "$bs_tag" "$work/bs" \
 	/dist/css/bootstrap.min.css /dist/js/bootstrap.bundle.min.js /LICENSE
 fetch https://github.com/FortAwesome/Font-Awesome "$fa_tag" "$work/fa" \
 	/css/all.min.css '/webfonts/*.woff2' /LICENSE.txt
+fetch https://github.com/twbs/icons "$bi_tag" "$work/bi" \
+	/font/bootstrap-icons.min.css /font/fonts/bootstrap-icons.woff2 /LICENSE
 
-rm -rf "$vendor/bootstrap" "$vendor/font-awesome"
-mkdir -p "$vendor/bootstrap" "$vendor/font-awesome/css" "$vendor/font-awesome/webfonts"
+rm -rf "$vendor/bootstrap" "$vendor/font-awesome" "$vendor/bootstrap-icons"
+mkdir -p "$vendor/bootstrap" "$vendor/font-awesome/css" "$vendor/font-awesome/webfonts" "$vendor/bootstrap-icons/fonts"
 
 # Drop the source map comments: the .map files aren't shipped, and browsers'
 # developer tools would report them as missing.
@@ -65,6 +72,13 @@ cp "$work/bs/LICENSE" "$vendor/bootstrap/LICENSE"
 cp "$work/fa/css/all.min.css" "$vendor/font-awesome/css/all.min.css"
 cp "$work/fa"/webfonts/*.woff2 "$vendor/font-awesome/webfonts/"
 cp "$work/fa/LICENSE.txt" "$vendor/font-awesome/LICENSE.txt"
+
+# Bootstrap Icons: only the woff2 font (every current browser reads it), so
+# drop the stylesheet's fallback to the older .woff file, which isn't shipped.
+sed -e '/sourceMappingURL/d' -e 's/,url("[^"]*bootstrap-icons\.woff?[^"]*") format("woff")//' \
+	"$work/bi/font/bootstrap-icons.min.css" > "$vendor/bootstrap-icons/bootstrap-icons.min.css"
+cp "$work/bi/font/fonts/bootstrap-icons.woff2" "$vendor/bootstrap-icons/fonts/"
+cp "$work/bi/LICENSE" "$vendor/bootstrap-icons/LICENSE"
 
 # Dark mode: Bootstrap keeps its dark colours under [data-bs-theme=dark],
 # which only JavaScript can switch on. Copy those rules into style.css
@@ -92,6 +106,7 @@ perl -0777 -i -pe '
 sed -i \
 	-e "s/define( 'QUICKSTRAP_BOOTSTRAP_VERSION', '[^']*' );/define( 'QUICKSTRAP_BOOTSTRAP_VERSION', '${bs_tag#v}' );/" \
 	-e "s/define( 'QUICKSTRAP_FONTAWESOME_VERSION', '[^']*' );/define( 'QUICKSTRAP_FONTAWESOME_VERSION', '${fa_tag}' );/" \
+	-e "s/define( 'QUICKSTRAP_ICONS_VERSION', '[^']*' );/define( 'QUICKSTRAP_ICONS_VERSION', '${bi_tag#v}' );/" \
 	"$theme/functions.php"
 
 echo

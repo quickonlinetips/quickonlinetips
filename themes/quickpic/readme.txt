@@ -108,3 +108,7 @@ QuickPic is distributed under the terms of the GNU GPL v2 or later.
 == Resources ==
 
 * Social icons in inc/social-icons.php: Simple Icons (https://simpleicons.org), CC0 1.0; LinkedIn and Email icons from the Twenty Twenty theme by the WordPress team, GPLv2 or later.
+* screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later. Photos shown in the screenshot:
+* Sunrise from a high mountain peak over a sea of clouds, by Jos Velasco, CC0, https://wordpress.org/photos/photo/86169f2493/
+* Cobbled street under historic street lamps in Prague at night, by Rita Robles Loaiza, CC0, https://wordpress.org/photos/photo/7306a5ee57/
+* Pink bougainvillea flowers among green leaves, by Nelson Rodriguez, CC0, https://wordpress.org/photos/photo/4166adb787/

@@ -10,7 +10,7 @@ body {
 	--qc-border: #ddd;
 	--qc-soft: #f6f6f6;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-	font-size: 17px;
+	font-size: 15px;
 	line-height: 1.6;
 	color: var(--qc-text);
 	background: #fff;

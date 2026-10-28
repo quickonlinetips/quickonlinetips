@@ -162,10 +162,10 @@ function quickchic_add_editor_styles() {
 
 	// Text sizes in the editor, in step with the theme.
 	add_theme_support( 'editor-font-sizes', array(
-		array( 'name' => __( 'Small', 'quickchic' ), 'slug' => 'small', 'size' => 14 ),
-		array( 'name' => __( 'Normal', 'quickchic' ), 'slug' => 'normal', 'size' => 17 ),
-		array( 'name' => __( 'Large', 'quickchic' ), 'slug' => 'large', 'size' => 22 ),
-		array( 'name' => __( 'Extra large', 'quickchic' ), 'slug' => 'x-large', 'size' => 28 ),
+		array( 'name' => __( 'Small', 'quickchic' ), 'slug' => 'small', 'size' => 13 ),
+		array( 'name' => __( 'Normal', 'quickchic' ), 'slug' => 'normal', 'size' => 15 ),
+		array( 'name' => __( 'Large', 'quickchic' ), 'slug' => 'large', 'size' => 20 ),
+		array( 'name' => __( 'Extra large', 'quickchic' ), 'slug' => 'x-large', 'size' => 26 ),
 	) );
 
 	// No gradient presets: they don't suit the theme's flat look.

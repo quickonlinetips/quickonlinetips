@@ -227,7 +227,7 @@ table {
 
 body {
 	font-family: var(--qc-font);
-	font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem); /* 16px on phones, 17px on wide screens */
+	font-size: 0.9375rem; /* 15px: compact, like the original QuickChic */
 	line-height: 1.5;
 	color: var(--qc-text);
 	background: var(--qc-bg);
@@ -1153,6 +1153,13 @@ button:focus-visible {
 
 	body.custom-background {
 		background: var(--qc-bg) !important;
+	}
+
+	/* 16px fields stop iPhones zooming in when someone taps to type */
+	input,
+	select,
+	textarea {
+		font-size: 16px;
 	}
 
 	.gallery {

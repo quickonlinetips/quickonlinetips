@@ -181,6 +181,22 @@ function quickchic_add_editor_styles() {
 }
 add_action( 'after_setup_theme', 'quickchic_add_editor_styles' );
 
+/*
+ * Block styles: extra looks in the block editor's Styles panel.
+ * The CSS lives in style.css and custom-editor-style.css, so nothing extra loads.
+ */
+function quickchic_block_styles() {
+	register_block_style( 'core/quote', array(
+		'name'  => 'qc-accent',
+		'label' => __( 'Accent bar', 'quickchic' ),
+	) );
+	register_block_style( 'core/group', array(
+		'name'  => 'qc-soft-box',
+		'label' => __( 'Soft box', 'quickchic' ),
+	) );
+}
+add_action( 'init', 'quickchic_block_styles' );
+
 // The owner's accent colour in the editor too.
 function quickchic_editor_accent( $settings ) {
 	$accent = quickchic_accent_css();

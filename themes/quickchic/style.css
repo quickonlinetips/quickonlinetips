@@ -654,6 +654,32 @@ figcaption {
 	text-decoration: none;
 }
 
+/* Block styles from the editor's Styles panel */
+.is-style-qc-accent,
+.wp-block-quote.is-style-qc-accent {
+	margin: 1.5em 0;
+	padding: 2px 0 2px 16px;
+	border-left: 4px solid var(--qc-accent);
+	color: var(--qc-text);
+	font-size: 1.1em;
+}
+
+.is-style-qc-soft-box {
+	margin: 1.5em 0;
+	padding: 14px 18px;
+	background: var(--qc-soft);
+	border-left: 3px solid var(--qc-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.is-style-qc-soft-box > :first-child {
+	margin-top: 0;
+}
+
+.is-style-qc-soft-box > :last-child {
+	margin-bottom: 0;
+}
+
 /* Blocks with their own background colour: keep text off the edges */
 .entry :is(p, h2, h3, h4, .wp-block-group, .wp-block-column, .wp-block-columns).has-background {
 	padding: 1em 1.25em;

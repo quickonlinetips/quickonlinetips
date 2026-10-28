@@ -245,7 +245,7 @@ figcaption,
 /* Outline buttons (the Button block's Outline style) look like Bootstrap's
    .btn-outline-primary: accent border and text, filled on hover */
 .wp-block-button.is-style-outline > .wp-block-button__link {
-	border: 1px solid var(--qs-accent);
+	border: 1px solid var(--qs-link, var(--qs-accent));
 	padding: calc(0.667em + 1px) calc(1.333em + 1px);
 }
 
@@ -254,7 +254,7 @@ figcaption,
 }
 
 .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
-	color: var(--qs-accent);
+	color: var(--qs-link, var(--qs-accent));
 }
 
 .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover {

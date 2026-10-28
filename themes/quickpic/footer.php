@@ -3,7 +3,7 @@
 	<!-- Bottom box: the green band with a search box and widgets -->
 	<aside id="bottombox" class="bottom-box" aria-label="<?php esc_attr_e( 'More from this site', 'quickpic' ); ?>">
 
-		<div id="adbox" class="bottom-search">
+		<div class="bottom-search">
 			<?php get_search_form(); ?>
 		</div>
 

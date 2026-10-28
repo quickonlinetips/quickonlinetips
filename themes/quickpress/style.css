@@ -19,7 +19,7 @@ QuickPress is distributed under the terms of the GNU GPL.
 
 /* Contents
 -------------------------------------
-1. Settings (colours and fonts)
+1. Settings (colours and fonts), dark mode
 2. QuickReset (replaces normalize.css)
 3. QuickGrid (page layout)
 4. Typography
@@ -50,8 +50,10 @@ QuickPress is distributed under the terms of the GNU GPL.
 	--qp-bg: #fff;
 	--qp-page-bg: #ede8e2; /* around the page on wide screens */
 	--qp-link: var(--qp-brand);
+	--qp-band: var(--qp-brand); /* the header band */
 	--qp-on-brand: #fff;
 	--qp-on-accent: #fff;
+	--qp-accent-text: var(--qp-accent); /* accent-coloured words */
 	--qp-menu: color-mix(in srgb, var(--qp-brand) 20%, #fff);
 	--qp-footer: color-mix(in srgb, var(--qp-brand) 80%, #000);
 	--qp-field: #fff;
@@ -61,6 +63,35 @@ QuickPress is distributed under the terms of the GNU GPL.
 	--qp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
 	--qp-heading-font: var(--qp-font); /* the same system font, in bold */
 	--qp-mono: ui-monospace, Menlo, Consolas, "Courier New", monospace;
+}
+
+
+/* Dark mode
+   Follows the reader's device setting. The blue is deepened for the bands
+   and lightened for links, so any colour the owner picks stays readable.
+   Owners can switch this off in Customize > Colours.
+------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+	body:not(.qp-light-only) {
+		--qp-text: #e4e4e4;
+		--qp-muted: #a3a3a3;
+		--qp-border: #3a3a3a;
+		--qp-line: #2a2a2a;
+		--qp-soft: #262626;
+		--qp-bg: #171717;
+		--qp-page-bg: #0d0d0d;
+		--qp-link: color-mix(in srgb, var(--qp-brand) 55%, #fff);
+		--qp-accent-text: color-mix(in srgb, var(--qp-accent) 65%, #fff);
+		--qp-band: color-mix(in srgb, var(--qp-brand) 70%, #000);
+		--qp-menu: color-mix(in srgb, var(--qp-brand) 25%, #1c1c1c);
+		--qp-footer: color-mix(in srgb, var(--qp-brand) 45%, #000);
+		--qp-field: #1f1f1f;
+		--qp-field-border: #555;
+		--qp-alt: #1d1d1d;
+		--qp-author: #17252b;
+		color-scheme: dark;
+	}
 }
 
 
@@ -224,7 +255,7 @@ a {
 }
 
 a:hover {
-	color: var(--qp-accent);
+	color: var(--qp-accent-text);
 	text-decoration: underline;
 }
 
@@ -313,7 +344,7 @@ dd {
 	justify-content: space-between;
 	gap: 15px 30px;
 	padding: 25px 30px;
-	background: var(--qp-brand);
+	background: var(--qp-band);
 	color: var(--qp-on-brand);
 }
 
@@ -368,7 +399,7 @@ dd {
 	margin: 8px 0 0;
 	font-size: 1.05em;
 	line-height: 1.4;
-	color: color-mix(in srgb, var(--qp-on-brand) 80%, var(--qp-brand));
+	color: color-mix(in srgb, var(--qp-on-brand) 80%, var(--qp-band));
 }
 
 .header-search {
@@ -404,7 +435,7 @@ dd {
 
 .main-menu a:hover,
 .main-menu .current-menu-item > a {
-	color: var(--qp-accent);
+	color: var(--qp-accent-text);
 }
 
 
@@ -619,7 +650,7 @@ figcaption {
 	font-size: 1.05em;
 	text-transform: uppercase;
 	letter-spacing: 0.03em;
-	color: var(--qp-accent);
+	color: var(--qp-accent-text);
 	margin: 0 0 6px;
 	padding-bottom: 3px;
 	border-bottom: 1px solid var(--qp-accent);

@@ -663,6 +663,10 @@ figcaption {
 	line-height: 1.4;
 }
 
+#sidebar .wp-block-latest-comments__comment-meta {
+	font-size: 1em;
+}
+
 #sidebar .wp-block-latest-posts__post-date {
 	font-size: 0.9em;
 	color: var(--qp-muted);

@@ -73,6 +73,48 @@ function quickpress_widgets_init() {
 }
 add_action( 'widgets_init', 'quickpress_widgets_init' );
 
+/*
+ * Default sidebar, shown only while all three sidebar areas are empty.
+ * Built from WordPress's own blocks, so it needs no plugin and looks the same
+ * as the block widgets people add later in Appearance > Widgets.
+ * Search is left out because the header already has a search box.
+ * As soon as any widget is added, this steps aside.
+ * A child theme can switch it off: add_filter( 'quickpress_show_default_sidebar', '__return_false' );
+ */
+function quickpress_default_sidebar() {
+	if ( ! apply_filters( 'quickpress_show_default_sidebar', true ) ) {
+		return;
+	}
+
+	$full  = array(
+		'widget_recent_entries' => array( __( 'Recent Posts', 'quickpress' ), '<!-- wp:latest-posts /-->' ),
+	);
+	$split = array(
+		'widget_categories'      => array( __( 'Categories', 'quickpress' ), '<!-- wp:categories {"className":"qp-short"} /-->' ),
+		'widget_recent_comments' => array( __( 'Recent Comments', 'quickpress' ), '<!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ),
+	);
+
+	echo '<div class="sidebar-full">';
+	quickpress_default_widgets( $full );
+	echo '</div><div class="sidebar-split">';
+	foreach ( $split as $class => $section ) {
+		echo '<div class="subcol">';
+		quickpress_default_widgets( array( $class => $section ) );
+		echo '</div>';
+	}
+	echo '</div>';
+}
+
+// Prints default widgets with the same wrappers as real ones.
+function quickpress_default_widgets( $sections ) {
+	foreach ( $sections as $class => $section ) {
+		echo '<section class="widget ' . esc_attr( $class ) . '">';
+		echo '<h2 class="widget-title">' . esc_html( $section[0] ) . '</h2>';
+		echo do_blocks( $section[1] ); // phpcs:ignore WordPress.Security.EscapeOutput -- core blocks escape their own output.
+		echo '</section>';
+	}
+}
+
 // Editor style: posts look in the editor much like they do on the site.
 function quickpress_add_editor_styles() {
 	add_editor_style( 'custom-editor-style.css' );

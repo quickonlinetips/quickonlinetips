@@ -357,7 +357,9 @@ add_filter( 'body_class', 'quickpress_body_classes' );
 // Load stylesheets
 function quickpress_scripts() {
 
-	$version = wp_get_theme( get_template() )->get( 'Version' );
+	// Theme version plus the file's last change time, so browsers fetch fresh CSS
+	// after every update, even when the version number stays the same.
+	$version = wp_get_theme( get_template() )->get( 'Version' ) . '.' . filemtime( get_template_directory() . '/style.css' );
 
 	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickpress', get_stylesheet_uri(), array(), $version );

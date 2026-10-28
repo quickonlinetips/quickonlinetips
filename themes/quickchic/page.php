@@ -1,42 +1,39 @@
 <?php get_header(); ?>
 
 <div id="content" class="content column left">
-    <main>
-        <section>
-            <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-            <article class="post" id="post-<?php the_ID(); ?>">
-                <h2>
-                    <?php the_title(); ?>
-                </h2>
-                <div class="entry">
-                    <?php the_content(); ?>
-                    <?php wp_link_pages(array(
-		'before' => '<div class="page-links"><span class="page-links-title">' . __( '<b>Pages:</b>', 'quickchic' ) . '</span>', 
-		'after' => '</div>',
-		'link_before' => '<span>', 
-		'link_after'  => '</span>',
-		'next_or_number' => 'number'
-		)); 
-		?>
+	<main>
 
-                </div>
+		<?php while ( have_posts() ) : the_post(); ?>
+		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-                <?php comments_template(); ?>
-            </article>
+			<h1 class="entry-title"><?php the_title(); ?></h1>
 
-            <?php endwhile; ?>
-            <?php else: ?>
-            <article>
-                <h2>
-                    <?php _e( 'Content Not Found', 'quickchic'); ?>
-                </h2>
-            </article>
-            <?php endif; ?>
+			<div class="entry">
+				<?php the_content(); ?>
 
-            <?php edit_post_link(); ?>
+				<?php
+				wp_link_pages( array(
+					'before'      => '<div class="page-links"><span class="page-links-title">' . esc_html__( 'Pages:', 'quickchic' ) . '</span>',
+					'after'       => '</div>',
+					'link_before' => '<span>',
+					'link_after'  => '</span>',
+				) );
+				?>
+			</div>
 
-        </section>
-    </main>
+			<?php edit_post_link( __( 'Edit', 'quickchic' ), '<p class="post-meta">', '</p>' ); ?>
+
+			<?php
+			if ( comments_open() || get_comments_number() ) {
+				comments_template();
+			}
+			?>
+
+		</article>
+		<?php endwhile; ?>
+
+	</main>
 </div>
+
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

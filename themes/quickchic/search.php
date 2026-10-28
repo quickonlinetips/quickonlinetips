@@ -1,17 +1,22 @@
 <?php get_header(); ?>
+
 <div id="content" class="content column left">
+	<main>
 
-    <main>
-        <section>
+		<header class="page-header">
+			<h1 class="page-title">
+				<?php
+				/* translators: %s: search words */
+				printf( esc_html__( 'Search Results for: %s', 'quickchic' ), '<span>' . esc_html( get_search_query() ) . '</span>' );
+				?>
+			</h1>
+		</header>
 
-            <h1>
-                <?php printf( __( 'Search Results for: %s', 'quickchic' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
-            <?php get_template_part('loop'); ?>
-            <?php get_template_part('pagination'); ?>
+		<?php get_template_part( 'loop' ); ?>
+		<?php get_template_part( 'pagination' ); ?>
 
-        </section>
-    </main>
-
+	</main>
 </div>
+
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

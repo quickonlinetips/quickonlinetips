@@ -1,16 +1,18 @@
 <?php get_header(); ?>
-	<div id="content" class="content column left">
 
-<main>
-<section>
+<div id="content" class="content column left">
+	<main>
 
-<h1><?php _e( 'Archives: ', 'quickchic' ); single_cat_title(); ?></h1>
-<?php get_template_part('loop'); ?>
-<?php get_template_part('pagination'); ?>
+		<header class="page-header">
+			<?php the_archive_title( '<h1 class="page-title">', '</h1>' ); ?>
+			<?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
+		</header>
 
-</section>
-</main>
+		<?php get_template_part( 'loop' ); ?>
+		<?php get_template_part( 'pagination' ); ?>
 
+	</main>
 </div>
+
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

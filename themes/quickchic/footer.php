@@ -2,6 +2,18 @@
 
 	<footer id="footer">
 
+		<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) || is_active_sidebar( 'footer-3' ) ) : ?>
+			<div class="footer-widgets">
+				<?php for ( $quickchic_i = 1; $quickchic_i <= 3; $quickchic_i++ ) : ?>
+					<?php if ( is_active_sidebar( 'footer-' . $quickchic_i ) ) : ?>
+						<div class="footer-column">
+							<?php dynamic_sidebar( 'footer-' . $quickchic_i ); ?>
+						</div>
+					<?php endif; ?>
+				<?php endfor; ?>
+			</div>
+		<?php endif; ?>
+
 		<?php
 		if ( has_nav_menu( 'footer' ) ) {
 			wp_nav_menu( array(

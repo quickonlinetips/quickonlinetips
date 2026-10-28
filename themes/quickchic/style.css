@@ -678,6 +678,31 @@ figcaption {
 }
 
 
+/* Below Posts widgets: a soft box under the post */
+
+.after-post {
+	margin: 25px 0;
+	padding: 14px 18px;
+	background: var(--qc-soft);
+	border-left: 3px solid var(--qc-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.after-post .widget {
+	margin: 0 0 14px;
+}
+
+.after-post .widget:last-child {
+	margin-bottom: 0;
+}
+
+.after-post h2,
+.footer-widgets h2 {
+	font-size: 1.15em;
+	margin: 0 0 6px;
+}
+
+
 /* 9. Comments and forms
 ------------------------------------- */
 
@@ -882,6 +907,49 @@ a.page-numbers:hover {
 
 #footer p {
 	margin: 3px 0;
+}
+
+/* Footer widgets: up to three columns on a soft panel with a pink top edge */
+.footer-widgets {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px 30px;
+	margin: -15px -5px 20px;
+	padding: 20px;
+	background: var(--qc-soft);
+	border-top: 3px solid var(--qc-accent);
+	text-align: left;
+	line-height: 1.4;
+}
+
+.footer-widgets .widget {
+	margin: 0 0 18px;
+}
+
+.footer-widgets .widget:last-child {
+	margin-bottom: 0;
+}
+
+.footer-widgets .widget-title,
+.footer-widgets h2 {
+	display: inline-block;
+	padding-bottom: 3px;
+	border-bottom: 2px solid var(--qc-accent);
+}
+
+.footer-widgets ul,
+.footer-widgets ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.footer-widgets li {
+	margin: 0 0 4px;
+}
+
+.footer-widgets p {
+	margin: 0 0 8px;
 }
 
 .footer-menu ul {

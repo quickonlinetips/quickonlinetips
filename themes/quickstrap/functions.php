@@ -121,7 +121,7 @@ function quickstrap_widgets_init() {
 	register_sidebar( array_merge( $wrappers, array(
 		'name'        => __( 'Left Sidebar', 'quickstrap' ),
 		'id'          => 'left-sidebar',
-		'description' => __( 'A narrow column on the left on wide screens (Appearance > Customize > Layout can widen it or swap the sides). On tablets and phones it moves below the posts and the right sidebar. Leave it empty for a two-column layout. While both sidebars are empty, a few default widgets fill both.', 'quickstrap' ),
+		'description' => __( 'A narrow column on the left on wide screens (Appearance > Customize > Layout can swap the sides). On tablets and phones it moves below the posts and the right sidebar. Leave it empty for a two-column layout. While both sidebars are empty, a few default widgets fill both.', 'quickstrap' ),
 	) ) );
 
 	register_sidebar( array_merge( $wrappers, array(
@@ -526,7 +526,6 @@ function quickstrap_customize_layout( $wp_customize ) {
 		'section' => 'quickstrap_layout',
 		'choices' => array(
 			'narrow' => __( 'Narrow Left Sidebar, wider Right Sidebar', 'quickstrap' ),
-			'equal'  => __( 'Both sidebars the same width (more room on the left)', 'quickstrap' ),
 			'swap'   => __( 'Swapped: Right Sidebar on the left, Left Sidebar on the right', 'quickstrap' ),
 		),
 	) );
@@ -534,7 +533,7 @@ function quickstrap_customize_layout( $wp_customize ) {
 add_action( 'customize_register', 'quickstrap_customize_layout' );
 
 function quickstrap_sanitize_layout( $value ) {
-	return in_array( $value, array( 'narrow', 'equal', 'swap' ), true ) ? $value : 'narrow';
+	return in_array( $value, array( 'narrow', 'swap' ), true ) ? $value : 'narrow';
 }
 
 /*
@@ -680,7 +679,6 @@ function quickstrap_has_left_sidebar() {
 /*
  * Sidebar layout, from Appearance > Customize > Layout:
  * - narrow: narrow Left Sidebar, wider Right Sidebar (2 | 6 | 4), the default
- * - equal:  both sidebars the same width (3 | 6 | 3), roomier for the Left Sidebar
  * - swap:   the two sidebars swap sides (4 | 6 | 2): the Right Sidebar's
  *           widgets on the left, the Left Sidebar's on the right. With the
  *           Left Sidebar empty, this is a two-column site with the sidebar on the left.
@@ -689,7 +687,7 @@ function quickstrap_has_left_sidebar() {
  */
 function quickstrap_layout() {
 	$layout = get_theme_mod( 'quickstrap_layout', 'narrow' );
-	return in_array( $layout, array( 'narrow', 'equal', 'swap' ), true ) ? $layout : 'narrow';
+	return in_array( $layout, array( 'narrow', 'swap' ), true ) ? $layout : 'narrow';
 }
 
 /*
@@ -716,9 +714,6 @@ function quickstrap_column_class( $column ) {
 		if ( $swap ) {
 			return $class . ' order-md-1';
 		}
-		if ( 'equal' === $layout && quickstrap_has_left_sidebar() ) {
-			$class .= ' col-lg-3';
-		}
 		return $class . ' order-lg-3';
 	}
 
@@ -726,7 +721,7 @@ function quickstrap_column_class( $column ) {
 	if ( $swap ) {
 		return 'sidebar sidebar-left col-12 col-lg-2 order-3';
 	}
-	return 'sidebar sidebar-left col-12 order-3 order-lg-1 ' . ( 'equal' === $layout ? 'col-lg-3' : 'col-lg-2' );
+	return 'sidebar sidebar-left col-12 col-lg-2 order-3 order-lg-1';
 }
 
 // The posts column's classes (kept for child themes that call it).

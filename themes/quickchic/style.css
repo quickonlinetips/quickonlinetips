@@ -913,29 +913,38 @@ input[type="submit"]:hover,
 	margin-left: auto;
 }
 
+/* Page numbers: outlined boxes; the current page is filled in */
 .page-numbers {
 	display: inline-block;
-	padding: 6px 12px;
+	min-width: 2.4em;
+	padding: 5px 11px;
+	line-height: 1.4;
+	text-align: center;
+	border: 1px solid var(--qc-border);
 	border-radius: 6px;
-	background: var(--qc-soft);
-}
-
-a.page-numbers {
-	background: var(--qc-accent);
-	color: var(--qc-on-accent);
+	color: var(--qc-link);
 }
 
 a.page-numbers:hover {
 	text-decoration: none;
-	filter: brightness(1.1);
+	background: var(--qc-accent);
+	border-color: var(--qc-accent);
+	color: var(--qc-on-accent);
 }
 
 .page-numbers.current {
+	background: var(--qc-accent);
+	border-color: var(--qc-accent);
+	color: var(--qc-on-accent);
 	font-weight: bold;
 }
 
 .page-numbers.dots {
-	background: none;
+	min-width: 0;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-color: transparent;
+	color: var(--qc-muted);
 }
 
 

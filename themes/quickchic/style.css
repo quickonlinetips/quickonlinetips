@@ -705,6 +705,12 @@ figcaption {
 	margin-bottom: 3px;
 }
 
+/* The opened items line up with the first ten (sub-items keep their indent) */
+#sidebar .qc-more > details > ul,
+.footer-widgets .qc-more > details > ul {
+	margin: 0;
+}
+
 /* Block widgets (the default in Appearance > Widgets) */
 
 #sidebar .wp-block-group__inner-container > * {

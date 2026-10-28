@@ -547,8 +547,25 @@ dd {
 	border-radius: 4px;
 }
 
-/* Thumbnails brighten a touch on hover, a hint that the photo opens the post */
-.post-thumb:hover img {
+/* Large photos in post lists (Customize > Post Lists > Featured photos):
+   across the whole column, above the excerpt. Very tall photos are capped
+   so one portrait shot doesn't fill the screen. */
+.post-photo {
+	display: block;
+	margin: 12px 0 10px;
+}
+
+.post-photo img {
+	display: block;
+	width: 100%;
+	max-height: 460px;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+/* Thumbnails and photos brighten a touch on hover, a hint that the photo opens the post */
+.post-thumb:hover img,
+.post-photo:hover img {
 	filter: brightness(1.08);
 }
 

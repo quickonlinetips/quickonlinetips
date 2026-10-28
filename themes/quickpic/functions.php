@@ -469,8 +469,32 @@ function quickpic_customize_post_lists( $wp_customize ) {
 		'section'     => 'quickpic_post_lists',
 		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
 	) );
+
+	$wp_customize->add_setting( 'quickpic_list_photo', array(
+		'default'           => 'thumb',
+		'sanitize_callback' => 'quickpic_sanitize_list_photo',
+	) );
+	$wp_customize->add_control( 'quickpic_list_photo', array(
+		'type'        => 'radio',
+		'label'       => __( 'Featured photos', 'quickpic' ),
+		'description' => __( 'How each post\'s featured image shows in post lists.', 'quickpic' ),
+		'section'     => 'quickpic_post_lists',
+		'choices'     => array(
+			'thumb' => __( 'A small thumbnail on the right', 'quickpic' ),
+			'large' => __( 'A large photo across the column', 'quickpic' ),
+		),
+	) );
 }
 add_action( 'customize_register', 'quickpic_customize_post_lists' );
+
+function quickpic_sanitize_list_photo( $value ) {
+	return 'large' === $value ? 'large' : 'thumb';
+}
+
+// Large photos in post lists? (Customize > Post Lists > Featured photos.)
+function quickpic_large_list_photos() {
+	return 'large' === quickpic_sanitize_list_photo( get_theme_mod( 'quickpic_list_photo', 'thumb' ) );
+}
 
 function quickpic_sanitize_list_display( $value ) {
 	return 'full' === $value ? 'full' : 'excerpt';

@@ -8,7 +8,11 @@
 
 	<div class="entry">
 
-		<?php if ( has_post_thumbnail() ) : ?>
+		<?php if ( has_post_thumbnail() && quickpic_large_list_photos() ) : ?>
+			<a class="post-photo" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+				<?php the_post_thumbnail( 'large' ); ?>
+			</a>
+		<?php elseif ( has_post_thumbnail() ) : ?>
 			<a class="post-thumb alignright" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 				<?php the_post_thumbnail( 'thumbnail' ); ?>
 			</a>

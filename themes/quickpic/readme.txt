@@ -21,7 +21,7 @@ QuickPic is for photo bloggers, travel and hobby blogs and anyone who wants thei
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
 
-Features: header colour and accent colour pickers, dark mode (can be switched off), Wide template for posts and pages, widget areas in the bottom box (three columns) and below posts, search box in the bottom box, main menu bar and footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, block styles and patterns, starter content for new sites, Skip to content link, print styles, translation ready.
+Features: header colour and accent colour pickers, small thumbnails or large photos in post lists, dark mode (can be switched off), Wide template for posts and pages, widget areas in the bottom box (three columns) and below posts, search box in the bottom box, main menu bar and footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, block styles and patterns, starter content for new sites, Skip to content link, print styles, translation ready.
 
 To change the green header or the green links and buttons, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
@@ -61,6 +61,10 @@ In the editor, open the Post (or Page) settings, find Template and pick "Wide, f
 
 Yes. Appearance > Customize > Post Lists lets you show a short excerpt with Read More (the default) or the full post, and set the excerpt length in words. With full posts, add a More block in a post to choose where it breaks. Search results always show excerpts.
 
+= Can the home page show bigger photos? =
+
+Yes. In Appearance > Customize > Post Lists, set Featured photos to "A large photo across the column". Each post's featured image then shows across the whole column above its excerpt, so the home page reads like a gallery of stories. The default is the classic small thumbnail on the right.
+
 = How do I add social icons? =
 
 Create a menu in Appearance > Menus with links to your profiles (for example https://www.instagram.com/yourname) and assign it to Footer Menu. Links to well-known networks show as small icons; other links stay as text.
@@ -80,7 +84,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Editor looks like the site; theme colours and text sizes in the block editor
 * Text sizes scale smoothly from phone to desktop
 * Updated date shown on edited posts
-* Customize > Post Lists: excerpts or full posts, and the excerpt length
+* Customize > Post Lists: excerpts or full posts, the excerpt length, and small thumbnails or large photos
 * Read More also shows after hand-written excerpts
 * Print styles
 * Social links in the Footer Menu show as small icons (X, Facebook, Instagram, LinkedIn, YouTube, GitHub, Pinterest, TikTok, Threads, Bluesky, Mastodon, Reddit, WhatsApp, Telegram, email, RSS)

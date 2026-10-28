@@ -1043,6 +1043,10 @@ a.page-numbers:hover {
 	margin: 0 0 4px;
 }
 
+.footer-widgets ul ul {
+	margin: 4px 0 0 12px;
+}
+
 .footer-widgets p {
 	margin: 0 0 8px;
 }

@@ -289,13 +289,18 @@ function quickchic_excerpt_more( $more ) {
 }
 add_filter( 'excerpt_more', 'quickchic_excerpt_more' );
 
-// After a hand-written excerpt (the Excerpt box in the editor), which
-// WordPress shows without a link, so every post in a list ends the same way.
+// WordPress leaves out the link in two cases where the post does go on:
+// a hand-written excerpt (the Excerpt box in the editor), and a post with a
+// More block early on, whose excerpt stops there. Add it in both, so every
+// post that continues ends with Read More.
 function quickchic_manual_excerpt_more( $excerpt ) {
-	if ( is_admin() || is_feed() || ! in_the_loop() || ! has_excerpt() ) {
+	if ( is_admin() || is_feed() || ! in_the_loop() || false !== strpos( $excerpt, 'class="read-more"' ) ) {
 		return $excerpt;
 	}
-	return $excerpt . quickchic_read_more_link();
+	if ( has_excerpt() || false !== strpos( get_post_field( 'post_content', get_the_ID() ), '<!--more' ) ) {
+		return $excerpt . quickchic_read_more_link();
+	}
+	return $excerpt;
 }
 add_filter( 'get_the_excerpt', 'quickchic_manual_excerpt_more', 20 );
 

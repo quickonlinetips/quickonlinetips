@@ -1,3 +1,141 @@
+/*
+QuickPic editor style: posts look in the editor the way they will on the site.
+WordPress scopes these rules to the editor, so they never load on the front end.
+*/
+
+body {
+	--qpic-brand: #005500;
+	--qpic-accent: #088000;
+	--qpic-text: #333;
+	--qpic-muted: #666;
+	--qpic-border: #ddd;
+	--qpic-soft: #f6f6f6;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-size: 15.36px; /* the post text size on the site */
+	line-height: 1.6;
+	color: var(--qpic-text);
+	background: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-weight: bold;
+	line-height: 1.25;
+	margin: 1.2em 0 0.4em;
+}
+
+h1 { font-size: 1.8em; }
+h2 { font-size: 1.55em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1.1em; }
+
+/* The post title */
+.editor-post-title,
+.editor-post-title__input {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.8em;
+	font-weight: bold;
+	line-height: 1.25;
+}
+
+a {
+	color: var(--qpic-accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+blockquote {
+	margin: 1.5em 0;
+	padding: 0 0 0 20px;
+	border-left: 4px solid var(--qpic-border);
+	color: var(--qpic-muted);
+}
+
+blockquote cite {
+	display: block;
+	margin-top: 5px;
+	font-size: 0.9em;
+}
+
+pre {
+	background: var(--qpic-soft);
+	border: 1px solid var(--qpic-border);
+	padding: 10px 12px;
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+code {
+	background: var(--qpic-soft);
+	padding: 1px 4px;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+pre code {
+	background: none;
+	padding: 0;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid var(--qpic-border);
+	margin: 2em 0;
+}
+
+table th,
+table td {
+	padding: 6px 8px;
+	border: 1px solid var(--qpic-border);
+	text-align: left;
+}
+
+table th {
+	background: var(--qpic-soft);
+}
+
+figcaption,
+.wp-caption-text {
+	font-size: 0.85em;
+	color: var(--qpic-muted);
+	text-align: center;
+}
+
+.wp-block-button__link,
+.wp-element-button {
+	background: var(--qpic-accent);
+	color: #fff;
+	border-radius: 6px;
+	text-decoration: none;
+}
+
+.wp-block-pullquote {
+	border-top: 3px solid var(--qpic-accent);
+	border-bottom: 3px solid var(--qpic-accent);
+}
+
+.wp-block-pullquote blockquote {
+	border: 0;
+	padding: 0;
+}
+
+/* Same width as the post column on the site */
+.wp-block {
+	max-width: 660px;
+}
+
+.wp-block[data-align="wide"],
+.wp-block[data-align="full"] {
+	max-width: 660px;
+}
+
+/* Classic editor */
 body#tinymce.wp-editor {
-    margin: 10px;
+	max-width: 660px;
+	margin: 10px;
 }

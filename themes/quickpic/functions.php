@@ -143,9 +143,43 @@ function quickpic_default_widgets() {
 
 // Editor style: posts look in the editor much like they do on the site.
 function quickpic_add_editor_styles() {
+	add_theme_support( 'editor-styles' );
 	add_editor_style( 'custom-editor-style.css' );
+
+	// The theme's own colours in the block editor's colour picker,
+	// instead of WordPress's general rainbow.
+	$colors = quickpic_colors();
+	add_theme_support( 'editor-color-palette', array(
+		array( 'name' => __( 'Header green', 'quickpic' ), 'slug' => 'brand', 'color' => $colors['brand'] ),
+		array( 'name' => __( 'Accent', 'quickpic' ), 'slug' => 'accent', 'color' => $colors['accent'] ),
+		array( 'name' => __( 'Text', 'quickpic' ), 'slug' => 'text', 'color' => '#333333' ),
+		array( 'name' => __( 'Grey', 'quickpic' ), 'slug' => 'grey', 'color' => '#707070' ),
+		array( 'name' => __( 'Light grey', 'quickpic' ), 'slug' => 'light-grey', 'color' => '#f6f6f6' ),
+		array( 'name' => __( 'White', 'quickpic' ), 'slug' => 'white', 'color' => '#ffffff' ),
+	) );
+
+	// Text sizes in the editor, in step with the theme's 15px post text.
+	add_theme_support( 'editor-font-sizes', array(
+		array( 'name' => __( 'Small', 'quickpic' ), 'slug' => 'small', 'size' => 13 ),
+		array( 'name' => __( 'Normal', 'quickpic' ), 'slug' => 'normal', 'size' => 15.36 ),
+		array( 'name' => __( 'Large', 'quickpic' ), 'slug' => 'large', 'size' => 20 ),
+		array( 'name' => __( 'Extra large', 'quickpic' ), 'slug' => 'x-large', 'size' => 26 ),
+	) );
+
+	// No gradient presets: they don't suit the theme's flat look.
+	add_theme_support( 'editor-gradient-presets', array() );
 }
-add_action( 'admin_init', 'quickpic_add_editor_styles' );
+add_action( 'after_setup_theme', 'quickpic_add_editor_styles' );
+
+// The owner's colours in the editor too.
+function quickpic_editor_colors( $settings ) {
+	$colors = quickpic_colors_css();
+	if ( $colors && isset( $settings['styles'] ) && is_array( $settings['styles'] ) ) {
+		$settings['styles'][] = array( 'css' => str_replace( ':root', 'body', $colors ) );
+	}
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'quickpic_editor_colors' );
 
 // The "Read More" link after excerpts.
 function quickpic_excerpt_more( $more ) {

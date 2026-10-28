@@ -26,9 +26,19 @@ if ( ! function_exists( 'quickpress_setup' ) ) :
 			'default-image' => '',
 		) ) );
 
-		// The menu bar under the header (Appearance > Menus).
+		// Optional logo beside the site title (Appearance > Customize > Site Identity).
+		add_theme_support( 'custom-logo', array(
+			'height'      => 100,
+			'width'       => 300,
+			'flex-height' => true,
+			'flex-width'  => true,
+		) );
+
+		// Menus: the menu bar under the header, and one in the footer (Appearance > Menus).
+		// The header id stays 'header-nav' so existing sites keep their menu.
 		register_nav_menus( array(
-			'header-nav' => __( 'Header Menu', 'quickpress' ),
+			'header-nav' => __( 'Main Menu', 'quickpress' ),
+			'footer'     => __( 'Footer Menu', 'quickpress' ),
 		) );
 
 		// More theme support
@@ -45,18 +55,19 @@ add_action( 'after_setup_theme', 'quickpress_setup' );
 // Register sidebar widgets. The ids stay the same so existing widgets stay put.
 function quickpress_widgets_init() {
 	$areas = array(
-		'sidebar-1' => __( 'Sidebar Full', 'quickpress' ),
-		'sidebar-2' => __( 'Sidebar Split Left', 'quickpress' ),
-		'sidebar-3' => __( 'Sidebar Split Right', 'quickpress' ),
+		'sidebar-1' => array( __( 'Sidebar Full', 'quickpress' ), __( 'Across the whole right column, at the top.', 'quickpress' ) ),
+		'sidebar-2' => array( __( 'Sidebar Split Left', 'quickpress' ), __( 'The left half of the right column, below Sidebar Full.', 'quickpress' ) ),
+		'sidebar-3' => array( __( 'Sidebar Split Right', 'quickpress' ), __( 'The right half of the right column, below Sidebar Full.', 'quickpress' ) ),
 	);
-	foreach ( $areas as $id => $name ) {
+	foreach ( $areas as $id => $area ) {
 		register_sidebar( array(
-			'name'          => $name,
+			'name'          => $area[0],
 			'id'            => $id,
-			'before_widget' => '',
-			'after_widget'  => '',
-			'before_title'  => '<h4>',
-			'after_title'   => '</h4>',
+			'description'   => $area[1],
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
 		) );
 	}
 }

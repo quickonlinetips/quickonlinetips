@@ -1,50 +1,25 @@
-<div id="sidebar" class="sidebar column right">
-    <aside>
+<aside id="sidebar" class="sidebar column right" aria-label="<?php esc_attr_e( 'Sidebar', 'quickpress' ); ?>">
 
-        <!-- Remove this box for pure 3-columns -->
-        <div id="adbox">
-            <ul>
-                <li>
-                    <?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
-                    <?php dynamic_sidebar( 'sidebar-1' ); ?>
-					    <?php else : ?> 					    	
-                    <?php endif; ?>
-                </li>
-            </ul>
-        </div>
-        <!-- /Remove this box for pure 3-columns -->
+	<?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+		<div class="sidebar-full">
+			<?php dynamic_sidebar( 'sidebar-1' ); ?>
+		</div>
+	<?php endif; ?>
 
-        <!-- Start sub-columns -->
-		<div class="row"> 
-		
-        <!-- Left_sidebar starts -->
-        <div id="" class="column subcol">
-            <ul>
-                <li>
-                    <?php if ( is_active_sidebar( 'sidebar-2' ) ) : ?>
-                    <?php dynamic_sidebar( 'sidebar-2' ); ?>
-					
-                    <?php endif; ?>
-                </li>
-            </ul>
-        </div>
-        <!-- /l_sidebar-->
+	<?php if ( is_active_sidebar( 'sidebar-2' ) || is_active_sidebar( 'sidebar-3' ) ) : ?>
+		<div class="sidebar-split">
+			<?php if ( is_active_sidebar( 'sidebar-2' ) ) : ?>
+				<div class="subcol">
+					<?php dynamic_sidebar( 'sidebar-2' ); ?>
+				</div>
+			<?php endif; ?>
+			<?php if ( is_active_sidebar( 'sidebar-3' ) ) : ?>
+				<div class="subcol">
+					<?php dynamic_sidebar( 'sidebar-3' ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
 
-        <!-- Right_sidebar starts -->
-        <div id="" class="column subcol">
-            <ul>
-                <li>
-                    <?php if ( is_active_sidebar( 'sidebar-3' ) ) : ?>
-					<?php dynamic_sidebar( 'sidebar-3' ); ?> 
-					
-                    <?php endif; ?>
-                </li>
-            </ul>
-        </div>
-        <!-- /r_sidebar-->
-
-		</div>   <!-- End sub-columns -->
-
-    </aside>
-</div>
-<!-- /sidebar-->
+</aside>
+<!-- /sidebar -->

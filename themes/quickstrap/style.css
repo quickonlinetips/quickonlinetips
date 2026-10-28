@@ -46,21 +46,28 @@ file only adds QuickStrap's own look on top.
 :root {
 	--qs-brand: #212529;   /* the top bar, Bootstrap's dark */
 	--qs-accent: #0d6efd;  /* links, buttons, highlights: Bootstrap's blue */
+	--qs-on-brand: #fff;
+	--qs-on-accent: #fff;
+
+	/* Bootstrap's own settings, a little more compact than its 16px default */
+	--bs-body-font-size: 0.9375rem; /* 15px */
+	--bs-body-line-height: 1.55;
+}
+
+/* Colours worked out from the ones above and from Bootstrap's variables.
+   They are set on body, not :root, because Bootstrap's dark colours are
+   set on body (see Dark mode below), and a variable takes the values
+   where it is set. */
+body {
 	--qs-link: var(--qs-accent);
 	--qs-accent-text: var(--qs-accent); /* accent-coloured words */
 	--qs-band: var(--qs-brand); /* the top bar itself (darker in dark mode) */
-	--qs-on-brand: #fff;
-	--qs-on-accent: #fff;
 	--qs-muted: var(--bs-secondary-color);
 	--qs-border: var(--bs-border-color);
 	--qs-line: var(--bs-border-color-translucent);
 	--qs-soft: var(--bs-tertiary-bg);
 	--qs-field: var(--bs-body-bg);
 	--qs-field-border: color-mix(in srgb, var(--bs-body-color) 28%, var(--bs-body-bg));
-
-	/* Bootstrap's own settings, a little more compact than its 16px default */
-	--bs-body-font-size: 0.9375rem; /* 15px */
-	--bs-body-line-height: 1.55;
 }
 
 
@@ -403,9 +410,10 @@ hr {
 	white-space: nowrap;
 }
 
-.sticky {
+#content main > article.sticky {
 	padding: 12px 16px;
 	background: var(--qs-soft);
+	border-bottom: 0;
 	border-left: 3px solid var(--qs-accent);
 	border-radius: 0 6px 6px 0;
 }

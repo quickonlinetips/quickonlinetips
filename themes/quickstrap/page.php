@@ -1,43 +1,45 @@
 <?php get_header(); ?>
 
-<?php get_sidebar ('left'); ?>
+<div id="content" class="<?php echo esc_attr( quickstrap_content_class() ); ?>">
+	<main>
 
-<!-- Content -->
-<div class="col-lg-6 col-md-8 col-sm-8">
+		<?php while ( have_posts() ) : the_post(); ?>
+		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-    <main role="main">
-        <section>
+			<h1 class="entry-title"><?php the_title(); ?></h1>
 
-            <?php if (have_posts()): while (have_posts()) : the_post(); ?>
+			<div class="entry">
 
-            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+				<?php if ( has_post_thumbnail() ) : ?>
+					<figure class="post-image"><?php the_post_thumbnail( 'large' ); ?></figure>
+				<?php endif; ?>
 
-                <h1 class="border-bottom pb-2 mb-3"><?php the_title(); ?></h1>
-                
-                <?php edit_post_link(); ?>
-				
-                <?php the_content(); ?>
-                <?php comments_template( '', true ); // Remove if you don't want comments ?>
+				<?php the_content(); ?>
 
-                <br class="clear"> 
+				<?php
+				wp_link_pages( array(
+					'before'      => '<div class="page-links"><span class="page-links-title">' . esc_html__( 'Pages:', 'quickstrap' ) . '</span>',
+					'after'       => '</div>',
+					'link_before' => '<span>',
+					'link_after'  => '</span>',
+				) );
+				?>
+			</div>
 
-            </article>
+			<?php edit_post_link( __( 'Edit', 'quickstrap' ), '<p class="post-meta">', '</p>' ); ?>
 
-            <?php endwhile; ?>
-            <?php else: ?>
+			<?php
+			if ( comments_open() || get_comments_number() ) {
+				comments_template();
+			}
+			?>
 
-            <article>
-                <h2>
-                    <?php _e( 'Content Not Found', 'quickstrap'); ?>
-                </h2>
-            </article>
+		</article>
+		<?php endwhile; ?>
 
-            <?php endif; ?>
-
-        </section>
-    </main>
+	</main>
 </div>
-<!-- /end content -->
 
 <?php get_sidebar(); ?>
+<?php get_sidebar( 'left' ); ?>
 <?php get_footer(); ?>

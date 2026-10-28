@@ -1,14 +1,10 @@
-<!-- Sidebar -->
-<div id="sidebar" class="col-lg-4 col-md-4 col-sm-4">
-
-    <aside class="sidebar">
-	    <div class="sidebar-widget">
-        <?php if ( is_active_sidebar( 'right-sidebar' ) ) : ?>
-			<?php dynamic_sidebar( 'right-sidebar' ); ?>
-			<?php else : ?> 
-        	<?php endif; ?>
-		</div>
-    </aside>
-
-</div>
-<!-- /end sidebar -->
+<?php
+// The Full width template has no sidebars.
+if ( quickstrap_is_full_width() ) {
+	return;
+}
+?>
+<aside id="sidebar" class="sidebar sidebar-right col-md-4 order-2 order-lg-3" aria-label="<?php esc_attr_e( 'Sidebar', 'quickstrap' ); ?>">
+	<?php dynamic_sidebar( 'right-sidebar' ); ?>
+</aside>
+<!-- /sidebar -->

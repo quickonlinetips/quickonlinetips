@@ -1,41 +1,49 @@
+<?php
+/**
+ * Comments list and comment form.
+ *
+ * @package QuickStrap
+ */
+
+// Password-protected post: WordPress shows the password form in the post, so stop here.
+if ( post_password_required() ) {
+	return;
+}
+?>
+
 <div id="comments" class="comments">
-    <?php if (post_password_required()) : ?>
-    <p>
-        <?php _e( 'Post is password protected. Enter the password to view any comments.', 'quickstrap' ); ?>
-    </p>
 
+	<?php if ( have_comments() ) : ?>
+		<h2 class="comments-title">
+			<?php
+			printf(
+				/* translators: 1: number of comments, 2: post title */
+				esc_html( _nx( 'One comment on &ldquo;%2$s&rdquo;', '%1$s comments on &ldquo;%2$s&rdquo;', get_comments_number(), 'comments title', 'quickstrap' ) ),
+				esc_html( number_format_i18n( get_comments_number() ) ),
+				'<span>' . esc_html( get_the_title() ) . '</span>'
+			);
+			?>
+		</h2>
 
-<?php return; endif; ?>
+		<?php the_comments_navigation(); ?>
 
-<?php if (have_comments()) : ?>
+		<ol class="commentlist">
+			<?php
+			wp_list_comments( array(
+				'style'       => 'ol',
+				'avatar_size' => 32,
+				'short_ping'  => true,
+			) );
+			?>
+		</ol>
 
-<h4 id="comments">
-    <i class="far fa-comments text-secondary"></i> 
-	<?php
-	printf( _nx( 'One comment on &ldquo;%2$s&rdquo;', '%1$s comments on &ldquo;%2$s&rdquo;', get_comments_number(), 'comments title', 'quickstrap' ), number_format_i18n( get_comments_number() ), '<span>' . get_the_title() . '</span>' );
-	?>
-</h4>
+		<?php the_comments_navigation(); ?>
+	<?php endif; ?>
 
-<ol class="commentlist">
-    <?php wp_list_comments(''); ?>
-</ol>
+	<?php if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) : ?>
+		<p class="no-comments"><?php esc_html_e( 'Comments are closed here.', 'quickstrap' ); ?></p>
+	<?php endif; ?>
 
-<nav>
-    <ul class="pagination">
-        <li class="page-item p-2">
-            <?php previous_comments_link() ?>
-        </li>
-        <li class="page-item p-2">
-            <?php next_comments_link() ?>
-        </li>
-    </ul>
-</nav>
+	<?php comment_form(); ?>
 
-<?php elseif ( ! comments_open() && ! is_page() && post_type_supports( get_post_type(), 'comments' ) ) : ?>
-	<p>
-  	 <i class="far fa-comment"></i> <?php _e( 'Comments are closed here.', 'quickstrap' ); ?>
-	</p>
-<?php endif; ?>
-
-<?php comment_form(); ?>
-</div> 
+</div>

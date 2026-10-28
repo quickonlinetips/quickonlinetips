@@ -1,24 +1,23 @@
 <?php get_header(); ?>
 
-<?php get_sidebar ('left'); ?>
+<div id="content" class="<?php echo esc_attr( quickstrap_content_class() ); ?>">
+	<main>
 
-<!-- Content -->
-<div class="col-lg-6 col-md-8 col-sm-8">
+		<header class="page-header">
+			<h1 class="page-title">
+				<?php
+				/* translators: %s: search words */
+				printf( esc_html__( 'Search Results for: %s', 'quickstrap' ), '<span>' . esc_html( get_search_query() ) . '</span>' );
+				?>
+			</h1>
+		</header>
 
-    <main role="main">
-        <!-- section -->
-        <section>
+		<?php get_template_part( 'loop' ); ?>
+		<?php get_template_part( 'pagination' ); ?>
 
-            <h1>
-                <?php printf( __( 'Search Results for: %s', 'quickstrap' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
-            <?php get_template_part('loop'); ?>
-            <?php get_template_part('pagination'); ?>
-
-        </section>
-        <!-- /section -->
-    </main>
+	</main>
 </div>
-<!-- /end content -->
 
 <?php get_sidebar(); ?>
+<?php get_sidebar( 'left' ); ?>
 <?php get_footer(); ?>

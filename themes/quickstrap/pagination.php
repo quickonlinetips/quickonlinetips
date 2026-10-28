@@ -1,10 +1,7 @@
-<nav>
-    <ul class="pagination">
-        <li class="page-item p-2">
-            <?php previous_posts_link(); ?>
-        </li>
-        <li class="page-item p-2">
-            <?php next_posts_link(); ?>
-        </li>
-    </ul>
-</nav>
+<?php
+// Numbered page links: « Newer 1 2 3 … Older »
+the_posts_pagination( array(
+	'mid_size'  => 1,
+	'prev_text' => '&laquo; ' . __( 'Newer', 'quickstrap' ),
+	'next_text' => __( 'Older', 'quickstrap' ) . ' &raquo;',
+) );

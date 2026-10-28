@@ -1,46 +1,13 @@
 <?php
-/*
-Template Name: Full Width
-*/
-?>
+/**
+ * Template Name: Full width, no sidebars
+ * Template Post Type: post, page
+ *
+ * The same post or page layout, without the sidebars, so the post runs
+ * across the whole page. Pick it in the editor under Post (or Page) > Template.
+ * The file keeps its old name so pages already using it keep it.
+ *
+ * @package QuickStrap
+ */
 
-    <?php get_header(); ?>
-
-    <!-- Content -->
-    <div class="col-md-12">
-
-        <main role="main">
-            <section>
-
-                <?php if (have_posts()): while (have_posts()) : the_post(); ?>
-
-                <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-                    <h1>
-                        <?php the_title(); ?>
-                    </h1>
-                    <?php the_content(); ?>
-                    <?php comments_template( '', true ); // Remove if you don't want comments ?>
-
-                    <br class="clear">
-                    <?php edit_post_link(); ?>
-
-                </article>
-
-                <?php endwhile; ?>
-                <?php else: ?>
-
-                <article>
-                    <h2>
-                        <?php _e( 'Content Not Found', 'quickstrap'); ?>
-                    </h2>
-                </article>
-
-                <?php endif; ?>
-
-            </section>
-        </main>
-    </div>
-    <!-- /end content -->
-
-    <?php get_footer(); ?>
+get_template_part( is_page() ? 'page' : 'single' );

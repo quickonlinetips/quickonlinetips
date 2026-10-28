@@ -1,21 +1,18 @@
 <?php get_header(); ?>
 
-<?php get_sidebar ('left'); ?>
+<div id="content" class="<?php echo esc_attr( quickstrap_content_class() ); ?>">
+	<main>
 
-<!-- Content -->
-<div class="col-lg-6 col-md-8 col-sm-8">
+		<?php if ( is_home() && ! is_front_page() ) : ?>
+			<h1 class="page-title"><?php single_post_title(); ?></h1>
+		<?php endif; ?>
 
-    <main role="main">
-        <section>
+		<?php get_template_part( 'loop' ); ?>
+		<?php get_template_part( 'pagination' ); ?>
 
-            <?php get_template_part('loop'); ?>
-            <?php get_template_part('pagination'); ?>
-
-        </section>
-    </main>
-
+	</main>
 </div>
-<!-- /end content -->
 
 <?php get_sidebar(); ?>
+<?php get_sidebar( 'left' ); ?>
 <?php get_footer(); ?>

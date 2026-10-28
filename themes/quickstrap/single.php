@@ -1,79 +1,75 @@
 <?php get_header(); ?>
 
-<?php get_sidebar ('left'); ?>
+<div id="content" class="<?php echo esc_attr( quickstrap_content_class() ); ?>">
+	<main>
 
-<!-- Content -->
-<div class="col-lg-6 col-md-8 col-sm-8">
+		<?php while ( have_posts() ) : the_post(); ?>
 
-    <?php if ( is_active_sidebar( 'top-post' ) ) : ?>
-    <div class="sidebar-widget">
-        <?php dynamic_sidebar( 'top-post' ); ?>
-    </div>
-    <?php endif; ?>
+		<?php if ( ! is_attachment() && is_active_sidebar( 'top-post' ) ) : ?>
+			<aside class="top-post widget-area" aria-label="<?php esc_attr_e( 'Above post', 'quickstrap' ); ?>">
+				<?php dynamic_sidebar( 'top-post' ); ?>
+			</aside>
+		<?php endif; ?>
 
+		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-    <main>
-        <section>
+			<h1 class="entry-title"><?php the_title(); ?></h1>
 
-            <?php if (have_posts()): while (have_posts()) : the_post(); ?>
+			<?php quickstrap_post_meta( false ); ?>
 
-            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+			<div class="entry">
 
-                <h1 title="<?php the_title_attribute(); ?>" class="entry-title"><?php the_title(); ?></h1>
+				<?php if ( has_post_thumbnail() && ! is_attachment() ) : ?>
+					<figure class="post-image"><?php the_post_thumbnail( 'large' ); ?></figure>
+				<?php endif; ?>
 
-                <div class="post-info border-bottom mb-3 text-muted small">
-                    <span class="date"><i class="fas fa-pen-nib"></i>
-  				<time class="published" datetime="<?php the_time('Y-m-d'); ?> <?php the_time('H:i'); ?>">
-				<?php the_date(); ?> 
-				</time> 
-					</span>  |
-                    <?php _e( 'By ', 'quickstrap' ); the_author(); ?>
+				<?php the_content(); ?>
 
-                    <p>
-                        <i class="fas fa-folder-open"></i>
-                        <?php _e( 'Filed in: ', 'quickstrap' ); the_category(', '); ?> &nbsp; 
-                        <?php the_tags( __( 'Tags: ', 'quickstrap' ), ', ', ''); ?>
+				<?php if ( is_attachment() ) : ?>
+					<nav class="navigation image-nav">
+						<span class="alignleft"><?php previous_image_link( false, '&larr; ' . __( 'Previous', 'quickstrap' ) ); ?></span>
+						<span class="alignright"><?php next_image_link( false, __( 'Next', 'quickstrap' ) . ' &rarr;' ); ?></span>
+					</nav>
+				<?php endif; ?>
 
-                        <?php edit_post_link(); // Edit Post Links ?>
-                    </p>
-                </div>
-                <!-- /post-info -->
-
-                <div class="entry-content">
-                    <?php the_content(); ?>
-                    <br />
-                    <?php wp_link_pages(array(
-					'before' => '<div class="page-links"><span class="page-links-title">' . __( '<b>Pages:</b>', 'quickstrap' ) . '</span>', 
-					'after' => '</div>',
-					'link_before' => '<span>', 
+				<?php
+				wp_link_pages( array(
+					'before'      => '<div class="page-links"><span class="page-links-title">' . esc_html__( 'Pages:', 'quickstrap' ) . '</span>',
+					'after'       => '</div>',
+					'link_before' => '<span>',
 					'link_after'  => '</span>',
-					'next_or_number' => 'number'
-					)); 
+				) );
 				?>
-                </div>
-                <!-- /entry-content -->
 
-                <?php comments_template(); ?>
-            </article>
+				<?php the_tags( '<p class="post-tags">' . esc_html__( 'Tags: ', 'quickstrap' ), ', ', '</p>' ); ?>
 
-            <?php endwhile; ?>
-            <?php else: ?>
-            <article>
-                <h2>
-                    <?php _e( 'Content Not Found', 'quickstrap'); ?>
-                </h2>
-            </article>
-            <?php endif; ?>
+			</div>
 
-        </section>
-    </main>
-    <?php if ( is_active_sidebar( 'bottom-post' ) ) : ?>
-    <div class="sidebar-widget">
-        <?php dynamic_sidebar( 'bottom-post' ); ?>
-    </div>
-    <?php endif; ?>
+			<?php if ( ! is_attachment() && is_active_sidebar( 'bottom-post' ) ) : ?>
+				<aside class="after-post widget-area" aria-label="<?php esc_attr_e( 'Below post', 'quickstrap' ); ?>">
+					<?php dynamic_sidebar( 'bottom-post' ); ?>
+				</aside>
+			<?php endif; ?>
+
+			<?php if ( ! is_attachment() ) : ?>
+				<nav class="navigation post-nav" aria-label="<?php esc_attr_e( 'Posts', 'quickstrap' ); ?>">
+					<div class="alignleft"><?php previous_post_link( '&laquo; %link' ); ?></div>
+					<div class="alignright"><?php next_post_link( '%link &raquo;' ); ?></div>
+				</nav>
+			<?php endif; ?>
+
+			<?php
+			if ( comments_open() || get_comments_number() ) {
+				comments_template();
+			}
+			?>
+
+		</article>
+		<?php endwhile; ?>
+
+	</main>
 </div>
-<!-- /end content -->
 
 <?php get_sidebar(); ?>
+<?php get_sidebar( 'left' ); ?>
 <?php get_footer(); ?>

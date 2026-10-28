@@ -133,6 +133,84 @@ function quickstrap_excerpt_more( $more ) {
 }
 add_filter( 'excerpt_more', 'quickstrap_excerpt_more' );
 
+// Post date, author, comments and categories line, used in lists and single posts
+function quickstrap_post_meta( $show_comments = true ) {
+	echo '<p class="post-meta">';
+
+	printf(
+		'<time datetime="%1$s">%2$s</time>',
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() )
+	);
+
+	/* translators: %s: post author name */
+	echo ' | ' . sprintf( esc_html__( 'By %s', 'quickstrap' ), esc_html( get_the_author() ) );
+
+	if ( $show_comments && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		echo ' | ';
+		comments_popup_link( __( 'No Comments', 'quickstrap' ), __( '1 Comment', 'quickstrap' ), __( '% Comments', 'quickstrap' ) );
+	}
+
+	$categories = get_the_category_list( ', ' );
+	if ( $categories ) {
+		/* translators: %s: list of categories */
+		echo ' | ' . sprintf( esc_html__( 'Filed in: %s', 'quickstrap' ), $categories ); // phpcs:ignore WordPress.Security.EscapeOutput -- WordPress builds this list.
+	}
+
+	edit_post_link( __( 'Edit', 'quickstrap' ), ' | ', '' );
+
+	echo '</p>';
+}
+
+/*
+ * Layout: Bootstrap's grid, three columns on wide screens.
+ *   Wide screens (992px and up): left sidebar | posts | right sidebar
+ *   Tablets (768px to 991px):    posts | right sidebar, left sidebar below both
+ *   Phones:                      posts, right sidebar, left sidebar
+ * The posts come first in the page's HTML, which helps screen readers and
+ * search engines; Bootstrap's order classes put the columns in place.
+ */
+
+// Is this post or page using the Full width template?
+function quickstrap_is_full_width() {
+	return is_singular() && is_page_template( 'full-width.php' );
+}
+
+// Does this page show the left sidebar? Only when it has widgets.
+function quickstrap_has_left_sidebar() {
+	return ! quickstrap_is_full_width() && is_active_sidebar( 'left-sidebar' );
+}
+
+// Bootstrap column classes for the posts column.
+function quickstrap_content_class() {
+	if ( quickstrap_is_full_width() ) {
+		return 'content col-12';
+	}
+	if ( quickstrap_has_left_sidebar() ) {
+		return 'content col-md-8 col-lg-6 order-1 order-lg-2';
+	}
+	return 'content col-md-8'; // No left sidebar: posts take its space.
+}
+
+// The posts column's width for embeds and large images.
+function quickstrap_layout_content_width() {
+	if ( quickstrap_is_full_width() ) {
+		$GLOBALS['content_width'] = 1296;
+	} elseif ( ! quickstrap_has_left_sidebar() ) {
+		$GLOBALS['content_width'] = 856;
+	}
+}
+add_action( 'template_redirect', 'quickstrap_layout_content_width' );
+
+// Body class for the Full width template.
+function quickstrap_body_classes( $classes ) {
+	if ( quickstrap_is_full_width() ) {
+		$classes[] = 'qs-full-width';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'quickstrap_body_classes' );
+
 // Load styles and scripts
 function quickstrap_scripts() {
 

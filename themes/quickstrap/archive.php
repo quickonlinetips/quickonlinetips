@@ -1,19 +1,19 @@
 <?php get_header(); ?>
 
-<?php get_sidebar ('left'); ?>
+<div id="content" class="<?php echo esc_attr( quickstrap_content_class() ); ?>">
+	<main>
 
-<!-- Content -->
-<div class="col-lg-6 col-md-8 col-sm-8">
+		<header class="page-header">
+			<?php the_archive_title( '<h1 class="page-title">', '</h1>' ); ?>
+			<?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
+		</header>
 
-    <main role="main">
-        <section>
-			<h1 class="mb-4 border-bottom"><?php single_cat_title(); ?></h1>
-            <?php get_template_part('loop'); ?>
-            <?php get_template_part('pagination'); ?>
-        </section>
-    </main>
+		<?php get_template_part( 'loop' ); ?>
+		<?php get_template_part( 'pagination' ); ?>
+
+	</main>
 </div>
-<!-- /end content -->
 
 <?php get_sidebar(); ?>
+<?php get_sidebar( 'left' ); ?>
 <?php get_footer(); ?>

@@ -56,7 +56,7 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 				'sidebar' => array(
 					'search'     => array( 'block', array( 'content' => '<!-- wp:search {"showLabel":false} /-->' ) ),
 					'recent'     => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Posts', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-posts /-->' ) ),
-					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories {"displayAsDropdown":true} /-->' ) ),
+					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories {"displayAsDropdown":true,"showLabel":false} /-->' ) ),
 					'archives'   => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Archives', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:archives /-->' ) ),
 				),
 			),
@@ -130,7 +130,7 @@ function quickchic_default_sidebar() {
 			'buttonText' => __( 'Search', 'quickchic' ),
 		) ) . ' /-->' ),
 		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickchic' ), '<!-- wp:latest-posts /-->' ),
-		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories {"displayAsDropdown":true} /-->' ),
+		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories {"displayAsDropdown":true,"showLabel":false} /-->' ),
 		'widget_archive'         => array( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ),
 	);
 
@@ -295,8 +295,9 @@ add_filter( 'body_class', 'quickchic_body_classes' );
 // Load stylesheets
 function quickchic_scripts() {
 
-	// Theme version from style.css, so browsers fetch fresh CSS after every update.
-	$version = wp_get_theme( get_template() )->get( 'Version' );
+	// Theme version plus the file's last change time, so browsers fetch fresh CSS
+	// after every update, even when the version number stays the same.
+	$version = wp_get_theme( get_template() )->get( 'Version' ) . '.' . filemtime( get_template_directory() . '/style.css' );
 
 	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickchic', get_stylesheet_uri(), array(), $version );

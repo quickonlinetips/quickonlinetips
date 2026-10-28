@@ -53,6 +53,7 @@ QuickPic is distributed under the terms of the GNU GPL.
 	--qpic-page-bg: #444;      /* around the page on wide screens */
 	--qpic-frame: #333;        /* the dark frame round the page, and the footer */
 	--qpic-menu: #ddd;         /* the menu bar */
+	--qpic-menu-active: color-mix(in srgb, var(--qpic-accent) 70%, #000); /* menu hover and current page, readable on the grey */
 	--qpic-link: var(--qpic-accent);
 	--qpic-band: var(--qpic-brand);
 	--qpic-band-text: #ddd;    /* text in the bottom box */
@@ -86,6 +87,7 @@ QuickPic is distributed under the terms of the GNU GPL.
 		--qpic-page-bg: #0d0d0d;
 		--qpic-frame: #000;
 		--qpic-menu: #2a2a2a;
+		--qpic-menu-active: var(--qpic-link);
 		--qpic-link: color-mix(in srgb, var(--qpic-accent) 60%, #fff);
 		--qpic-band: color-mix(in srgb, var(--qpic-brand) 70%, #000);
 		--qpic-band-text: #cfcfcf;
@@ -409,7 +411,24 @@ dd {
 
 .main-menu a:hover,
 .main-menu .current-menu-item > a {
-	color: var(--qpic-link);
+	color: var(--qpic-menu-active);
+}
+
+/* The page you are on: a short accent bar under its menu link,
+   like the bar under the site title */
+.main-menu li {
+	position: relative;
+}
+
+.main-menu .current-menu-item > a::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: -6px;
+	width: 22px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--qpic-accent);
 }
 
 

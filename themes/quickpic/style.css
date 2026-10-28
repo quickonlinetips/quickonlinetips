@@ -56,7 +56,7 @@ QuickPic is distributed under the terms of the GNU GPL.
 	--qpic-menu-active: color-mix(in srgb, var(--qpic-accent) 70%, #000); /* menu hover and current page, readable on the grey */
 	--qpic-link: var(--qpic-accent);
 	--qpic-band: var(--qpic-brand);
-	--qpic-band-text: #ddd;    /* text in the bottom box */
+	--qpic-band-text: color-mix(in srgb, var(--qpic-on-brand) 70%, var(--qpic-band)); /* text in the bottom box: a soft green-grey, so white links stand out */
 	--qpic-on-brand: #fff;
 	--qpic-on-accent: #fff;
 	--qpic-field: #fff;
@@ -90,7 +90,6 @@ QuickPic is distributed under the terms of the GNU GPL.
 		--qpic-menu-active: var(--qpic-link);
 		--qpic-link: color-mix(in srgb, var(--qpic-accent) 60%, #fff);
 		--qpic-band: color-mix(in srgb, var(--qpic-brand) 70%, #000);
-		--qpic-band-text: #cfcfcf;
 		--qpic-field: #1f1f1f;
 		--qpic-field-border: #555;
 		--qpic-alt: #1d1d1d;
@@ -756,18 +755,17 @@ figcaption {
 	border-bottom: 2px solid color-mix(in srgb, var(--qpic-highlight) 55%, var(--qpic-band));
 }
 
-/* Links: white in normal weight with a soft underline, so they stand apart
-   from the light grey text around them without shouting */
+/* Links: bright white in normal weight. The text around them is a softer
+   green-grey, so links stand out without bold or underlines (the headings
+   already carry the box's only lines) */
 .bottom-box a {
 	color: var(--qpic-on-brand);
-	text-decoration: underline;
-	text-decoration-color: color-mix(in srgb, var(--qpic-on-brand) 35%, transparent);
-	text-underline-offset: 3px;
 }
 
 .bottom-box a:hover {
 	color: var(--qpic-highlight);
-	text-decoration-color: currentColor;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
 .bottom-box ul,

@@ -367,10 +367,12 @@ hr {
 		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
 	}
 
-	/* Third level: opens to the side */
+	/* Third level: opens to the left side. The menu sits on the right of
+	   the header, so there is always room on the left, never on the right */
 	.main-menu .sub-menu .sub-menu {
 		top: -6px;
-		left: 100%;
+		left: auto;
+		right: 100%;
 		border-radius: 6px;
 	}
 
@@ -389,22 +391,22 @@ hr {
 		background: rgba(255, 255, 255, 0.08);
 	}
 
+	/* In a dropdown, the arrow points left, where the next level opens */
 	.main-menu .sub-menu .qs-arrow {
-		transform: rotate(-45deg);
+		transform: rotate(135deg);
 	}
 
-	/* A dropdown near the right edge opens to the left instead */
+	/* A dropdown near the right edge lines up with its item's right side */
 	.main-menu .navbar-nav > li:last-child > .sub-menu,
 	.main-menu .navbar-nav > li:nth-last-child(2) > .sub-menu {
 		left: auto;
 		right: 0;
 	}
+}
 
-	.main-menu .navbar-nav > li:last-child .sub-menu .sub-menu,
-	.main-menu .navbar-nav > li:nth-last-child(2) .sub-menu .sub-menu {
-		left: auto;
-		right: 100%;
-	}
+/* Menu links: no underline on hover, like Bootstrap's navbar */
+.main-menu a:hover {
+	text-decoration: none;
 }
 
 
@@ -789,6 +791,16 @@ figcaption {
 }
 
 :is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning, .is-style-qs-card) > :last-child {
+	margin-bottom: 0;
+}
+
+/* WordPress wraps a Group's blocks in an inner box on classic themes:
+   no extra space at its top and bottom either */
+:is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning, .is-style-qs-card, .is-style-qs-soft-box, .qs-hero) > .wp-block-group__inner-container > :first-child {
+	margin-top: 0;
+}
+
+:is(.is-style-qs-alert-info, .is-style-qs-alert-success, .is-style-qs-alert-warning, .is-style-qs-card, .is-style-qs-soft-box, .qs-hero) > .wp-block-group__inner-container > :last-child {
 	margin-bottom: 0;
 }
 

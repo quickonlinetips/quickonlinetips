@@ -68,7 +68,7 @@ Yes. Appearance > Customize > Layout has three choices: a narrow Left Sidebar wi
 
 = Why doesn't the left sidebar hide on phones any more? =
 
-Hidden widgets confused people: they added widgets, saw them on their computer and couldn't find them on their phone. Now the left sidebar moves below the posts on tablets and phones, with its lists in columns. If you still want it hidden on small screens, add this to a child theme's stylesheet or Appearance > Customize > Additional CSS: @media (max-width: 991.98px) { .sidebar-left { display: none; } }
+Hidden widgets confused people: they added widgets, saw them on their computer and couldn't find them on their phone. Now the left sidebar moves below the posts on tablets and phones, with its lists in columns.
 
 = Does the menu support sub-menus? =
 

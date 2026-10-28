@@ -674,10 +674,15 @@ figcaption {
 	margin: 0 0 22px;
 }
 
+/* Widget headings, sidebar and footer alike: a short accent underline */
 .widget-title,
-#sidebar h2 {
+#sidebar h2,
+.footer-widgets h2 {
+	display: inline-block;
 	font-size: 1.15em;
 	margin: 0 0 6px;
+	padding-bottom: 3px;
+	border-bottom: 2px solid var(--qc-accent);
 }
 
 #sidebar ul,
@@ -766,10 +771,14 @@ figcaption {
 	margin-bottom: 0;
 }
 
+/* Below Posts headings stay plain: the box already has an accent edge */
 .after-post h2,
-.footer-widgets h2 {
+.after-post .widget-title {
+	display: block;
 	font-size: 1.15em;
 	margin: 0 0 6px;
+	padding-bottom: 0;
+	border-bottom: 0;
 }
 
 
@@ -1060,13 +1069,6 @@ a.page-numbers:hover {
 
 .footer-widgets .widget:last-child {
 	margin-bottom: 0;
-}
-
-.footer-widgets .widget-title,
-.footer-widgets h2 {
-	display: inline-block;
-	padding-bottom: 3px;
-	border-bottom: 2px solid var(--qc-accent);
 }
 
 .footer-widgets ul,

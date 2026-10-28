@@ -8,36 +8,17 @@
         <?php get_search_form(); ?>
     </div>
 
-    <div style="clear:both;"></div>
-
-    <div id="" class="row">
-        <div id="" class="column">
-            <!-- Widgetized footer  1 -->
-            <ul>
-                <li>
-                    <div>
-					<?php if ( is_active_sidebar( 'footer-1' ) ) : ?>
-                    <?php dynamic_sidebar( 'footer-1' ); ?>
-                    <?php endif; ?>
-                	</div>
-				</li>
-            </ul>
-        </div>
-
-        <div id="" class="column">
-            <!-- Widgetized footer 2 -->
-            <ul>
-                <li>
-                    <div>
-					<?php if ( is_active_sidebar( 'footer-2' ) ) : ?>
-                    <?php dynamic_sidebar( 'footer-2' ); ?>
-                    <?php endif; ?>
-					</div>
-                </li>
-            </ul>
-        </div>
-        <div style="clear:both;"></div>
+    <?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) ) : ?>
+    <div class="bottom-widgets">
+        <?php for ( $quickpic_i = 1; $quickpic_i <= 2; $quickpic_i++ ) : ?>
+            <?php if ( is_active_sidebar( 'footer-' . $quickpic_i ) ) : ?>
+                <div class="bottom-column">
+                    <?php dynamic_sidebar( 'footer-' . $quickpic_i ); ?>
+                </div>
+            <?php endif; ?>
+        <?php endfor; ?>
     </div>
+    <?php endif; ?>
     <!-- /Boxes -->
 </div>
 <!-- /Bottom Box -->

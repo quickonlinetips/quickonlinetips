@@ -2,40 +2,44 @@
 <html <?php language_attributes(); ?>>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php wp_head(); ?>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
-	<?php wp_body_open(); ?>
-    <div id="page">
+<?php wp_body_open(); ?>
+<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'quickpic' ); ?></a>
 
-        <header id="header">
-            <?php if (is_home()) { ?>
-            <h1>
-                <?php } ?>
-                <a class="blogtitle" href="<?php echo esc_url( home_url() ); ?>">
-                    <?php bloginfo('name'); ?>
-                </a>
-                <?php if (is_home()) { ?>
-            </h1>
-            <?php } ?>
-            <div class="description">
-                <?php bloginfo('description'); ?>
-            </div>
-        </header>
+<div id="page">
 
-        <div id="menu-header">
-            <!-- Header Menu -->
-            <?php wp_nav_menu( array( 
-	'theme_location' => 'header-nav', 
-	'menu_class' => 'nav navbar-nav',
-	'container' => false,
-	'depth' => 1,
-	// do not fall back to wp_page_menu()
-	'fallback_cb' => false
- ) ); ?>
-        </div>
+	<header id="header">
 
-		<div class="row"> <!-- start row -->
+		<?php the_custom_logo(); ?>
+
+		<?php if ( is_front_page() && is_home() ) : ?>
+			<h1 class="site-title"><a class="blogtitle" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+		<?php else : ?>
+			<p class="site-title"><a class="blogtitle" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+		<?php endif; ?>
+
+		<?php if ( get_bloginfo( 'description' ) ) : ?>
+			<p class="description"><?php bloginfo( 'description' ); ?></p>
+		<?php endif; ?>
+
+	</header>
+
+	<?php
+	if ( has_nav_menu( 'header-nav' ) ) {
+		wp_nav_menu( array(
+			'theme_location'       => 'header-nav',
+			'container'            => 'nav',
+			'container_id'         => 'menu-header',
+			'container_class'      => 'main-menu',
+			'container_aria_label' => __( 'Main menu', 'quickpic' ),
+			'depth'                => 1,
+		) );
+	}
+	?>
+
+	<div class="row"> <!-- start row -->

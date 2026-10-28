@@ -26,10 +26,19 @@ if ( ! function_exists( 'quickpic_setup' ) ) :
 			'default-image' => '',
 		) ) );
 
-		// The menu bar under the header (Appearance > Menus).
-		// The id stays 'header-nav' so existing sites keep their menu.
+		// Optional logo above the site title (Appearance > Customize > Site Identity).
+		add_theme_support( 'custom-logo', array(
+			'height'      => 100,
+			'width'       => 300,
+			'flex-height' => true,
+			'flex-width'  => true,
+		) );
+
+		// Menus: the menu bar under the header, and one in the footer (Appearance > Menus).
+		// The header id stays 'header-nav' so existing sites keep their menu.
 		register_nav_menus( array(
 			'header-nav' => __( 'Main Menu', 'quickpic' ),
+			'footer'     => __( 'Footer Menu', 'quickpic' ),
 		) );
 
 		// More theme support
@@ -43,25 +52,21 @@ if ( ! function_exists( 'quickpic_setup' ) ) :
 endif; // quickpic_setup
 add_action( 'after_setup_theme', 'quickpic_setup' );
 
-// Widget areas in the green box at the bottom of every page.
+// Widget areas in the green box at the bottom of every page, side by side.
 // The ids stay the same so existing widgets stay put.
 function quickpic_widgets_init() {
-	register_sidebar( array(
-		'name'          => __( 'Footer 1', 'quickpic' ),
-		'id'            => 'footer-1',
-		'before_widget' => '',
-		'after_widget'  => '',
-		'before_title'  => '<h4>',
-		'after_title'   => '</h4>',
-	) );
-	register_sidebar( array(
-		'name'          => __( 'Footer 2', 'quickpic' ),
-		'id'            => 'footer-2',
-		'before_widget' => '',
-		'after_widget'  => '',
-		'before_title'  => '<h4>',
-		'after_title'   => '</h4>',
-	) );
+	for ( $i = 1; $i <= 2; $i++ ) {
+		register_sidebar( array(
+			/* translators: %d: footer column number */
+			'name'          => sprintf( __( 'Footer %d', 'quickpic' ), $i ),
+			'id'            => 'footer-' . $i,
+			'description'   => __( 'A column in the green box at the bottom of every page, under the search box.', 'quickpic' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		) );
+	}
 }
 add_action( 'widgets_init', 'quickpic_widgets_init' );
 

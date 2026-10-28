@@ -768,6 +768,14 @@ figcaption {
 	margin-bottom: 0;
 }
 
+.after-post .widget > :first-child {
+	margin-top: 0;
+}
+
+.after-post .widget > :last-child {
+	margin-bottom: 0;
+}
+
 /* Below Posts headings stay plain: the box already has an accent edge */
 .after-post h2,
 .after-post .widget-title {

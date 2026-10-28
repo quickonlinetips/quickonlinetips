@@ -32,6 +32,7 @@ QuickChic is distributed under the terms of the GNU GPL.
 11. Footer
 12. Accessibility
 13. Phones and tablets
+14. Print
 ------------------------------------- */
 
 
@@ -1083,5 +1084,68 @@ select:focus-visible {
 
 	.post-thumb img {
 		width: 80px;
+	}
+}
+
+
+/* 14. Print
+   Printing a post gives clean text: no menu, sidebar, widgets or comment form.
+------------------------------------- */
+
+@media print {
+
+	body {
+		border-top: 0;
+		color: #000;
+		background: #fff;
+		font-size: 12pt;
+	}
+
+	.row {
+		display: block;
+	}
+
+	#header,
+	#content {
+		padding: 0;
+		border: 0;
+	}
+
+	.main-menu,
+	#sidebar,
+	.after-post,
+	.footer-widgets,
+	.footer-menu,
+	.post-nav,
+	.pagination,
+	.comment-respond,
+	.reply,
+	.skip-link,
+	.credits {
+		display: none;
+	}
+
+	a {
+		color: #000;
+	}
+
+	/* Show where links in the post go */
+	.entry a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.85em;
+		word-break: break-all;
+	}
+
+	img,
+	figure,
+	pre,
+	blockquote {
+		break-inside: avoid;
+	}
+
+	h1,
+	h2,
+	h3 {
+		break-after: avoid;
 	}
 }

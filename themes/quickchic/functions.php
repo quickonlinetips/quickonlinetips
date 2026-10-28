@@ -56,7 +56,7 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 				'sidebar' => array(
 					'search'     => array( 'block', array( 'content' => '<!-- wp:search {"showLabel":false} /-->' ) ),
 					'recent'     => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Posts', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-posts /-->' ) ),
-					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories /-->' ) ),
+					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories {"displayAsDropdown":true} /-->' ) ),
 					'archives'   => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Archives', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:archives /-->' ) ),
 				),
 			),
@@ -105,7 +105,7 @@ function quickchic_default_sidebar() {
 			'buttonText' => __( 'Search', 'quickchic' ),
 		) ) . ' /-->' ),
 		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickchic' ), '<!-- wp:latest-posts /-->' ),
-		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ),
+		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories {"displayAsDropdown":true} /-->' ),
 		'widget_archive'         => array( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ),
 	);
 
@@ -123,8 +123,40 @@ function quickchic_default_sidebar() {
 function quickchic_add_editor_styles() {
 	add_theme_support( 'editor-styles' );
 	add_editor_style( 'custom-editor-style.css' );
+
+	// The theme's own colours in the block editor's colour picker,
+	// instead of WordPress's general rainbow.
+	$accent = sanitize_hex_color( get_theme_mod( 'quickchic_accent_color', '#c32364' ) );
+	add_theme_support( 'editor-color-palette', array(
+		array( 'name' => __( 'Accent', 'quickchic' ), 'slug' => 'accent', 'color' => $accent ? $accent : '#c32364' ),
+		array( 'name' => __( 'Text', 'quickchic' ), 'slug' => 'text', 'color' => '#333333' ),
+		array( 'name' => __( 'Grey', 'quickchic' ), 'slug' => 'grey', 'color' => '#666666' ),
+		array( 'name' => __( 'Light grey', 'quickchic' ), 'slug' => 'light-grey', 'color' => '#f6f6f6' ),
+		array( 'name' => __( 'White', 'quickchic' ), 'slug' => 'white', 'color' => '#ffffff' ),
+	) );
+
+	// Text sizes in the editor, in step with the theme.
+	add_theme_support( 'editor-font-sizes', array(
+		array( 'name' => __( 'Small', 'quickchic' ), 'slug' => 'small', 'size' => 14 ),
+		array( 'name' => __( 'Normal', 'quickchic' ), 'slug' => 'normal', 'size' => 17 ),
+		array( 'name' => __( 'Large', 'quickchic' ), 'slug' => 'large', 'size' => 22 ),
+		array( 'name' => __( 'Extra large', 'quickchic' ), 'slug' => 'x-large', 'size' => 28 ),
+	) );
+
+	// No gradient presets: they don't suit the theme's flat look.
+	add_theme_support( 'editor-gradient-presets', array() );
 }
 add_action( 'after_setup_theme', 'quickchic_add_editor_styles' );
+
+// The owner's accent colour in the editor too.
+function quickchic_editor_accent( $settings ) {
+	$accent = quickchic_accent_css();
+	if ( $accent && isset( $settings['styles'] ) && is_array( $settings['styles'] ) ) {
+		$settings['styles'][] = array( 'css' => str_replace( ':root', 'body', $accent ) );
+	}
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'quickchic_editor_accent' );
 
 // Read more link after excerpts
 function quickchic_excerpt_more( $more ) {

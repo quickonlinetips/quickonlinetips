@@ -67,4 +67,7 @@ QuickChic bundles no third-party resources.
 
 == Resources ==
 
-* screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later.
+* screenshot.png, theme screenshot by QuickOnlineTips, GPLv2 or later. Photos shown in the screenshot:
+* Pink flowers, by Roman Khadka, CC0, https://wordpress.org/photos/photo/3066ae0a92/
+* Laptop and coffee on a balcony, by Virendra Kumar Yadav, CC0, https://wordpress.org/photos/photo/2867a10c66/
+* Calm lake under a pink sky, by aditisarkar29, CC0, https://wordpress.org/photos/photo/6626adf74a/

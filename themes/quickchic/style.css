@@ -19,7 +19,7 @@ QuickChic is distributed under the terms of the GNU GPL.
 
 /* Contents
 -------------------------------------
-1. Settings (colours and fonts)
+1. Settings (colours and fonts), dark mode
 2. QuickReset (replaces normalize.css)
 3. QuickGrid (page layout)
 4. Typography
@@ -46,9 +46,40 @@ QuickChic is distributed under the terms of the GNU GPL.
 	--qc-border: #ddd;
 	--qc-soft: #f6f6f6;
 	--qc-bg: #fff;
+	--qc-link: var(--qc-accent);
+	--qc-on-accent: #fff;
+	--qc-line: #f3f3f3;
+	--qc-field: #fff;
+	--qc-field-border: #bbb;
+	--qc-alt: #f9f9f9;
+	--qc-author: #fff8fe;
 	--qc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
 	--qc-heading-font: Arial, Helvetica, sans-serif;
 	--qc-mono: ui-monospace, Menlo, Consolas, "Courier New", monospace;
+}
+
+
+/* Dark mode
+   Follows the reader's device setting. The accent colour is lightened
+   for links so it stays readable on a dark background.
+   Owners can switch this off in Customize > Colours.
+------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+	body:not(.qc-light-only) {
+		--qc-text: #e4e4e4;
+		--qc-muted: #a3a3a3;
+		--qc-border: #3a3a3a;
+		--qc-soft: #262626;
+		--qc-bg: #171717;
+		--qc-link: color-mix(in srgb, var(--qc-accent) 60%, #fff);
+		--qc-line: #2a2a2a;
+		--qc-field: #1f1f1f;
+		--qc-field-border: #555;
+		--qc-alt: #1d1d1d;
+		--qc-author: #2a1b22;
+		color-scheme: dark;
+	}
 }
 
 
@@ -163,7 +194,7 @@ table {
 
 body {
 	font-family: var(--qc-font);
-	font-size: 100%;
+	font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem); /* 16px on phones, 17px on wide screens */
 	line-height: 1.5;
 	color: var(--qc-text);
 	background: var(--qc-bg);
@@ -182,16 +213,17 @@ h6 {
 	margin: 1.2em 0 0.4em;
 }
 
+/* Headings grow smoothly from phone to desktop */
 h1 {
-	font-size: 1.9em;
+	font-size: clamp(1.55em, 1.3em + 1vw, 1.9em);
 }
 
 h2 {
-	font-size: 1.6em;
+	font-size: clamp(1.35em, 1.2em + 0.7vw, 1.6em);
 }
 
 h3 {
-	font-size: 1.3em;
+	font-size: clamp(1.15em, 1.08em + 0.35vw, 1.3em);
 }
 
 h4 {
@@ -199,7 +231,7 @@ h4 {
 }
 
 a {
-	color: var(--qc-accent);
+	color: var(--qc-link);
 	text-decoration: none;
 }
 
@@ -216,7 +248,7 @@ h3 a {
 h1 a:hover,
 h2 a:hover,
 h3 a:hover {
-	color: var(--qc-accent);
+	color: var(--qc-link);
 	text-decoration: none;
 }
 
@@ -278,12 +310,12 @@ hr {
 ------------------------------------- */
 
 #header {
-	border-left: 4px dotted #f3f3f3;
+	border-left: 4px dotted var(--qc-line);
 }
 
 .site-title {
 	font-family: var(--qc-heading-font);
-	font-size: 1.6em;
+	font-size: clamp(1.4em, 1.2em + 0.8vw, 1.6em);
 	font-weight: bold;
 	line-height: 1.2;
 	margin: 0;
@@ -295,7 +327,7 @@ hr {
 }
 
 .site-title a:hover {
-	color: var(--qc-accent);
+	color: var(--qc-link);
 }
 
 .custom-logo-link {
@@ -514,7 +546,7 @@ figcaption {
 .wp-block-button__link,
 .wp-element-button {
 	background: var(--qc-accent);
-	color: #fff;
+	color: var(--qc-on-accent);
 	border-radius: 6px;
 	text-decoration: none;
 }
@@ -538,7 +570,7 @@ figcaption {
 ------------------------------------- */
 
 #sidebar {
-	border-left: 4px dotted #f3f3f3;
+	border-left: 4px dotted var(--qc-line);
 	padding-top: 5px;
 	font-size: 0.9em;
 	line-height: 1.4;
@@ -625,9 +657,9 @@ input[type="search"],
 textarea {
 	max-width: 100%;
 	padding: 6px 8px;
-	border: 1px solid #bbb;
+	border: 1px solid var(--qc-field-border);
 	border-radius: 4px;
-	background: #fff;
+	background: var(--qc-field);
 }
 
 textarea {
@@ -639,7 +671,7 @@ input[type="submit"],
 .search-submit {
 	cursor: pointer;
 	background: var(--qc-accent);
-	color: #fff;
+	color: var(--qc-on-accent);
 	border: 0;
 	border-radius: 6px;
 	padding: 7px 14px;
@@ -683,7 +715,7 @@ input[type="submit"]:hover {
 
 .commentlist .children {
 	margin: 15px 0 0 15px;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid var(--qc-border);
 	padding-left: 10px;
 }
 
@@ -695,11 +727,11 @@ input[type="submit"]:hover {
 }
 
 .commentlist > .comment:nth-child(even) > .comment-body {
-	background: #f9f9f9;
+	background: var(--qc-alt);
 }
 
 .commentlist .bypostauthor > .comment-body {
-	background: #fff8fe;
+	background: var(--qc-author);
 }
 
 .comment-author .avatar {
@@ -788,7 +820,7 @@ input[type="submit"]:hover {
 
 a.page-numbers {
 	background: var(--qc-accent);
-	color: #fff;
+	color: var(--qc-on-accent);
 }
 
 a.page-numbers:hover {
@@ -863,8 +895,8 @@ a.page-numbers:hover {
 	left: 10px;
 	z-index: 100000;
 	padding: 10px 15px;
-	background: #fff;
-	color: var(--qc-accent);
+	background: var(--qc-bg);
+	color: var(--qc-link);
 	font-weight: bold;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
@@ -905,7 +937,7 @@ select:focus-visible {
 
 	#sidebar {
 		border-left: 0;
-		border-top: 4px dotted #f3f3f3;
+		border-top: 4px dotted var(--qc-line);
 	}
 
 	/* Menu becomes one line of links under the title */

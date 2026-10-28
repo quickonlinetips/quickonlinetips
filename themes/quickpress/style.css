@@ -57,6 +57,7 @@ QuickPress is distributed under the terms of the GNU GPL.
 	--qp-accent-text: var(--qp-accent); /* accent-coloured words */
 	--qp-menu: color-mix(in srgb, var(--qp-brand) 20%, #fff);
 	--qp-footer: color-mix(in srgb, var(--qp-brand) 80%, #000);
+	--qp-footer-tint: color-mix(in srgb, var(--qp-brand) 8%, #fff); /* behind footer widgets */
 	--qp-field: #fff;
 	--qp-field-border: #bbb;
 	--qp-alt: #f9f9f9;
@@ -87,6 +88,7 @@ QuickPress is distributed under the terms of the GNU GPL.
 		--qp-band: color-mix(in srgb, var(--qp-brand) 70%, #000);
 		--qp-menu: color-mix(in srgb, var(--qp-brand) 25%, #1c1c1c);
 		--qp-footer: color-mix(in srgb, var(--qp-brand) 45%, #000);
+		--qp-footer-tint: color-mix(in srgb, var(--qp-brand) 14%, #171717);
 		--qp-field: #1f1f1f;
 		--qp-field-border: #555;
 		--qp-alt: #1d1d1d;
@@ -1112,14 +1114,15 @@ a.page-numbers:hover {
 	font-size: 0.95em;
 }
 
-/* Footer widgets: up to three columns on the page background,
-   above the dark band (no grey panel behind them) */
+/* Footer widgets: up to three columns on a very light tint of the header
+   colour, so they read as part of the footer. The box is only printed
+   when a footer area has widgets, so with none the tint disappears too. */
 .footer-widgets {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 20px 30px;
-	padding: 20px 25px 25px;
-	border-top: 1px solid var(--qp-border);
+	padding: 22px 25px 25px;
+	background: var(--qp-footer-tint);
 	line-height: 1.45;
 }
 

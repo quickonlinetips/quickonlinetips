@@ -50,6 +50,9 @@
         <?php echo date('Y'); ?> -
         <?php bloginfo('name'); ?>
     </p>
+    <p class="credits">
+        <a href="https://wordpress.org/themes/quickpic/" rel="nofollow">QuickPic Theme</a> &bull; <?php esc_html_e( 'Powered by WordPress', 'quickpic' ); ?>
+    </p>
     <?php wp_footer(); ?>
 
 </footer>

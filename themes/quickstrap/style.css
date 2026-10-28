@@ -1007,52 +1007,59 @@ textarea {
 	width: 100%;
 }
 
-/* Buttons in forms and search boxes: accent colour, a touch darker on hover.
-   Bootstrap's own .btn buttons in posts keep their look. */
-input[type="submit"],
-.search-submit,
-.wp-block-search__button,
-.comment-form .submit {
+/* Bootstrap's primary buttons, page numbers and field focus follow the
+   Accent colour, so one pick recolours them all (they match Bootstrap's
+   blue by default) */
+.btn-primary {
+	--bs-btn-bg: var(--qs-accent);
+	--bs-btn-border-color: var(--qs-accent);
+	--bs-btn-color: var(--qs-on-accent);
+	--bs-btn-hover-bg: color-mix(in srgb, var(--qs-accent) 85%, #000);
+	--bs-btn-hover-border-color: color-mix(in srgb, var(--qs-accent) 85%, #000);
+	--bs-btn-hover-color: var(--qs-on-accent);
+	--bs-btn-active-bg: color-mix(in srgb, var(--qs-accent) 80%, #000);
+	--bs-btn-active-border-color: color-mix(in srgb, var(--qs-accent) 80%, #000);
+	--bs-btn-active-color: var(--qs-on-accent);
+	--bs-btn-disabled-bg: var(--qs-accent);
+	--bs-btn-disabled-border-color: var(--qs-accent);
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+	border-color: color-mix(in srgb, var(--qs-accent) 50%, #fff);
+	box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--qs-accent) 25%, transparent);
+}
+
+/* Other plugins' submit buttons without Bootstrap's .btn: the same look */
+input[type="submit"]:not(.btn) {
 	cursor: pointer;
+	padding: 0.375rem 0.75rem;
 	background: var(--qs-accent);
 	color: var(--qs-on-accent);
 	border: 1px solid var(--qs-accent);
-	border-radius: 6px;
-	padding: 8px 16px;
-	line-height: 1.4;
-	font-weight: 600;
+	border-radius: var(--bs-border-radius);
 }
 
-input[type="submit"]:hover,
-.search-submit:hover,
-.wp-block-search__button:hover {
-	filter: brightness(0.9);
-}
-
-/* Search: box and button side by side, same height */
-.search-form,
+/* Search block: box and button side by side */
 .wp-block-search__inside-wrapper {
 	display: flex;
-	align-items: stretch;
 	gap: 6px;
 }
 
-.search-form {
-	margin: 15px 0;
-}
-
-.search-form label,
 .wp-block-search__input {
 	flex: 1;
 	min-width: 0;
 }
 
-.search-field {
-	width: 100%;
-}
-
 .wp-block-search__button {
 	margin: 0;
+	white-space: nowrap;
+}
+
+.search-form {
+	margin: 15px 0;
+	max-width: 480px;
 }
 
 .comments {
@@ -1137,26 +1144,11 @@ input[type="submit"]:hover,
 	margin: 24px 0 20px;
 }
 
-.comment-form label {
-	display: block;
-	margin-bottom: 3px;
-	font-size: 0.9em;
-	font-weight: 600;
-}
-
 .comment-form p {
-	margin: 0 0 14px;
+	margin: 0 0 1rem;
 }
 
-.comment-form-cookies-consent label {
-	display: inline;
-	font-weight: normal;
-}
-
-.comment-form input[type="text"],
-.comment-form input[type="email"],
-.comment-form input[type="url"] {
-	width: 100%;
+.comment-form input.form-control {
 	max-width: 420px;
 }
 
@@ -1181,11 +1173,6 @@ input[type="submit"]:hover,
 	max-width: 48%;
 }
 
-.navigation.pagination {
-	display: block;
-}
-
-.pagination .nav-links,
 .comment-navigation .nav-links {
 	display: flex;
 	flex-wrap: wrap;
@@ -1197,38 +1184,23 @@ input[type="submit"]:hover,
 	margin-left: auto;
 }
 
-/* Page numbers: outlined boxes; the current page is filled in */
-.page-numbers {
-	display: inline-block;
-	min-width: 2.4em;
-	padding: 5px 11px;
-	line-height: 1.4;
-	text-align: center;
-	border: 1px solid var(--qs-border);
-	border-radius: 6px;
-	color: var(--qs-link);
+/* Page numbers: Bootstrap's .pagination, in the Accent colour */
+.pagination-nav {
+	margin: 20px 0;
 }
 
-a.page-numbers:hover {
+.pagination {
+	--bs-pagination-color: var(--qs-link);
+	--bs-pagination-hover-color: var(--qs-link);
+	--bs-pagination-focus-color: var(--qs-link);
+	--bs-pagination-active-bg: var(--qs-accent);
+	--bs-pagination-active-border-color: var(--qs-accent);
+	--bs-pagination-active-color: var(--qs-on-accent);
+	row-gap: 6px;
+}
+
+.pagination .page-link:hover {
 	text-decoration: none;
-	background: var(--qs-accent);
-	border-color: var(--qs-accent);
-	color: var(--qs-on-accent);
-}
-
-.page-numbers.current {
-	background: var(--qs-accent);
-	border-color: var(--qs-accent);
-	color: var(--qs-on-accent);
-	font-weight: bold;
-}
-
-.page-numbers.dots {
-	min-width: 0;
-	padding-left: 2px;
-	padding-right: 2px;
-	border-color: transparent;
-	color: var(--qs-muted);
 }
 
 
@@ -1486,7 +1458,7 @@ a:focus-visible {
 	.footer-widgets,
 	.footer-menu,
 	.post-nav,
-	.pagination,
+	.pagination-nav,
 	.comment-respond,
 	.reply,
 	.skip-link,

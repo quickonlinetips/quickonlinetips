@@ -665,6 +665,70 @@ function quickstrap_show_between_posts() {
 	return $position === $after && $position < $wp_query->post_count;
 }
 
+/*
+ * Bootstrap markup for WordPress's own HTML, so a developer sees the Bootstrap
+ * pieces they know (and a Bootstrap theme or variable change restyles them):
+ * - page numbers: .pagination with .page-item and .page-link
+ * - comment form: .form-control, .form-label, .form-check and .btn btn-primary
+ * - the Search block: .form-control and .btn btn-primary
+ * The search form itself is in searchform.php (an .input-group).
+ */
+function quickstrap_pagination() {
+	$links = paginate_links( array(
+		'type'      => 'array',
+		'mid_size'  => 1,
+		'prev_text' => '&laquo; ' . esc_html__( 'Newer', 'quickstrap' ),
+		'next_text' => esc_html__( 'Older', 'quickstrap' ) . ' &raquo;',
+	) );
+	if ( empty( $links ) ) {
+		return;
+	}
+
+	echo '<nav class="pagination-nav" aria-label="' . esc_attr__( 'Posts', 'quickstrap' ) . '"><ul class="pagination flex-wrap">';
+	foreach ( $links as $link ) {
+		$state = '';
+		if ( false !== strpos( $link, 'page-numbers current' ) ) {
+			$state = ' active';
+		} elseif ( false !== strpos( $link, 'page-numbers dots' ) ) {
+			$state = ' disabled';
+		}
+		// paginate_links() marks every link "page-numbers"; Bootstrap calls it "page-link".
+		echo '<li class="page-item' . esc_attr( $state ) . '">' . str_replace( 'page-numbers', 'page-link', $link ) . '</li>'; // phpcs:ignore WordPress.Security.EscapeOutput -- paginate_links() escapes its own output.
+	}
+	echo '</ul></nav>';
+}
+
+function quickstrap_comment_form_fields( $fields ) {
+	foreach ( $fields as $name => $html ) {
+		if ( 'cookies' === $name ) {
+			$html = str_replace( '<p class="comment-form-cookies-consent">', '<p class="comment-form-cookies-consent form-check">', $html );
+			$html = str_replace( '<input ', '<input class="form-check-input" ', $html );
+			$html = str_replace( '<label ', '<label class="form-check-label" ', $html );
+		} else {
+			$html = str_replace( array( '<input ', '<textarea ' ), array( '<input class="form-control" ', '<textarea class="form-control" ' ), $html );
+			$html = str_replace( '<label ', '<label class="form-label" ', $html );
+		}
+		$fields[ $name ] = $html;
+	}
+	return $fields;
+}
+add_filter( 'comment_form_fields', 'quickstrap_comment_form_fields' );
+
+function quickstrap_comment_form_defaults( $defaults ) {
+	$defaults['class_submit'] = 'submit btn btn-primary';
+	return $defaults;
+}
+add_filter( 'comment_form_defaults', 'quickstrap_comment_form_defaults' );
+
+function quickstrap_search_block( $block_content, $block ) {
+	if ( 'core/search' !== $block['blockName'] || is_admin() ) {
+		return $block_content;
+	}
+	$block_content = str_replace( 'class="wp-block-search__input', 'class="form-control wp-block-search__input', $block_content );
+	return str_replace( 'class="wp-block-search__button', 'class="btn btn-primary wp-block-search__button', $block_content );
+}
+add_filter( 'render_block', 'quickstrap_search_block', 10, 2 );
+
 // Is this post or page using the Full width template?
 function quickstrap_is_full_width() {
 	return is_singular() && is_page_template( 'full-width.php' );

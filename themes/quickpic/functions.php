@@ -117,9 +117,8 @@ function quickpic_scripts() {
 	// The theme's version, read from style.css, so it never goes stale.
 	$version = wp_get_theme( get_template() )->get( 'Version' );
 
-	wp_enqueue_style( 'quickpic-normalize', get_template_directory_uri() . '/css/normalize.css', array(), '8.0.1' );
+	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickpic', get_stylesheet_uri(), array(), $version );
-	wp_enqueue_style( 'quickpic-quickgrid', get_template_directory_uri() . '/css/quickgrid.css', array(), '1.0' );
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

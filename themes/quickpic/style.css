@@ -16,979 +16,1059 @@ QuickPic WordPress Theme, Copyright 2019 QuickOnlineTips.com
 QuickPic is distributed under the terms of the GNU GPL
 */
 
+/* Contents
+-------------------------------------
+1. Settings (colours and fonts)
+2. QuickReset (replaces normalize.css)
+3. QuickGrid (page layout)
+4. Typography
+5. Header and menu bar
+6. Posts and pages
+7. Images and block content
+8. Bottom box (search and widgets)
+9. Comments and forms
+10. Navigation
+11. Footer
+12. Accessibility
+13. Phones and tablets
+------------------------------------- */
 
-/* Begin Typography &amp; Colors
+
+/* 1. Settings
+   Change these few values to recolour the whole theme.
+------------------------------------- */
+
+:root {
+	--qpic-brand: #005500;     /* header band and bottom box */
+	--qpic-accent: #088000;    /* links, buttons, page numbers */
+	--qpic-highlight: #ff0;    /* headings and links on the green and dark bands */
+	--qpic-text: #333;
+	--qpic-muted: #707070;
+	--qpic-border: #ddd;
+	--qpic-line: #eee;
+	--qpic-soft: #f6f6f6;
+	--qpic-bg: #fff;
+	--qpic-page-bg: #444;      /* around the page on wide screens */
+	--qpic-frame: #333;        /* the dark frame round the page, and the footer */
+	--qpic-menu: #ddd;         /* the menu bar */
+	--qpic-link: var(--qpic-accent);
+	--qpic-band: var(--qpic-brand);
+	--qpic-band-text: #ddd;    /* text in the bottom box */
+	--qpic-on-brand: #fff;
+	--qpic-on-accent: #fff;
+	--qpic-field: #fff;
+	--qpic-field-border: #bbb;
+	--qpic-alt: #f9f9f9;
+	--qpic-author: #eef8ec;
+	--qpic-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	--qpic-heading-font: var(--qpic-font); /* the same system font, in bold */
+	--qpic-mono: ui-monospace, Menlo, Consolas, "Courier New", monospace;
+}
+
+
+/* 2. QuickReset
+   The few fixes modern browsers still need.
+------------------------------------- */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+img,
+svg,
+video,
+iframe {
+	max-width: 100%;
+}
+
+img,
+video {
+	height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+	color: inherit;
+}
+
+pre,
+code,
+kbd {
+	font-family: var(--qpic-mono);
+	font-size: 0.9em;
+}
+
+sub,
+sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+}
+
+sup {
+	top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+
+/* 3. QuickGrid
+   One column, framed: the page sits in a dark frame with round corners,
+   the QuickPic look since the first version. Phones drop the frame.
 ------------------------------------- */
 
 body {
-    font-size: 80%;
-    font-family: -apple-system, BlinkMacSystemFont, Avenir, "Avenir Next",
-    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
-    background: #444;
-    color: #333;
-	line-height: 1.6em;
-}
-
-#navbar {
-    font-family: Arial, Helvetica, Sans-Serif;
-    font-size: 1.2em;
-    line-height: 1.3em;
-    background: #DDD;
-    padding: 7px;
-    margin: 0 0 20px 0;
-    color: #666;
-    letter-spacing: -1px;
-    text-align: center;
-}
-
-#navbar a {
-    color: #666;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-#navbar a:hover {
-    color: #000;
+	padding: 20px 0;
 }
 
 #page {
-    background-color: white;
-    text-align: left;
+	max-width: 780px; /* 740px inside the frame */
+	margin: 0 auto;
+	background: var(--qpic-bg);
+	border: 20px solid var(--qpic-frame);
+	border-radius: 15px;
+	overflow: hidden;
 }
 
-#header {
-    background: #005500;
+.row {
+	display: block;
 }
 
 #content {
-    font-size: 1.2em;
-    background: #fff;
+	min-width: 0;
 }
 
-.content .entry {
-    line-height: 1.6em;
-}
-
-.content .postmetadata {}
-
-.alt {
-    background: #f3f3f3;
-}
-
-#footer {
-    border: none;
-}
-
-small {
-    font-family: Arial, Helvetica, Sans-Serif;
-    font-size: 0.9em;
-    line-height: 1.5em;
-}
-
-h1,
-h2,
-h3,
-h4 {
-    font-family: arial, sans-serif;
-    font-weight: bold;
-}
-
-#content h1 {
-    font-size: 1.8em;
-    text-align: left;
-}
-
-#header td {
-    font-size: 1.1em;
-}
-
-#header h1 {
-    font-size: 1em;
-    margin: 0;
-    padding: 0;
-}
-
-.blogtitle {
-    font-family: arial, sans-serif;
-    font-size: 2.8em !important;
-    text-align: center;
-    font-weight: bold;
-    margin: 10px 0 0 0;
-    padding: 0;
-}
-
-.description {
-    padding: 5px;
-    color: #ccc;
-    font-size: 1.1em;
-    text-align: center;
-}
-
-h2 {
-    font-size: 1.8em;
-    text-align: left;
-}
-
-h2.pagetitle {
-    font-size: 1.6em;
-}
-
-#bottombox h2 {
-    font-family: Arial, Sans-Serif;
-    font-size: 1.2em;
-}
-
-h3 {
-    font-size: 1.3em;
-}
-
-#header h1,
-h1 a,
-h1 a:hover,
-h1 a:visited {
-    text-decoration: none;
-    color: white;
-}
-
-h1,
-h1 a,
-h1 a:hover,
-h1 a:visited {
-    text-decoration: none;
-    color: #333;
-}
-
-h2,
-h2 a,
-h2 a:visited,
-h3,
-h3 a,
-h3 a:visited {
-    color: #333;
-}
-
-h2,
-h2 a,
-h2 a:hover,
-h2 a:visited,
-h3,
-h3 a,
-h3 a:hover,
-h3 a:visited,
-#bottombox h2,
-#bottombox h4,
-#wp-calendar caption,
-cite {
-    text-decoration: none;
-}
-
-#bottombox h4 {
-    font-size: 1.2em;
-}
-
-.commentlist li,
-#commentform input,
-#commentform textarea {
-    font-size: 1em;
-}
-
-.commentlist li {
-    font-weight: normal;
-}
-
-.commentlist cite,
-.commentlist cite a {
-    font-weight: bold;
-    font-style: normal;
-    font-size: 1em;
-}
-
-.commentlist p {
-    font-weight: normal;
-    line-height: 1.5em;
-    text-transform: none;
-}
-
-#commentform p {
-    font-size: 1.1em;
-}
-
-.commentmetadata {
-    font-weight: normal;
-}
-
-small,
-#sidebar ul ul li,
-#sidebar ul ol li,
-.nocomments,
-.postmetadata,
-blockquote,
-strike {
-    color: #777;
-}
-
-pre {
-    font: 1em 'Courier New', Courier, Fixed;
-    color: #666;
-    background: #F8F8F8;
-    padding: 5px;
-    line-height: 1.5em;
-    border: 1px solid #ddd;
-    overflow-x: auto;
-    /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
-    white-space: pre-wrap;
-    /* css-3 */
-    white-space: -moz-pre-wrap !important;
-    /* Mozilla, since 1999 */
-    white-space: -pre-wrap;
-    /* Opera 4-6 */
-    white-space: -o-pre-wrap;
-    /* Opera 7 */
-    /* width: 99%; */
-    word-wrap: break-word;
-    /* Internet Explorer 5.5+ */
-}
-
-code {
-    font: 1.1em 'Courier New', Courier, Fixed;
-    color: #666;
-    padding: 0 2px;
-    background: #fff;
-    line-height: 1.5em;
-    overflow: auto;
-}
-
-acronym,
-abbr,
-span.caps {
-    font-size: 0.9em;
-    letter-spacing: .07em;
-}
-
-a,
-a:visited,
-h2 a:hover,
-h3 a:hover {
-    color: #088000;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.sticky {}
-
-#bottombox a {
-    color: #DDD;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#bottombox a:hover {
-    text-decoration: underline;
+.column {
+	padding: 25px 40px;
 }
 
 
-/* Begin Structure
+/* 4. Typography
 ------------------------------------- */
 
 body {
-    margin: 0 0;
-    padding: 20px 0 0 0;
+	font-family: var(--qpic-font);
+	font-size: 0.8rem; /* about 13px, like the original QuickPic */
+	line-height: 1.5;
+	color: var(--qpic-text);
+	background: var(--qpic-page-bg);
 }
 
-#page {
-    background-color: #fff;
-    margin: 20px auto 20px auto;
-    padding: 0;
-    width: 740px;
-    border: 20px #333 solid;
-    border-radius: 15px;
-    -moz-border-radius: 15px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--qpic-heading-font);
+	font-weight: bold;
+	line-height: 1.25;
+	margin: 1.2em 0 0.4em;
 }
 
-#header {
-    margin: 0 0 0 0;
-    padding: 20px 10px;
-    text-align: center;
-}
-
-#header a {
-    color: #f9f9f9;
-    text-decoration: none;
-}
-
-#header a:hover {
-    color: #CCC;
-}
-
-.content {
-	background: #fff;
-}
-
-.post {
-    margin: 0 0 20px;
-    text-align: left;
-    background: #fff;
-}
-
-.post hr {
-    display: block;
-}
-
-.entry {
-    border-top: 1px solid #ddd;
-    overflow: hidden;
-}
-
-.entry p {}
-
-.content .postmetadata {
-    padding-top: 5px;
-}
-
-.postmetadata {
-    clear: left;
-}
-
-#footer {
-    font-family: Arial, Helvetica, Sans-Serif;
-    padding: 10px;
-    color: #f3f3f3; 
-    line-height: 1.5em;
-    margin: 0 auto;
-    clear: both;
-    background: #333;
-}
-
-#footer a {
-    color: #FF0;
-    text-decoration: none;
-}
-
-#footer a:hover {
-    color: #ccc;
-}
-
-#footer p {
-    margin: 0 0;
-    padding: 5px 0;
-    text-align: center; 
-}
-
-
-/* Begin Headers
-------------------------------------- */
-
-#content h1 { 
+/* Headings grow smoothly from phone to desktop */
+h1 {
+	font-size: clamp(1.5em, 1.3em + 0.9vw, 1.8em);
 }
 
 h2 {
-    margin: 10px 0 5px 0;
-}
-
-h2.pagetitle,
-h2.pagetitle {
-    margin-top: 10px;
-    text-align: center;
-}
-
-#bottombox h2 {
-    margin: 10px 0 0;
-    padding: 0;
-}
-
-#bottombox h4 {
-    margin: 20px 0 0;
-    padding: 2px;
-    color: #FF0;
-    text-transform: uppercase;
+	font-size: clamp(1.3em, 1.2em + 0.6vw, 1.55em);
 }
 
 h3 {
-    padding: 0;
-    margin: 30px 0 0;
+	font-size: clamp(1.15em, 1.08em + 0.35vw, 1.3em);
 }
 
-h3.comments {
-    padding: 0;
-    margin: 40px auto 20px;
+h4 {
+	font-size: 1.1em;
 }
 
-
-/* Begin Menu Headers
-------------------------------------- */
-
-#menu-header {
-    clear: both;
-    font-size: 1.1em;
-    line-height: 1.5em;
-    font-weight: bold;
-    margin: 0 auto 15px auto;
-    padding: 0px 20px;
-    overflow: hidden;
-    width: auto;
-    text-transform: uppercase;
-    color: #333;
-    background: #DDD;
-}
-
-#menu-header ul {
-    float: left;
-    width: 100%;
-    padding: 0 10px;
-}
-
-#menu-header li {
-    float: left;
-    list-style-type: none;
-    display: block;
-    margin-right: 20px;
-    position: relative;
-    padding: 0;
-}
-
-#menu-header a {
-    color: #333;
-    text-decoration: none;
-}
-
-#menu-header a:hover {
-    color: #088000;
-    text-decoration: underline;
-}
-
-
-/* Begin Images
-------------------------------------- */
-
-p img {
-    padding: 0;
-    max-width: 100%;
-}
-
-.entry img {
-    padding: 5px;
-    height: auto;
-}
-
-.rssicon {
-    vertical-align: middle;
-    border: 0;
-    padding-right: 5px;
-}
-
-img.centered {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-img.alignright {
-    padding-left: 10px; 
-    display: inline;
-}
-
-img.alignleft {
-    padding-right: 10px; 
-    display: inline;
-}
-
-.thumb {
-    float: left !important;
-    margin: 10px 5px 0 0;
-}
-
-.alignright {
-    float: right;
-}
-
-.alignleft {
-    float: left
-}
-
-
-/* Begin Lists
-------------------------------------- */
- 
-.entry ol {
-    padding: 0 0 0 20px;
-    margin: 0;
-}
-
-.entry ol li {
-    margin: 0;
-    padding: 0;
-}
-
-.entry td {
-    padding: 5px;
-    border: 1px solid #DDD;
-}
-
-.postmetadata ul,
-.postmetadata li {
-    display: inline;
-    list-style-type: none;
-    list-style-image: none;
-}
-
-#bottombox ul,
-#sidebar ul ol {
-    margin: 0;
-    padding: 0;
-}
-
-#bottombox ul li {
-    list-style-type: none;
-    list-style-image: none;
-    margin-bottom: 15px;
-}
-
-#bottombox ul p,
-#sidebar ul select {
-    margin: 5px 0 8px;
-}
-
-#bottombox ul ul,
-#sidebar ul ol {
-    margin: 15px 0 15px 10px;
-}
-
-#bottombox ul ul ul,
-#sidebar ul ol {
-    margin: 0 0 0 10px;
-}
-
-ol li,
-#sidebar ul ol li {
-    list-style: decimal outside;
-}
-
-#bottombox ul ul li,
-#sidebar ul ol li {
-    margin: 6px 0 0;
-    padding: 0;
-}
-
-
-/* Begin Form Elements
-------------------------------------- */
-
-select {
-    width: 130px;
-}
-
-.search-field {
-    width: 70%;
-    padding: 6px;
-    margin: 15px 0;
-    background: #f3f3f3;
-    border: 1px solid #999;
-}
-
-.search-submit {
-    cursor: pointer;
-    border: solid 1px #666;
-    background: #000;
-    color: #fff;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-.screen-reader-text {
-    display: none;
-}
-
-#commentform input {
-    width: 170px;
-    padding: 2px;
-    margin: 5px 5px 1px 0;
-    border: 1px solid #ccc;
-}
-
-#commentform textarea {
-    width: 90%;
-    padding: 2px;
-    border: 1px solid #ccc;
-}
-
-#commentform #submit {
-    background: #005500;
-    padding: 6px;
-    font-size: 0.9em;
-    color: #fff;
-    margin: 0;
-     border: 0px; 
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-
-/* Begin Comments
-------------------------------------- */
-.comments {
-	clear:both;
+a {
+	color: var(--qpic-link);
+	text-decoration: none;
 }
 
-.alt {
-    margin: 0;
-    padding: 10px;
+a:hover {
+	text-decoration: underline;
 }
 
-.commentlist {
-    padding: 0;
-    margin: 0;
-    text-align: justify;
+h1 a,
+h2 a,
+h3 a {
+	color: var(--qpic-text);
 }
-
-.commentlist li {
-    margin: 15px 0 3px;
-    padding: 5px 10px 3px;
-    list-style: none;
-}
-
-.commentlist p {
-    margin: 10px 5px 10px 0;
-}
-
-#commentform p {
-    margin: 5px 0;
-}
-
-.nocomments {
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    display: none;
-}
-
-.commentmetadata {
-    margin: 0;
-    display: block;
-}
-
-img.avatar {
-    float: left;
-    margin: 0 10px 0 0;
-    padding: 0 4px 0 0;
-    vertical-align: middle;
-}
-
-#respond {
-    margin-bottom: 20px;
-}
-
-#reply-title a {
-    color: #088000 !important;
-}
-
-.bypostauthor {
-    background: #E6FFE2 !important;
-}
-
-ol.commentlist li div.comment-meta {
-    font-size: 9px;
-    margin-bottom: 10px;
-}
-
-ol.commentlist li div.comment-meta a {
-    color: #999 !important;
-}
-
-ol.commentlist li div.comment-meta a:hover {
-    color: #06c !important;
-    text-decoration: underline;
-}
-
-ol.commentlist li p {
-    font-size: 1em;
-    margin: 0 0 1em;
-}
-
-ol.commentlist li ul {
-    font-size: 1em;
-    margin: 0;
-}
-
-ol.commentlist li ul li {
-    font-size: 1em;
-    list-style: square;
-    margin: 0;
-}
-
-ol.commentlist li ol li {
-    font-size: 1em;
-    margin: 0;
-    list-style: upper-roman;
-}
-
-ol.commentlist li div.reply {
-    font-size: 1em;
-}
-
-ol.commentlist li div.reply a {
-    text-decoration: none;
-    padding: 5px;
-}
-
-ol.commentlist li ul.children {
-    list-style: none;
-    margin: 1em 0 0;
-    text-indent: 0;
-}
-
-ol.commentlist {
-    list-style: none;
-    margin: 0 0 1em;
-    padding: 0;
-    text-indent: 0;
-}
-
-ol.commentlist li.comment {
-    border: 1px solid #d5d5d5;
-    padding: 1em;
-    border-radius: 8px;
-    -moz-border-radius: 8px;
-}
-
-ol.commentlist li.even {
-    background: #fff;
-}
-
-ol.commentlist li.odd {
-    background: #f9f9f9;
-}
-
-ol.commentlist li ul.children li.depth-2 {
-    list-style: none;
-    border-left: 1px solid #ccc;
-    margin: 0 0 .25em .25em;
-}
-
-ol.commentlist li ul.children li.depth-3 {
-    list-style: none;
-    border-left: 1px solid #ccc;
-    margin: 0 0 .25em .25em;
-}
-
-ol.commentlist li ul.children li.depth-4 {
-    list-style: none;
-    border-left: 1px solid #ccc;
-    margin: 0 0 .25em .25em;
-}
-
-ol.commentlist li ul.children li.depth-5 {
-    list-style: none;
-    border-left: 1px solid #ccc;
-    margin: 0 0 .25em .25em;
-}
-
-.commentlist table td {
-    background: #FFF;
-    border: 1px solid #CCC;
-    padding: 10px;
-}
-
-dl,
-dt,
-dd {
-    list-style: none;
-    padding: 0;
-    margin: 0 ;
-	outline: 0;
-    vertical-align: baseline;
-}
-
-dt {
-    font-weight: bold;
-    padding-top: 5px;
-}
-
-dd {
-    padding-bottom: 15px;
-}
-
-
-/* Begin bottom box
-------------------------------------- */
-
-#bottombox {
-    font-family: Arial, Helvetica, Sans-Serif;
-    padding: 20px;
-    margin: 15px 0 0 0;
-    background: #005500;
-    color: #ddd;
-    font-size: 1em;
-    clear: both;
-}
-
-#adbox {
-    text-align: left;
-    padding: 10px 5px;
-    background: #333;
-    text-align: center; 
-    border-radius: 5px;
-}
-
-#bottombox_low {
-    clear: both;
-}
-
-
-/* Begin Tags &amp; Classes
-------------------------------------- */
 
-acronym,
-abbr,
-span.caps {
-    cursor: help;
+h1 a:hover,
+h2 a:hover,
+h3 a:hover {
+	color: var(--qpic-link);
+	text-decoration: none;
 }
 
-acronym,
-abbr {
-    border-bottom: 1px dashed #999;
+small {
+	font-size: 0.85em;
 }
 
 blockquote {
-    margin: 15px 30px 0 10px;
-    padding-left: 20px;
-    border-left: 5px solid #ccc;
+	margin: 1.5em 0;
+	padding: 0 0 0 20px;
+	border-left: 4px solid var(--qpic-border);
+	color: var(--qpic-muted);
 }
 
 blockquote cite {
-    margin: 5px 0 0;
-    display: block;
+	display: block;
+	margin-top: 5px;
+	font-size: 0.9em;
 }
 
-.center {
-    text-align: center;
+pre {
+	background: var(--qpic-soft);
+	border: 1px solid var(--qpic-border);
+	padding: 10px 12px;
+	line-height: 1.5;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+code {
+	background: var(--qpic-soft);
+	padding: 1px 4px;
+	border-radius: 3px;
+}
+
+pre code {
+	background: none;
+	padding: 0;
+}
+
+abbr[title] {
+	cursor: help;
+	text-decoration: underline dotted;
 }
 
 hr {
-    display: none;
+	border: 0;
+	border-top: 1px solid var(--qpic-border);
+	margin: 2em 0;
 }
 
-a img {
-    border: none;
+dt {
+	font-weight: bold;
 }
 
-.navigation {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-	padding: 10px 0;
+dd {
+	margin: 0 0 10px 20px;
 }
 
-.mainnav a {
-    background: #005500;
-    color: #FFF !important;
-    padding: 10px;
-    border-radius: 8px;
-    -moz-border-radius: 8px;
+.center {
+	text-align: center;
 }
 
 
-/* Captions
+/* 5. Header and menu bar
 ------------------------------------- */
 
-.aligncenter,
-div.aligncenter {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+/* The green header band: logo, site title and tagline, centred */
+#header {
+	padding: 26px 20px 22px;
+	background: var(--qpic-band);
+	color: var(--qpic-on-brand);
+	text-align: center;
+}
+
+/* The site title: bigger and heavier than any post heading,
+   with a short yellow bar underneath so it reads as the name of the site */
+.site-title {
+	font-family: var(--qpic-heading-font);
+	font-size: clamp(2em, 1.6em + 1.6vw, 2.8em);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.site-title::after {
+	content: "";
+	display: block;
+	width: 42px;
+	height: 4px;
+	margin: 9px auto 0;
+	border-radius: 2px;
+	background: var(--qpic-highlight);
+}
+
+.site-title a,
+.site-title a:hover {
+	color: var(--qpic-on-brand);
+	text-decoration: none;
+}
+
+.site-title a:hover {
+	opacity: 0.85;
+}
+
+.custom-logo-link {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+.custom-logo {
+	display: block;
+	max-height: 100px;
+	width: auto;
+}
+
+.description {
+	margin: 8px 0 0;
+	font-size: 1.1em;
+	line-height: 1.4;
+	color: color-mix(in srgb, var(--qpic-on-brand) 78%, var(--qpic-band));
+}
+
+/* The light grey menu bar under the header */
+.main-menu {
+	background: var(--qpic-menu);
+	padding: 8px 30px;
+}
+
+.main-menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 20px;
+}
+
+.main-menu a {
+	color: var(--qpic-text);
+	font-size: 1.1em;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.main-menu a:hover,
+.main-menu .current-menu-item > a {
+	color: var(--qpic-link);
+}
+
+
+/* 6. Posts and pages
+------------------------------------- */
+
+#content {
+	font-size: 0.96rem; /* about 15px, like the original */
+}
+
+#content main > :first-child,
+.entry-title,
+.page-title {
+	margin-top: 0;
+}
+
+/* Space between posts (not comments, which are also <article>s) */
+#content main > article {
+	margin: 0 0 35px;
+}
+
+.page-header {
+	margin-bottom: 20px;
+}
+
+.archive-description {
+	color: var(--qpic-muted);
+}
+
+.entry-title {
+	margin-bottom: 2px;
+}
+
+/* Post titles in lists: as large as the original QuickPic (1.8em, about 28px) */
+#content main > article > h2.entry-title {
+	font-size: clamp(1.4em, 1.2em + 0.9vw, 1.8em);
+}
+
+.post-meta {
+	margin: 0 0 6px;
+	line-height: 1.4;
+	font-size: 0.85em;
+	color: var(--qpic-muted);
+}
+
+.entry {
+	border-top: 1px solid var(--qpic-border);
+	line-height: 1.6;
+	display: flow-root; /* keeps floated images inside the post */
+}
+
+.entry a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.entry a:hover {
+	text-decoration-thickness: 2px;
+}
+
+.entry > :first-child {
+	margin-top: 10px;
+}
+
+.read-more,
+.more-link {
+	white-space: nowrap;
+}
+
+.sticky {
+	border-left: 3px solid var(--qpic-accent);
+	padding-left: 15px;
+}
+
+.post-tags {
+	font-size: 0.9em;
+	color: var(--qpic-muted);
+}
+
+.page-links {
+	margin: 1.5em 0;
+}
+
+.page-links > span,
+.page-links > a {
+	margin-right: 5px;
+}
+
+
+/* 7. Images and block content
+------------------------------------- */
+
+.alignleft {
+	float: left;
+	margin: 5px 20px 10px 0;
+}
+
+.alignright {
+	float: right;
+	margin: 5px 0 10px 20px;
+}
+
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.alignwide,
+.alignfull {
+	max-width: 100%;
+}
+
+.post-thumb img {
+	display: block;
+}
+
+.post-image {
+	margin: 15px 0;
+}
+
+.post-image img {
+	display: block;
+}
+
+figure {
+	margin: 1.5em 0;
 }
 
 .wp-caption {
-    text-align: center;
-    padding-top: 4px;
-    margin: 10px;
-    -moz-border-radius: 3px;
-    -khtml-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    max-width: 100%;
+	max-width: 100%;
 }
 
-.wp-caption img {
-    margin: 0;
-    padding: 0;
-    border: 0 none;
+.wp-caption-text,
+figcaption {
+	font-size: 0.85em;
+	color: var(--qpic-muted);
+	text-align: center;
+	margin-top: 5px;
 }
 
-.wp-caption p.wp-caption-text {
-    font-size: 11px;
-    line-height: 17px;
-    padding: 0 4px 5px;
-    margin: 0;
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	margin: 1.5em 0;
 }
 
-#content .gallery {
-    margin: 0 auto 18px;
+.gallery-columns-1 { grid-template-columns: 1fr; }
+.gallery-columns-2 { grid-template-columns: repeat(2, 1fr); }
+.gallery-columns-4 { grid-template-columns: repeat(4, 1fr); }
+.gallery-columns-5 { grid-template-columns: repeat(5, 1fr); }
+
+.gallery-item {
+	margin: 0;
+	text-align: center;
 }
 
-#content .gallery .gallery-item {
-    float: left;
-    margin-top: 5px;
-    text-align: center;
-    width: 33%;
+.entry table,
+.wp-block-table table {
+	width: 100%;
+	margin: 1.5em 0;
 }
 
-#content .gallery img {
-    border: 2px solid #cfcfcf;
+.entry th,
+.entry td {
+	padding: 6px 8px;
+	border: 1px solid var(--qpic-border);
+	text-align: left;
 }
 
-#content .gallery .gallery-caption {
-    color: #888;
-    font-size: 11px;
-    margin: 0 0 12px;
+.entry th {
+	background: var(--qpic-soft);
 }
 
-#content .gallery dl {
-    margin: 0;
+.wp-block-button__link,
+.wp-element-button {
+	background: var(--qpic-accent);
+	color: var(--qpic-on-accent);
+	border-radius: 6px;
+	text-decoration: none;
 }
 
-#content .gallery img {
-    border: 0px solid #f1f1f1;
+.entry .wp-block-button__link {
+	text-decoration: none;
 }
 
-#content .gallery br+br {
-    display: none;
+.wp-block-pullquote {
+	border-top: 3px solid var(--qpic-accent);
+	border-bottom: 3px solid var(--qpic-accent);
 }
 
-#content .attachment img {
-    /* single attachment images should be centered */
-    display: block;
-    margin: 0 auto;
+.wp-block-pullquote blockquote {
+	border: 0;
+	padding: 0;
 }
 
 
-/* End captions */
-
-
-/* Responsive Design
+/* 8. Bottom box
+   The green band at the bottom of every page: a search box in a dark
+   panel, then up to three widget columns with yellow headings.
 ------------------------------------- */
 
-@media screen and (max-width: 750px) {
-    body {
-        background: #FFF;
-        padding: 0;
-    }
-    body.custom-background {
-        background-color: #FFF !important;
-    }
-    #page {
-        width: 100%;
-        border: 0;
-        margin: 0;
-    }
-    #menu-header {
-        margin: 0;
-    }
+.bottom-box {
+	padding: 20px 25px 25px;
+	background: var(--qpic-band);
+	color: var(--qpic-band-text);
+	font-size: 1.05em;
+	line-height: 1.45;
+}
+
+.bottom-search {
+	padding: 10px 14px;
+	background: var(--qpic-frame);
+	border-radius: 6px;
+}
+
+.bottom-search .search-form {
+	max-width: 460px;
+	margin: 0 auto;
+}
+
+.bottom-widgets {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px 30px;
+	margin-top: 22px;
+}
+
+.bottom-column {
+	min-width: 0;
+}
+
+.bottom-box .widget {
+	margin: 0 0 20px;
+}
+
+.bottom-box .widget:last-child {
+	margin-bottom: 0;
+}
+
+/* Widget headings: yellow capitals with a short underline,
+   like the original QuickPic */
+.bottom-box .widget-title,
+.bottom-box h2 {
+	display: inline-block;
+	font-size: 1.15em;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	color: var(--qpic-highlight);
+	margin: 0 0 8px;
+	padding-bottom: 3px;
+	border-bottom: 2px solid color-mix(in srgb, var(--qpic-highlight) 55%, var(--qpic-band));
+}
+
+.bottom-box a {
+	color: color-mix(in srgb, var(--qpic-on-brand) 92%, var(--qpic-band));
+	font-weight: 600;
+}
+
+.bottom-box a:hover {
+	color: var(--qpic-highlight);
+}
+
+.bottom-box ul,
+.bottom-box ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.bottom-box li {
+	margin: 0 0 5px;
+}
+
+.bottom-box ul ul {
+	margin: 4px 0 0 12px;
+}
+
+.bottom-box p {
+	margin: 0 0 8px;
+}
+
+.bottom-box .wp-block-group__inner-container > * {
+	margin-top: 0;
+}
+
+.bottom-box .wp-block-latest-comments {
+	font-size: inherit;
+	padding: 0;
+}
+
+.bottom-box .wp-block-latest-comments__comment {
+	margin: 0 0 5px;
+	line-height: 1.4;
+}
+
+.bottom-box .wp-block-latest-comments__comment-meta {
+	font-size: 1em;
+}
+
+.bottom-box .wp-block-latest-posts__post-date {
+	font-size: 0.9em;
+	opacity: 0.8;
+}
+
+.bottom-box select {
+	max-width: 100%;
+}
+
+
+/* 9. Comments and forms
+------------------------------------- */
+
+/* Text fields: same height as the buttons, soft accent ring when typing */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="tel"],
+select,
+textarea,
+.wp-block-search__input {
+	max-width: 100%;
+	padding: 8px 11px;
+	line-height: 1.4;
+	border: 1px solid var(--qpic-field-border);
+	border-radius: 6px;
+	background: var(--qpic-field);
+	color: var(--qpic-text);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	outline: none;
+	border-color: var(--qpic-accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--qpic-accent) 20%, transparent);
+}
+
+textarea {
+	width: 100%;
+}
+
+/* Buttons: accent colour, a touch darker on hover */
+button,
+input[type="submit"],
+.search-submit,
+.wp-block-search__button {
+	cursor: pointer;
+	background: var(--qpic-accent);
+	color: var(--qpic-on-accent);
+	border: 1px solid var(--qpic-accent);
+	border-radius: 6px;
+	padding: 8px 16px;
+	line-height: 1.4;
+	font-weight: 600;
+}
+
+button:hover,
+input[type="submit"]:hover,
+.wp-block-search__button:hover {
+	filter: brightness(0.9);
+}
+
+/* Search: box and button side by side, same height */
+.search-form,
+.wp-block-search__inside-wrapper {
+	display: flex;
+	align-items: stretch;
+	gap: 6px;
+}
+
+.search-form {
+	margin: 15px 0;
+}
+
+.search-form label,
+.wp-block-search__input {
+	flex: 1;
+	min-width: 0;
+}
+
+.search-field {
+	width: 100%;
+}
+
+.wp-block-search__button {
+	margin: 0;
+}
+
+.comments {
+	clear: both;
+	margin-top: 40px;
+}
+
+.comments-title {
+	font-size: 1.3em;
+	margin-bottom: 10px;
+}
+
+.commentlist,
+.commentlist .children {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.commentlist .children {
+	margin: 6px 0 0 14px;
+	border-left: 1px solid var(--qpic-border);
+	padding-left: 10px;
+}
+
+/* Each comment: a compact box, 6px apart */
+.commentlist .comment-body {
+	border: 1px solid var(--qpic-border);
+	border-radius: 6px;
+	padding: 8px 12px;
+	margin: 0 0 6px;
+}
+
+.comment-content p {
+	margin: 0 0 6px;
+}
+
+.comment-content p:last-child {
+	margin-bottom: 0;
+}
+
+.commentlist > .comment:nth-child(even) > .comment-body {
+	background: var(--qpic-alt);
+}
+
+.commentlist .bypostauthor > .comment-body {
+	background: var(--qpic-author);
+}
+
+.comment-author .avatar {
+	float: left;
+	margin: 0 8px 0 0;
+	border-radius: 50%;
+}
+
+.comment-author .fn {
+	font-style: normal;
+	font-weight: bold;
+}
+
+.comment-meta {
+	display: flow-root; /* holds the small avatar */
+	font-size: 0.8em;
+	line-height: 1.35;
+	margin-bottom: 4px;
+}
+
+.comment-meta a {
+	color: var(--qpic-muted);
+}
+
+.reply {
+	margin-top: 3px;
+	font-size: 0.85em;
+}
+
+.comment-respond {
+	margin: 24px 0 20px;
+}
+
+.comment-form label {
+	display: block;
+	margin-bottom: 3px;
+	font-size: 0.9em;
+	font-weight: 600;
+}
+
+.comment-form p {
+	margin: 0 0 14px;
+}
+
+.comment-form-cookies-consent label {
+	display: inline;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form input[type="url"] {
+	width: 100%;
+	max-width: 420px;
+}
+
+.no-comments {
+	color: var(--qpic-muted);
+}
+
+
+/* 10. Navigation
+------------------------------------- */
+
+.navigation {
+	display: flow-root;
+	margin: 20px 0;
+}
+
+.post-nav .alignleft,
+.post-nav .alignright,
+.image-nav .alignleft,
+.image-nav .alignright {
+	margin: 0;
+	max-width: 48%;
+}
+
+.pagination .nav-links,
+.comment-navigation .nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+
+.comment-navigation .nav-next {
+	margin-left: auto;
+}
+
+/* Page numbers: outlined boxes; the current page is filled in */
+.page-numbers {
+	display: inline-block;
+	min-width: 2.4em;
+	padding: 5px 11px;
+	line-height: 1.4;
+	text-align: center;
+	border: 1px solid var(--qpic-border);
+	border-radius: 6px;
+	color: var(--qpic-link);
+}
+
+a.page-numbers:hover {
+	text-decoration: none;
+	background: var(--qpic-accent);
+	border-color: var(--qpic-accent);
+	color: var(--qpic-on-accent);
+}
+
+.page-numbers.current {
+	background: var(--qpic-accent);
+	border-color: var(--qpic-accent);
+	color: var(--qpic-on-accent);
+	font-weight: bold;
+}
+
+.page-numbers.dots {
+	min-width: 0;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-color: transparent;
+	color: var(--qpic-muted);
+}
+
+
+/* 11. Footer
+   The dark band at the very bottom, the same colour as the frame.
+------------------------------------- */
+
+.site-info {
+	padding: 12px 20px 16px;
+	background: var(--qpic-frame);
+	color: #f3f3f3;
+	text-align: center;
+}
+
+.site-info p {
+	margin: 3px 0;
+}
+
+.site-info a {
+	color: var(--qpic-highlight);
+}
+
+.footer-menu ul {
+	list-style: none;
+	margin: 0 0 8px;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 5px 18px;
+}
+
+.credits {
+	opacity: 0.8;
+}
+
+
+/* 12. Accessibility
+------------------------------------- */
+
+/* Hidden on screen but read aloud by screen readers */
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	word-wrap: normal !important;
+}
+
+/* The Skip to content link appears when reached with the Tab key */
+.skip-link:focus {
+	clip: auto;
+	clip-path: none;
+	height: auto;
+	width: auto;
+	margin: 0;
+	top: 10px;
+	left: 10px;
+	z-index: 100000;
+	padding: 10px 15px;
+	background: var(--qpic-bg);
+	color: var(--qpic-link);
+	font-weight: bold;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+a:focus-visible,
+button:focus-visible {
+	outline: 2px solid var(--qpic-accent);
+	outline-offset: 2px;
+}
+
+
+/* 13. Phones and tablets
+   Below 800px the frame goes and the page fills the screen.
+------------------------------------- */
+
+@media (max-width: 800px) {
+
+	body {
+		padding: 0;
+	}
+
+	body,
+	body.custom-background {
+		background: var(--qpic-bg) !important;
+	}
+
+	#page {
+		border: 0;
+		border-radius: 0;
+	}
+
+	#header {
+		padding: 20px 16px 18px;
+	}
+
+	.main-menu {
+		padding: 8px 16px;
+	}
+
+	.main-menu ul {
+		gap: 4px 16px;
+	}
+
+	.column {
+		padding: 20px 16px;
+	}
+
+	.bottom-box {
+		padding: 18px 16px 22px;
+	}
+
+	.gallery {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 480px) {
+
+	.alignleft,
+	.alignright {
+		float: none;
+		margin: 10px 0;
+	}
+
+	.post-thumb {
+		float: right;
+		margin: 5px 0 10px 15px;
+	}
+
+	.post-thumb img {
+		width: 80px;
+	}
 }

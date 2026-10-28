@@ -267,3 +267,39 @@ figcaption,
 	font-size: 1.25rem;
 	font-weight: 300;
 }
+
+/* FAQ pattern and any Details block: one question per row, a thin line
+   between, the answer under it when opened. No JavaScript */
+.wp-block-details {
+	margin: 0;
+	padding: 0.65rem 0;
+	border-bottom: 1px solid var(--qs-border);
+}
+
+.wp-block-details summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.wp-block-details > :not(summary) {
+	margin: 0.5rem 0 0.25rem;
+}
+
+/* Call to action pattern: a box tinted with the Accent colour */
+.qs-cta {
+	margin: 1.5em 0;
+	padding: 1.5rem 1.5rem 1.25rem;
+	background: color-mix(in srgb, var(--qs-accent) 8%, var(--bs-body-bg, #fff));
+	border: 1px solid color-mix(in srgb, var(--qs-accent) 25%, transparent);
+	border-radius: var(--bs-border-radius-lg, 0.5rem);
+}
+
+:is(.qs-cta, .qs-faq) > :first-child,
+:is(.qs-cta, .qs-faq) > .wp-block-group__inner-container > :first-child {
+	margin-top: 0;
+}
+
+:is(.qs-cta, .qs-faq) > :last-child,
+:is(.qs-cta, .qs-faq) > .wp-block-group__inner-container > :last-child {
+	margin-bottom: 0;
+}

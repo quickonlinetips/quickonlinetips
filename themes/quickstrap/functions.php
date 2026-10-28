@@ -367,6 +367,35 @@ function quickstrap_block_patterns() {
 			. '</div><!-- /wp:group -->',
 	) );
 
+	$faq = function ( $question, $answer ) {
+		return '<!-- wp:details --><details class="wp-block-details"><summary>' . esc_html( $question ) . '</summary>'
+			. '<!-- wp:paragraph --><p>' . esc_html( $answer ) . '</p><!-- /wp:paragraph -->'
+			. '</details><!-- /wp:details -->';
+	};
+
+	register_block_pattern( 'quickstrap/faq', array(
+		'title'       => __( 'FAQ', 'quickstrap' ),
+		'description' => __( 'Questions that open to show their answers when clicked. No JavaScript: it uses the Details block.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:group {"className":"qs-faq"} --><div class="wp-block-group qs-faq">'
+			. '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Frequently asked questions', 'quickstrap' ) . '</h2><!-- /wp:heading -->'
+			. $faq( __( 'What is this site about?', 'quickstrap' ), __( 'A short answer in a sentence or two. Click a question to open or close it.', 'quickstrap' ) )
+			. $faq( __( 'How often do you post?', 'quickstrap' ), __( 'Another short answer. Add more questions with the Details block.', 'quickstrap' ) )
+			. $faq( __( 'How can I get in touch?', 'quickstrap' ), __( 'Tell readers where to find you, and link to your contact page.', 'quickstrap' ) )
+			. '</div><!-- /wp:group -->',
+	) );
+
+	register_block_pattern( 'quickstrap/call-to-action', array(
+		'title'       => __( 'Call to action', 'quickstrap' ),
+		'description' => __( 'A tinted box with a headline, a sentence and one clear button.', 'quickstrap' ),
+		'categories'  => array( 'quickstrap' ),
+		'content'     => '<!-- wp:group {"className":"qs-cta"} --><div class="wp-block-group qs-cta">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'Ready to get started?', 'quickstrap' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'One sentence on what readers get when they click the button.', 'quickstrap' ) . '</p><!-- /wp:paragraph -->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'Get started', 'quickstrap' ) . '</a></div><!-- /wp:button --></div><!-- /wp:buttons -->'
+			. '</div><!-- /wp:group -->',
+	) );
+
 	register_block_pattern( 'quickstrap/notice', array(
 		'title'       => __( 'Notice', 'quickstrap' ),
 		'description' => __( 'A Bootstrap-style info alert for a note, tip or update.', 'quickstrap' ),

@@ -17,7 +17,7 @@ QuickStrap is for bloggers and small sites who like Bootstrap's clean look, want
 * **Plug and play.** Activate it and start writing. There is no options panel to learn.
 * **Familiar and simple.** Set up widgets and menus in the usual Appearance > Widgets and Menus screens. Posts written in the block editor look just right.
 * **One, two or three columns.** Posts in the middle, a right sidebar, and an optional left sidebar. Leave the left one empty and the posts widen to fill its space. Customize > Layout widens the left sidebar or swaps the two sides. On tablets and phones nothing is hidden: the sidebars move below the posts.
-* **Bootstrap with a click.** Card and Alert styles for the Group block, Bootstrap-style outline buttons, and ready-made Three cards, Hero box and Notice patterns. Bootstrap's classes still work in your posts too.
+* **Bootstrap with a click.** Card and Alert styles for the Group block, Bootstrap-style outline buttons, and ready-made Three cards, Hero box, Call to action, FAQ and Notice patterns. Bootstrap's classes still work in your posts too.
 * **Menus with sub-menus.** Dropdowns on wide screens and indented links on phones, with no JavaScript.
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode using Bootstrap's own dark colours, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
@@ -76,7 +76,7 @@ Yes, up to three levels. Add sub-items in Appearance > Menus by dragging a link 
 
 = How do I use Bootstrap's look in my posts? =
 
-Add a Group block and pick Card, Alert: info, Alert: success or Alert: warning under Styles; pick Outline for a Button. Or insert the Three cards, Hero box or Notice pattern from the QuickStrap patterns. Bootstrap's classes (like btn btn-primary, table, alert alert-info) also work in Additional CSS class or the HTML block.
+Add a Group block and pick Card, Alert: info, Alert: success or Alert: warning under Styles; pick Outline for a Button. Or insert the Three cards, Hero box, Call to action, FAQ or Notice pattern from the QuickStrap patterns. Bootstrap's classes (like btn btn-primary, table, alert alert-info) also work in Additional CSS class or the HTML block.
 
 = How do I make a page without the sidebars? =
 
@@ -109,7 +109,7 @@ The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonline
 * No JavaScript and no web fonts by default: the phone menu button now works with plain HTML and CSS
 * Sub-menus finally show: dropdowns on wide screens and indented links on phones, up to three levels, still without JavaScript
 * Customize > Layout: narrow left sidebar (default), both sidebars the same width, or the two sides swapped
-* Group block styles Card, Alert: info, Alert: success and Alert: warning, Bootstrap-style outline buttons, and Three cards, Hero box and Notice patterns
+* Group block styles Card, Alert: info, Alert: success and Alert: warning, Bootstrap-style outline buttons, and Three cards, Hero box, Call to action, FAQ (no JavaScript) and Notice patterns
 * New Between Posts widget area in post lists, after the third post
 * Customize > Bootstrap Extras: switch Bootstrap's JavaScript or Font Awesome back on if your posts use them, or load Bootstrap Icons, Bootstrap's own icon set
 * The left sidebar no longer disappears on tablets and phones: it moves below the posts with its lists in columns; with no widgets the posts widen to fill its space

@@ -302,15 +302,18 @@ hr {
 	color: var(--qs-muted);
 }
 
-.qs-light-header .main-menu .sub-menu {
-	border: 1px solid var(--qs-border);
-	border-top: 0;
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-}
+@media (min-width: 992px) {
 
-.qs-light-header .main-menu .sub-menu .nav-link:hover,
-.qs-light-header .main-menu .sub-menu .nav-link:focus-visible {
-	background: rgba(var(--bs-emphasis-color-rgb), 0.06);
+	.qs-light-header .main-menu .sub-menu {
+		border: 1px solid var(--qs-border);
+		border-top: 0;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+	}
+
+	.qs-light-header .main-menu .sub-menu .nav-link:hover,
+	.qs-light-header .main-menu .sub-menu .nav-link:focus-visible {
+		background: rgba(var(--bs-emphasis-color-rgb), 0.06);
+	}
 }
 
 /* Sub-menus, no JavaScript. On wide screens a dropdown opens when the mouse

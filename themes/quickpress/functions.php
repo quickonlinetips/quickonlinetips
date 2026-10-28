@@ -285,10 +285,26 @@ function quickpress_colors_css() {
 	return $css ? ':root{' . $css . '}' : '';
 }
 
-// Body classes: dark mode switched off.
+// Is this post or page using the Full width template?
+function quickpress_is_full_width() {
+	return is_singular() && is_page_template( 'template-full-width.php' );
+}
+
+// Full width pages get a wider content area for embeds and large images.
+function quickpress_full_width_content_width() {
+	if ( quickpress_is_full_width() ) {
+		$GLOBALS['content_width'] = 950;
+	}
+}
+add_action( 'template_redirect', 'quickpress_full_width_content_width' );
+
+// Body classes: dark mode switched off, Full width template.
 function quickpress_body_classes( $classes ) {
 	if ( ! get_theme_mod( 'quickpress_dark_mode', true ) ) {
 		$classes[] = 'qp-light-only';
+	}
+	if ( quickpress_is_full_width() ) {
+		$classes[] = 'qp-full-width';
 	}
 	return $classes;
 }

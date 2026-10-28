@@ -1,3 +1,9 @@
+<?php
+// The Full width template has no sidebar.
+if ( quickpress_is_full_width() ) {
+	return;
+}
+?>
 <aside id="sidebar" class="sidebar column right" aria-label="<?php esc_attr_e( 'Sidebar', 'quickpress' ); ?>">
 
 	<?php

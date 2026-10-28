@@ -14,6 +14,9 @@
 define( 'QUICKSTRAP_BOOTSTRAP_VERSION', '5.3.8' );
 define( 'QUICKSTRAP_FONTAWESOME_VERSION', '7.3.1' );
 
+// Icons for social links in the Footer Menu (inline SVG, no icon font needed).
+require get_template_directory() . '/inc/social-icons.php';
+
 // Width of the main content column, used by WordPress for embeds and large images.
 if ( ! isset( $content_width ) ) {
 	$content_width = 636;

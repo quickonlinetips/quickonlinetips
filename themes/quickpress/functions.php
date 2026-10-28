@@ -90,6 +90,35 @@ function quickpress_excerpt_more( $more ) {
 }
 add_filter( 'excerpt_more', 'quickpress_excerpt_more' );
 
+// Post date, author, comments and categories line, used in lists and single posts
+function quickpress_post_meta( $show_comments = true ) {
+	echo '<p class="post-meta">';
+
+	printf(
+		'<time datetime="%1$s">%2$s</time>',
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() )
+	);
+
+	/* translators: %s: post author name */
+	echo ' | ' . sprintf( esc_html__( 'By %s', 'quickpress' ), esc_html( get_the_author() ) );
+
+	if ( $show_comments && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		echo ' | ';
+		comments_popup_link( __( 'No Comments', 'quickpress' ), __( '1 Comment', 'quickpress' ), __( '% Comments', 'quickpress' ) );
+	}
+
+	$categories = get_the_category_list( ', ' );
+	if ( $categories ) {
+		/* translators: %s: list of categories */
+		echo ' | ' . sprintf( esc_html__( 'Filed in: %s', 'quickpress' ), $categories ); // phpcs:ignore WordPress.Security.EscapeOutput -- WordPress builds this list.
+	}
+
+	edit_post_link( __( 'Edit', 'quickpress' ), ' | ', '' );
+
+	echo '</p>';
+}
+
 // Load stylesheets
 function quickpress_scripts() {
 

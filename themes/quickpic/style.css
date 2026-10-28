@@ -765,6 +765,24 @@ figcaption {
 }
 
 
+/* "12 more" at the end of a long list: opens in place, no JavaScript */
+.qpic-more summary {
+	cursor: pointer;
+	color: var(--qpic-highlight);
+	font-weight: 600;
+	list-style-position: inside;
+}
+
+.qpic-more details[open] summary {
+	margin-bottom: 5px;
+}
+
+/* The opened items line up with the first ten (sub-items keep their indent) */
+.bottom-box .qpic-more > details > ul,
+.entry .qpic-more > details > ul {
+	margin: 0;
+}
+
 /* Below Posts widgets: a soft box under the post */
 
 .after-post {

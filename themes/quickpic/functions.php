@@ -141,6 +141,99 @@ function quickpic_default_widgets() {
 	echo '</div>';
 }
 
+/*
+ * Long lists in the theme's own starter widgets (Categories and Pages in the
+ * green bottom box): show the first 10 items, then "12 more" that opens
+ * the rest in place. Plain HTML <details>, so no JavaScript.
+ * Only blocks with the CSS class "qpic-short" are shortened, so lists an
+ * owner adds themselves always show in full. (Owners can opt in by adding
+ * qpic-short under the block's Advanced > Additional CSS class.)
+ * Change the number in a child theme: add_filter( 'quickpic_list_limit', fn() => 15 );
+ */
+function quickpic_shorten_long_lists( $block_content, $block ) {
+	$blocks = array( 'core/categories', 'core/page-list', 'core/archives' );
+	if ( empty( $block['blockName'] ) || ! in_array( $block['blockName'], $blocks, true ) ) {
+		return $block_content;
+	}
+	$classes = isset( $block['attrs']['className'] ) ? ' ' . $block['attrs']['className'] . ' ' : '';
+	// qc-short and qp-short are QuickChic's and QuickPress's names for the same
+	// thing, so lists set up under those themes keep shortening in QuickPic.
+	$marked = false;
+	foreach ( array( 'qpic-short', 'qc-short', 'qp-short' ) as $name ) {
+		$marked = $marked || false !== strpos( $classes, ' ' . $name . ' ' );
+	}
+	if ( is_admin() || ! $marked || ! empty( $block['attrs']['displayAsDropdown'] ) ) {
+		return $block_content;
+	}
+
+	$limit = (int) apply_filters( 'quickpic_list_limit', 10 );
+	if ( $limit < 1 || substr_count( $block_content, '<li' ) <= $limit || ! class_exists( 'DOMDocument' ) ) {
+		return $block_content;
+	}
+
+	$doc       = new DOMDocument();
+	$old_state = libxml_use_internal_errors( true );
+	$doc->loadHTML( '<?xml encoding="utf-8"?><div id="qpic-list">' . $block_content . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $old_state );
+
+	$xpath = new DOMXPath( $doc );
+	$wrap  = $xpath->query( '//div[@id="qpic-list"]' )->item( 0 );
+	$list  = $wrap ? $xpath->query( './/ul', $wrap )->item( 0 ) : null;
+	if ( ! $list ) {
+		return $block_content;
+	}
+
+	// Count every line, sub-items included, but never split an item from its own
+	// sub-items: show whole top-level items until the next would pass the limit.
+	$items = array();
+	foreach ( $list->childNodes as $node ) {
+		if ( XML_ELEMENT_NODE === $node->nodeType && 'li' === $node->nodeName ) {
+			$items[] = $node;
+		}
+	}
+	$shown_lines = 0;
+	$keep        = 0;
+	foreach ( $items as $item ) {
+		$lines = 1 + $item->getElementsByTagName( 'li' )->length;
+		if ( $keep > 0 && $shown_lines + $lines > $limit ) {
+			break;
+		}
+		$shown_lines += $lines;
+		$keep++;
+	}
+	$hidden = array_slice( $items, $keep );
+	if ( ! $hidden ) {
+		return $block_content;
+	}
+	$extra = 0;
+	foreach ( $hidden as $item ) {
+		$extra += 1 + $item->getElementsByTagName( 'li' )->length;
+	}
+
+	$more_item = $doc->createElement( 'li' );
+	$more_item->setAttribute( 'class', 'qpic-more' );
+	$details = $doc->createElement( 'details' );
+	$summary = $doc->createElement( 'summary' );
+	/* translators: %d: number of hidden list items */
+	$summary->appendChild( $doc->createTextNode( sprintf( _n( '%d more', '%d more', $extra, 'quickpic' ), $extra ) ) );
+	$rest = $doc->createElement( 'ul' );
+	foreach ( $hidden as $item ) {
+		$rest->appendChild( $item ); // Moves the item into the hidden list.
+	}
+	$details->appendChild( $summary );
+	$details->appendChild( $rest );
+	$more_item->appendChild( $details );
+	$list->appendChild( $more_item );
+
+	$html = '';
+	foreach ( $wrap->childNodes as $node ) {
+		$html .= $doc->saveHTML( $node );
+	}
+	return $html;
+}
+add_filter( 'render_block', 'quickpic_shorten_long_lists', 10, 2 );
+
 // Editor style: posts look in the editor much like they do on the site.
 function quickpic_add_editor_styles() {
 	add_theme_support( 'editor-styles' );

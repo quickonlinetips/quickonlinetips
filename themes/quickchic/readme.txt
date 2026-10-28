@@ -46,7 +46,7 @@ No. QuickChic uses the block widgets WordPress gives every site. Add any block (
 
 = What shows in the sidebar before I add widgets? =
 
-Search, Recent Posts, Categories and Archives, so a new site never looks empty. As soon as you add your own widgets, they take over. If your old widgets were moved to Inactive when you switched themes, drag them into the Sidebar in Appearance > Widgets.
+Search, Recent Posts and Categories, so a new site never looks empty. As soon as you add your own widgets, they take over. If your old widgets were moved to Inactive when you switched themes, drag them into the Sidebar in Appearance > Widgets.
 
 = How do I make a page without the sidebar? =
 
@@ -72,7 +72,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Updated date shown on edited posts
 * Print styles
 * Block widgets work out of the box; no Classic Widgets plugin needed
-* Sidebar shows Search, Recent Posts, Categories and Archives until you add widgets
+* Sidebar shows Search, Recent Posts and Categories until you add widgets
 * Starter content for new sites: sidebar widgets, three footer columns, About and Contact pages, main menu
 * One stylesheet instead of three; normalize.css replaced by a much smaller reset
 * Site title now shows on phones (it was hidden), at the top of the page

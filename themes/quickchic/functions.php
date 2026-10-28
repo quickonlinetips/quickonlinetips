@@ -57,7 +57,6 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 					'search'     => array( 'block', array( 'content' => '<!-- wp:search {"showLabel":false} /-->' ) ),
 					'recent'     => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Posts', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-posts /-->' ) ),
 					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories /-->' ) ),
-					'archives'   => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Archives', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:archives /-->' ) ),
 				),
 				// The three footer columns, so a new site shows the whole design.
 				'footer-1' => array(
@@ -141,7 +140,6 @@ function quickchic_default_sidebar() {
 		) ) . ' /-->' ),
 		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickchic' ), '<!-- wp:latest-posts /-->' ),
 		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ),
-		'widget_archive'         => array( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ),
 	);
 
 	foreach ( $sections as $class => $section ) {

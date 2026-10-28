@@ -75,6 +75,9 @@ if ( ! function_exists( 'quickstrap_setup' ) ) :
 				'right-sidebar' => array(
 					'search'     => array( 'block', array( 'content' => $quickstrap_search ) ),
 					'recent'     => array( 'block', array( 'content' => $quickstrap_heading( __( 'Recent Posts', 'quickstrap' ) ) . '<!-- wp:latest-posts /-->' ) ),
+				),
+				// The narrow left column, so a new site shows all three columns.
+				'left-sidebar'  => array(
 					'categories' => array( 'block', array( 'content' => $quickstrap_heading( __( 'Categories', 'quickstrap' ) ) . '<!-- wp:categories {"className":"qs-short"} /-->' ) ),
 				),
 				// Footer columns, so a new site shows the footer too.
@@ -118,7 +121,7 @@ function quickstrap_widgets_init() {
 	register_sidebar( array_merge( $wrappers, array(
 		'name'        => __( 'Left Sidebar', 'quickstrap' ),
 		'id'          => 'left-sidebar',
-		'description' => __( 'A narrow column on the left on wide screens. On tablets and phones it moves below the posts and the right sidebar. Leave it empty for a two-column layout.', 'quickstrap' ),
+		'description' => __( 'A narrow column on the left on wide screens. On tablets and phones it moves below the posts and the right sidebar. Leave it empty for a two-column layout. While both sidebars are empty, a few default widgets fill both.', 'quickstrap' ),
 	) ) );
 
 	register_sidebar( array_merge( $wrappers, array(
@@ -146,29 +149,53 @@ function quickstrap_widgets_init() {
 add_action( 'widgets_init', 'quickstrap_widgets_init' );
 
 /*
- * Default sidebar, shown only while the right sidebar has no widgets.
+ * Default sidebars, shown only while a sidebar has no widgets.
  * New sites park WordPress's own default widgets in Inactive, so without this
  * a new site would show an empty column. Built from WordPress's own blocks,
  * so it needs no plugin and looks the same as the block widgets people add
  * later in Appearance > Widgets. As soon as a widget is added, it steps aside.
- * A child theme can switch it off: add_filter( 'quickstrap_show_default_sidebar', '__return_false' );
+ *
+ * Right sidebar (while it is empty): Search, Recent Posts, Recent Comments.
+ * Left sidebar (only while BOTH sidebars are empty, so a new site shows the
+ * three-column design): Categories, a list that suits the narrow column.
+ * Once the owner fills the right sidebar, an empty left sidebar means
+ * "two columns, please" and nothing is shown there.
+ *
+ * A child theme can switch both off: add_filter( 'quickstrap_show_default_sidebar', '__return_false' );
  */
-function quickstrap_default_sidebar() {
-	if ( ! apply_filters( 'quickstrap_show_default_sidebar', true ) ) {
+function quickstrap_show_default_sidebar() {
+	return (bool) apply_filters( 'quickstrap_show_default_sidebar', true );
+}
+
+// Does the left sidebar show its default widgets?
+function quickstrap_show_default_left() {
+	return quickstrap_show_default_sidebar()
+		&& ! is_active_sidebar( 'left-sidebar' )
+		&& ! is_active_sidebar( 'right-sidebar' );
+}
+
+function quickstrap_default_sidebar( $side = 'right' ) {
+	if ( ! quickstrap_show_default_sidebar() ) {
 		return;
 	}
 
-	$search = '<!-- wp:search ' . wp_json_encode( array(
-		'label'      => __( 'Search', 'quickstrap' ),
-		'showLabel'  => false,
-		'buttonText' => __( 'Search', 'quickstrap' ),
-	) ) . ' /-->';
+	if ( 'left' === $side ) {
+		$sections = array(
+			'widget_categories' => array( __( 'Categories', 'quickstrap' ), '<!-- wp:categories {"className":"qs-short"} /-->' ),
+		);
+	} else {
+		$search = '<!-- wp:search ' . wp_json_encode( array(
+			'label'      => __( 'Search', 'quickstrap' ),
+			'showLabel'  => false,
+			'buttonText' => __( 'Search', 'quickstrap' ),
+		) ) . ' /-->';
 
-	$sections = array(
-		'widget_search'         => array( '', $search ),
-		'widget_recent_entries' => array( __( 'Recent Posts', 'quickstrap' ), '<!-- wp:latest-posts /-->' ),
-		'widget_categories'     => array( __( 'Categories', 'quickstrap' ), '<!-- wp:categories {"className":"qs-short"} /-->' ),
-	);
+		$sections = array(
+			'widget_search'          => array( '', $search ),
+			'widget_recent_entries'  => array( __( 'Recent Posts', 'quickstrap' ), '<!-- wp:latest-posts /-->' ),
+			'widget_recent_comments' => array( __( 'Recent Comments', 'quickstrap' ), '<!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ),
+		);
+	}
 
 	foreach ( $sections as $class => $section ) {
 		echo '<section class="widget ' . esc_attr( $class ) . '">';
@@ -513,9 +540,11 @@ function quickstrap_is_full_width() {
 	return is_singular() && is_page_template( 'full-width.php' );
 }
 
-// Does this page show the left sidebar? Only when it has widgets.
+// Does this page show the left sidebar? When it has widgets, or while
+// both sidebars are empty and it shows its default widgets.
 function quickstrap_has_left_sidebar() {
-	return ! quickstrap_is_full_width() && is_active_sidebar( 'left-sidebar' );
+	return ! quickstrap_is_full_width()
+		&& ( is_active_sidebar( 'left-sidebar' ) || quickstrap_show_default_left() );
 }
 
 // Bootstrap column classes for the posts column.

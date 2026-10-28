@@ -46,7 +46,7 @@ Go to Appearance > Menus, create a menu and tick Main Menu (the dark bar at the 
 
 = Why does a new site already show widgets and a menu? =
 
-On a brand-new WordPress install, QuickStrap offers starter content in Appearance > Customize: right sidebar widgets (Search, Recent Posts, Categories), three footer columns (About, Recent Comments, Pages), About and Contact pages and a main menu, so you see the whole design straight away. Nothing is saved until you click Publish, and sites that already have content never see it. Edit or remove any of it in Appearance > Widgets.
+On a brand-new WordPress install, QuickStrap offers starter content in Appearance > Customize: sidebar widgets (Search and Recent Posts on the right, Categories on the left), three footer columns (About, Recent Comments, Pages), About and Contact pages and a main menu, so you see the whole design straight away. Nothing is saved until you click Publish, and sites that already have content never see it. Edit or remove any of it in Appearance > Widgets.
 
 = Do I need the Classic Widgets plugin? =
 
@@ -54,11 +54,11 @@ No. QuickStrap uses the block widgets WordPress gives every site. Add any block 
 
 = What shows in the sidebar before I add widgets? =
 
-Search, Recent Posts and Categories, so a new site never looks empty. As soon as you add your own widgets to the Right Sidebar, they take over. If your old widgets were moved to Inactive when you switched themes, drag them into the sidebars in Appearance > Widgets.
+While both sidebars are empty, the right one shows Search, Recent Posts and Recent Comments and the narrow left one shows Categories, so a new site shows all three columns and never looks empty. As soon as you add your own widgets to a sidebar, they take over there. Once the Right Sidebar has widgets, an empty Left Sidebar simply isn't shown and the posts widen (a two-column site). If your old widgets were moved to Inactive when you switched themes, drag them into the sidebars in Appearance > Widgets.
 
 = How do the two sidebars work? =
 
-The Right Sidebar is the main one. The Left Sidebar is a narrow column on the left on wide screens; leave it empty for a two-column site, or add widgets for three columns. On tablets and phones the sidebars move below the posts (right sidebar first), so their widgets are never hidden.
+The Right Sidebar is the main one. The Left Sidebar is a narrow column on the left on wide screens; add widgets for three columns, or leave it empty for a two-column site (while both sidebars are still empty, default widgets fill both). On tablets and phones the sidebars move below the posts (right sidebar first), so their widgets are never hidden.
 
 = How do I make a page without the sidebars? =
 
@@ -103,7 +103,7 @@ The theme's code lives on GitHub (https://github.com/quickonlinetips/quickonline
 * Print styles
 * Block styles (Accent bar for quotes, Soft box for groups) and two block patterns (newsletter sign-up box, about the author)
 * Block widgets work out of the box; no Classic Widgets plugin needed
-* Right sidebar shows Search, Recent Posts and Categories until you add widgets
+* Until you add widgets, the right sidebar shows Search, Recent Posts and Recent Comments, and the left sidebar shows Categories, so a new site shows all three columns
 * Starter content for new sites: sidebar widgets, footer columns, About and Contact pages, main menu
 * Custom logo and tagline in the header; widget wrappers fixed (they closed a paragraph that was never opened)
 * Numbered pagination, featured image on single posts, previous and next post links

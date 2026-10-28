@@ -647,6 +647,34 @@ figcaption {
 	max-width: 100%;
 }
 
+/* "12 more" at the end of a long list (sidebars and footer): opens in place, no JavaScript */
+.qs-more summary {
+	cursor: pointer;
+	color: var(--qs-link);
+	font-weight: 600;
+	list-style-position: inside;
+}
+
+.qs-more summary::marker {
+	color: var(--qs-accent);
+}
+
+.qs-more details[open] summary {
+	margin-bottom: 3px;
+}
+
+/* The opened items line up with the first ten (sub-items keep their indent) */
+.sidebar .qs-more > details > ul,
+.footer-widgets .qs-more > details > ul {
+	margin: 0;
+}
+
+/* The "more" line has no rule of its own; the opened items keep theirs */
+.sidebar li.qs-more,
+.sidebar .qs-more li:last-child {
+	border-bottom: 0;
+}
+
 /* Block widgets (the default in Appearance > Widgets) */
 
 .sidebar .wp-block-group__inner-container > * {

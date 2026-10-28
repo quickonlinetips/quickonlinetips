@@ -11,7 +11,7 @@ if ( ! quickstrap_has_left_sidebar() ) {
 	return;
 }
 ?>
-<aside id="sidebar-left" class="sidebar sidebar-left col-12 col-lg-2 order-3 order-lg-1" aria-label="<?php esc_attr_e( 'Left sidebar', 'quickstrap' ); ?>">
+<aside id="sidebar-left" class="<?php echo esc_attr( quickstrap_column_class( 'left' ) ); ?>" aria-label="<?php esc_attr_e( 'Left sidebar', 'quickstrap' ); ?>">
 	<?php
 	if ( is_active_sidebar( 'left-sidebar' ) ) {
 		dynamic_sidebar( 'left-sidebar' );

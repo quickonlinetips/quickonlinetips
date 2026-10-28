@@ -4,7 +4,7 @@ if ( quickstrap_is_full_width() ) {
 	return;
 }
 ?>
-<aside id="sidebar" class="sidebar sidebar-right col-md-4 order-2 order-lg-3" aria-label="<?php esc_attr_e( 'Sidebar', 'quickstrap' ); ?>">
+<aside id="sidebar" class="<?php echo esc_attr( quickstrap_column_class( 'right' ) ); ?>" aria-label="<?php esc_attr_e( 'Sidebar', 'quickstrap' ); ?>">
 	<?php
 	if ( is_active_sidebar( 'right-sidebar' ) ) {
 		dynamic_sidebar( 'right-sidebar' );

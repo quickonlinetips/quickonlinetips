@@ -121,7 +121,7 @@ function quickstrap_widgets_init() {
 	register_sidebar( array_merge( $wrappers, array(
 		'name'        => __( 'Left Sidebar', 'quickstrap' ),
 		'id'          => 'left-sidebar',
-		'description' => __( 'A narrow column on the left on wide screens. On tablets and phones it moves below the posts and the right sidebar. Leave it empty for a two-column layout. While both sidebars are empty, a few default widgets fill both.', 'quickstrap' ),
+		'description' => __( 'A narrow column on the left on wide screens (Appearance > Customize > Layout can widen it or swap the sides). On tablets and phones it moves below the posts and the right sidebar. Leave it empty for a two-column layout. While both sidebars are empty, a few default widgets fill both.', 'quickstrap' ),
 	) ) );
 
 	register_sidebar( array_merge( $wrappers, array(
@@ -440,6 +440,39 @@ function quickstrap_manual_excerpt_more( $excerpt ) {
 add_filter( 'get_the_excerpt', 'quickstrap_manual_excerpt_more', 20 );
 
 /*
+ * Customizer: Appearance > Customize > Layout
+ * Where the two sidebars go on wide screens (see quickstrap_layout()).
+ */
+function quickstrap_customize_layout( $wp_customize ) {
+
+	$wp_customize->add_section( 'quickstrap_layout', array(
+		'title'       => __( 'Layout', 'quickstrap' ),
+		'description' => __( 'How the two sidebars sit beside your posts on wide screens. A sidebar with no widgets isn\'t shown, and the posts widen to fill its space. On tablets and phones the sidebars always move below the posts, so no widget is hidden.', 'quickstrap' ),
+		'priority'    => 44,
+	) );
+
+	$wp_customize->add_setting( 'quickstrap_layout', array(
+		'default'           => 'narrow',
+		'sanitize_callback' => 'quickstrap_sanitize_layout',
+	) );
+	$wp_customize->add_control( 'quickstrap_layout', array(
+		'type'    => 'radio',
+		'label'   => __( 'Sidebars', 'quickstrap' ),
+		'section' => 'quickstrap_layout',
+		'choices' => array(
+			'narrow' => __( 'Narrow Left Sidebar, wider Right Sidebar', 'quickstrap' ),
+			'equal'  => __( 'Both sidebars the same width (more room on the left)', 'quickstrap' ),
+			'swap'   => __( 'Swapped: Right Sidebar on the left, Left Sidebar on the right', 'quickstrap' ),
+		),
+	) );
+}
+add_action( 'customize_register', 'quickstrap_customize_layout' );
+
+function quickstrap_sanitize_layout( $value ) {
+	return in_array( $value, array( 'narrow', 'equal', 'swap' ), true ) ? $value : 'narrow';
+}
+
+/*
  * Customizer: Appearance > Customize > Post Lists
  * - Show excerpts (default) or full posts on the home page and archives.
  * - Excerpt length in words (WordPress's default is 55).
@@ -564,15 +597,61 @@ function quickstrap_has_left_sidebar() {
 		&& ( is_active_sidebar( 'left-sidebar' ) || quickstrap_show_default_left() );
 }
 
-// Bootstrap column classes for the posts column.
+/*
+ * Sidebar layout, from Appearance > Customize > Layout:
+ * - narrow: narrow Left Sidebar, wider Right Sidebar (2 | 6 | 4), the default
+ * - equal:  both sidebars the same width (3 | 6 | 3), roomier for the Left Sidebar
+ * - swap:   the two sidebars swap sides (4 | 6 | 2): the Right Sidebar's
+ *           widgets on the left, the Left Sidebar's on the right. With the
+ *           Left Sidebar empty, this is a two-column site with the sidebar on the left.
+ * On tablets and phones every layout is the same: posts first, then the Right
+ * Sidebar, then the Left Sidebar, so no widget is ever hidden.
+ */
+function quickstrap_layout() {
+	$layout = get_theme_mod( 'quickstrap_layout', 'narrow' );
+	return in_array( $layout, array( 'narrow', 'equal', 'swap' ), true ) ? $layout : 'narrow';
+}
+
+/*
+ * Bootstrap column classes for the three columns: 'content', 'right' or 'left'.
+ * The order classes put the posts first in small screens and in the middle on wide ones.
+ */
+function quickstrap_column_class( $column ) {
+	$layout = quickstrap_layout();
+	$swap   = 'swap' === $layout;
+
+	if ( 'content' === $column ) {
+		if ( quickstrap_is_full_width() ) {
+			return 'content col-12';
+		}
+		if ( quickstrap_has_left_sidebar() ) {
+			return 'content col-md-8 col-lg-6 order-1' . ( $swap ? ' order-md-2' : ' order-lg-2' );
+		}
+		// No Left Sidebar: the posts take its space.
+		return 'content col-md-8 order-1' . ( $swap ? ' order-md-2' : '' );
+	}
+
+	if ( 'right' === $column ) {
+		$class = 'sidebar sidebar-right col-md-4 order-2';
+		if ( $swap ) {
+			return $class . ' order-md-1';
+		}
+		if ( 'equal' === $layout && quickstrap_has_left_sidebar() ) {
+			$class .= ' col-lg-3';
+		}
+		return $class . ' order-lg-3';
+	}
+
+	// The Left Sidebar: full width below the others until wide screens.
+	if ( $swap ) {
+		return 'sidebar sidebar-left col-12 col-lg-2 order-3';
+	}
+	return 'sidebar sidebar-left col-12 order-3 order-lg-1 ' . ( 'equal' === $layout ? 'col-lg-3' : 'col-lg-2' );
+}
+
+// The posts column's classes (kept for child themes that call it).
 function quickstrap_content_class() {
-	if ( quickstrap_is_full_width() ) {
-		return 'content col-12';
-	}
-	if ( quickstrap_has_left_sidebar() ) {
-		return 'content col-md-8 col-lg-6 order-1 order-lg-2';
-	}
-	return 'content col-md-8'; // No left sidebar: posts take its space.
+	return quickstrap_column_class( 'content' );
 }
 
 // The posts column's width for embeds and large images.

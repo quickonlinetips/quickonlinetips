@@ -645,6 +645,33 @@ figcaption {
 }
 
 
+/* Below Posts widgets: a soft box under the post */
+.after-post {
+	margin: 25px 0;
+	padding: 14px 18px;
+	background: var(--qs-soft);
+	border-left: 3px solid var(--qs-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.after-post .widget {
+	margin: 0 0 14px;
+}
+
+.after-post .widget:last-child {
+	margin-bottom: 0;
+}
+
+/* Below Posts headings stay plain: the box already has an accent edge */
+.after-post h2,
+.after-post .widget-title {
+	display: block;
+	font-size: 1.15em;
+	margin: 0 0 6px;
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
 /* 8. Comments and forms
 ------------------------------------- */
 

@@ -236,6 +236,16 @@ function quickpress_post_meta( $show_comments = true ) {
 		esc_html( get_the_date() )
 	);
 
+	// On a post's own page, show when it was last updated (if a day or more after publishing).
+	if ( is_singular() && get_the_modified_time( 'U' ) - get_the_time( 'U' ) >= DAY_IN_SECONDS ) {
+		printf(
+			' | <span class="updated-date">%1$s <time datetime="%2$s">%3$s</time></span>',
+			esc_html__( 'Updated', 'quickpress' ),
+			esc_attr( get_the_modified_date( 'c' ) ),
+			esc_html( get_the_modified_date() )
+		);
+	}
+
 	/* translators: %s: post author name */
 	echo ' | ' . sprintf( esc_html__( 'By %s', 'quickpress' ), esc_html( get_the_author() ) );
 

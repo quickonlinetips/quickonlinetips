@@ -653,6 +653,24 @@ figcaption {
 
 /* Block widgets (the default in Appearance > Widgets) */
 
+/* Details block (Categories, Archives): a title that opens to a list, no JavaScript */
+.wp-block-details summary {
+	cursor: pointer;
+	font-family: var(--qc-heading-font);
+	font-size: 1.15em;
+	font-weight: bold;
+	list-style-position: outside;
+	margin-left: 1em;
+}
+
+.wp-block-details summary::marker {
+	color: var(--qc-accent);
+}
+
+.wp-block-details[open] summary {
+	margin-bottom: 6px;
+}
+
 #sidebar .wp-block-group__inner-container > * {
 	margin-top: 0;
 }

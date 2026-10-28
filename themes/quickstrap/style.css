@@ -1,210 +1,226 @@
 /*
 Theme Name: QuickStrap
 Theme URI: https://www.quickonlinetips.com/archives/quickstrap-wordpress-theme/
+Description: QuickStrap is a fast Bootstrap blog theme.
+Version: 1.4
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
 Author: QuickOnlineTips
 Author URI: https://www.quickonlinetips.com/
-Description: A lightweight 3-columns responsive Bootstrap starter theme, Font Awesome preloaded, full width page options, 3 footer widgets, SEO optimized, fast loading, minimal styling, easy to customize WordPress theme.
-Version: 1.3
-Requires at least: 5.0
-Tested up to: 6.1
-Requires PHP: 7.0
-Tags: three-columns, right-sidebar, left-sidebar, threaded-comments, sticky-post, custom-background,  translation-ready, editor-style, custom-menu, featured-images
+Tags: blog, three-columns, two-columns, left-sidebar, right-sidebar, custom-background, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, sticky-post, threaded-comments, translation-ready
 Text Domain: quickstrap
-License: GNU General Public License v2.0
+License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-QuickStrap WordPress Theme, Copyright 2019 QuickOnlineTips.com
-QuickStrap is distributed under the terms of the GNU GPL
+
+QuickStrap WordPress Theme, Copyright 2026 QuickOnlineTips.com
+QuickStrap is distributed under the terms of the GNU GPL.
 */
 
+/* Contents
+-------------------------------------
+Bootstrap (vendor/bootstrap/bootstrap.min.css) loads first and does the
+heavy lifting: the reset, the grid, typography and its components. This
+file only adds QuickStrap's own look on top.
 
-/* Theme Validity --------------------- */
+1. Settings (colours and sizes)
+2. Typography
+3. Header and menu
+4. Layout
+5. Posts and pages
+6. Images and block content
+7. Sidebars
+8. Comments and forms
+9. Navigation
+10. Footer
+11. Accessibility
+12. Phones and tablets
+------------------------------------- */
 
-.wp-caption {}
 
-.wp-caption-text {
-    font-style: italic;
-    color: #999;
+/* 1. Settings
+   Change these few values to recolour the whole theme. Greys, borders and
+   backgrounds come from Bootstrap's own variables (--bs-...).
+------------------------------------- */
+
+:root {
+	--qs-brand: #212529;   /* the top bar, Bootstrap's dark */
+	--qs-accent: #0d6efd;  /* links, buttons, highlights: Bootstrap's blue */
+	--qs-link: var(--qs-accent);
+	--qs-accent-text: var(--qs-accent); /* accent-coloured words */
+	--qs-on-brand: #fff;
+	--qs-on-accent: #fff;
+	--qs-muted: var(--bs-secondary-color);
+	--qs-border: var(--bs-border-color);
+	--qs-line: var(--bs-border-color-translucent);
+	--qs-soft: var(--bs-tertiary-bg);
+	--qs-field: var(--bs-body-bg);
+	--qs-field-border: color-mix(in srgb, var(--bs-body-color) 28%, var(--bs-body-bg));
+
+	/* Bootstrap's own settings, a little more compact than its 16px default */
+	--bs-body-font-size: 0.9375rem; /* 15px */
+	--bs-body-line-height: 1.55;
 }
 
-.sticky {
-    background: #f9f9f9;
-    padding: 10px 15px 5px; 
-	border-left: 2px solid #CCC;
+
+/* 2. Typography
+------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	line-height: 1.25;
+	margin: 1.4em 0 0.5em;
 }
 
-.gallery-caption {
-    font-style: italic;
-    color: #999;
+/* Headings grow smoothly from phone to desktop, up to QuickStrap's sizes */
+h1 {
+	font-size: clamp(1.7rem, 1.4rem + 1.2vw, 2.2rem);
 }
 
-.bypostauthor {
-    background: #f9f9f9;
+h2 {
+	font-size: clamp(1.45rem, 1.25rem + 0.8vw, 1.8rem);
 }
 
-.alignright {
-    float: right;
-    margin-left: 10px;
+h3 {
+	font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
 }
 
-.alignleft {
-    float: left;
-    margin-right: 10px;
+h4 {
+	font-size: 1.2rem;
 }
 
-.aligncenter {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+h5,
+h6 {
+	font-size: 1.05rem;
 }
 
-
-/* Essential Styles ------------------- */
-.h1, h1 {
-    font-size: 2.2rem;
-}
-.h2, h2 {
-    font-size: 1.8rem;
-}
-.h3, h3 {
-    font-size: 1.6rem;
+a {
+	color: var(--qs-link);
+	text-decoration: none;
 }
 
 a:hover {
-	text-decoration: none;
-}
-
-h2 a  {
-	color: #333;
-	text-decoration: none;
-}
-
-h2 a:hover {
+	color: var(--qs-link);
 	text-decoration: underline;
 }
 
-.sidebar,
-.sidebar-left,
-.footer-widget {
-    overflow: hidden;
+blockquote {
+	margin: 1.5em 0;
+	padding: 0 0 0 20px;
+	border-left: 4px solid var(--qs-border);
+	color: var(--qs-muted);
 }
 
-.sidebar-widget ul,
-.footer-widget ul {
-    list-style: none !important;
-    padding-left: 5px;
-}
- 
- 
-.navbar-nav a {
-	color: #DDD;
+blockquote cite {
 	display: block;
-    padding: .5rem 1rem;
-}
- 
-.type-page {
-    overflow: hidden;
+	margin-top: 5px;
+	font-size: 0.9em;
 }
 
-.post {
-    overflow: hidden;
-}
- 
-.page img {
-    max-width: 100%;
-    height: auto;
-}
-
-.post img {
-    max-width: 100%;
-    height: auto;
+pre {
+	background: var(--qs-soft);
+	border: 1px solid var(--qs-border);
+	border-radius: 6px;
+	padding: 10px 12px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
-.comment {
-    margin: 15px 0;
-    padding: 10px; 
-    list-style: none;
-	border-top: 1px solid #DDD;
+code {
+	background: var(--qs-soft);
+	padding: 1px 4px;
+	border-radius: 3px;
 }
 
-.commentlist {
-    padding-left: 0px;
+pre code {
+	background: none;
+	padding: 0;
 }
 
-.comment-author { 
-}
-
-.fn {
-    font-weight: bold;
-}
-
-.comment-meta { 
-    margin: 5px 0 10px;
-}
-
-.depth-2,
-.depth-3,
-.depth-4,
-.depth-5 {
-    list-style: none !important;
-}
-
-textarea {
-    width: 100%
-}
-
-embed,
-iframe,
-object,
-video {
-    max-width: 100%;
-}
-
-.main-footer { 
-}
-
-.emptybox {
-	border: 1px solid #CCC;
-	background-color: #fff;
-	padding: 5px;
-	text-align: center;
-	text-transform: uppercase;
+hr {
+	margin: 2em 0;
 }
 
 
-/* Text for screen readers --------------- */
+/* 3. Header and menu
+   Bootstrap's dark navbar: site title on the left, menu on the right.
+------------------------------------- */
 
-.screen-reader-text {
-    clip: rect(1px, 1px, 1px, 1px);
-    position: absolute !important;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
+.site-header {
+	padding: 1rem 0;
+	margin-bottom: 2.25rem;
+	background: var(--qs-brand);
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	--bs-navbar-color: rgba(255, 255, 255, 0.8);
+	--bs-navbar-hover-color: #fff;
+	--bs-navbar-active-color: #fff;
 }
 
-.screen-reader-text:focus {
-    background-color: #f1f1f1;
-    border-radius: 3px;
-    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-    clip: auto !important;
-    color: #21759b;
-    display: block;
-    font-size: 14px;
-    font-size: 0.875rem;
-    font-weight: bold;
-    height: auto;
-    left: 5px;
-    line-height: normal;
-    padding: 15px 23px 14px;
-    text-decoration: none;
-    top: 5px;
-    width: auto;
-    z-index: 100000;
-    /* Above WP toolbar. */
+.site-branding {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 14px;
+	min-width: 0;
+	margin-right: 1rem;
 }
 
+/* The site title: bigger and heavier than the menu, with a short accent
+   bar underneath so it reads as the name of the site */
+.site-title {
+	flex-basis: 100%;
+	margin: 0;
+	font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.75rem);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+	overflow-wrap: anywhere;
+}
 
-/* Menu button without JavaScript ------- */
+.custom-logo-link + .site-title {
+	flex-basis: auto;
+}
 
+.site-title::after {
+	content: "";
+	display: block;
+	width: 42px;
+	height: 4px;
+	margin-top: 9px;
+	border-radius: 2px;
+	background: var(--qs-accent);
+}
+
+.site-title a,
+.site-title a:hover {
+	color: var(--qs-on-brand);
+	text-decoration: none;
+}
+
+.site-title a:hover {
+	opacity: 0.85;
+}
+
+.site-description {
+	flex-basis: 100%;
+	margin: 4px 0 0;
+	font-size: 0.875rem;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+.custom-logo {
+	display: block;
+	max-height: 60px;
+	width: auto;
+}
+
+/* The phone menu button works without JavaScript: it is the label of a
+   hidden checkbox, and ticking the box shows the menu */
 .qs-menu-toggle {
 	position: absolute;
 	width: 1px;
@@ -218,4 +234,797 @@ video {
 
 .qs-menu-toggle:focus-visible + .navbar-toggler {
 	box-shadow: 0 0 0 var(--bs-navbar-toggler-focus-width);
+}
+
+.navbar-toggler {
+	cursor: pointer;
+}
+
+.main-menu .nav-link {
+	font-weight: 500;
+}
+
+/* The page you are on: a short accent bar under its menu link,
+   the same mark as under the site title */
+.main-menu li {
+	position: relative;
+}
+
+.main-menu .current-menu-item > a::after {
+	content: "";
+	position: absolute;
+	left: var(--bs-navbar-nav-link-padding-x, 0);
+	bottom: 2px;
+	width: 22px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--qs-accent);
+}
+
+
+/* 4. Layout
+   Bootstrap's grid does the columns (see quickstrap_content_class() in
+   functions.php). These rules only add breathing room.
+------------------------------------- */
+
+#page {
+	min-height: 40vh;
+}
+
+.content,
+.sidebar {
+	min-width: 0;
+	margin-bottom: 2rem;
+}
+
+
+/* 5. Posts and pages
+------------------------------------- */
+
+#content main > :first-child,
+.entry-title,
+.page-title {
+	margin-top: 0;
+}
+
+.page-header {
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--qs-border);
+}
+
+.archive-description {
+	color: var(--qs-muted);
+}
+
+/* Posts in a list: separated by a thin line, like the original <hr> */
+#content main > article {
+	margin: 0 0 1.75rem;
+	padding-bottom: 1.25rem;
+	border-bottom: 1px solid var(--qs-border);
+}
+
+#content main > article:last-of-type,
+.single #content main > article,
+.page #content main > article {
+	border-bottom: 0;
+}
+
+.entry-title {
+	margin-bottom: 4px;
+}
+
+.entry-title a {
+	color: var(--bs-emphasis-color);
+}
+
+.entry-title a:hover {
+	color: var(--qs-link);
+	text-decoration: none;
+}
+
+.post-meta {
+	margin: 0 0 8px;
+	font-size: 0.85em;
+	line-height: 1.4;
+	color: var(--qs-muted);
+}
+
+.post-meta a {
+	color: var(--qs-muted);
+	text-decoration: underline;
+	text-decoration-color: var(--qs-border);
+	text-underline-offset: 2px;
+}
+
+.post-meta a:hover {
+	color: var(--qs-link);
+}
+
+.single .post-meta {
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--qs-border);
+}
+
+.entry {
+	line-height: 1.6;
+	display: flow-root; /* keeps floated images inside the post */
+}
+
+.entry a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.entry a:hover {
+	text-decoration-thickness: 2px;
+}
+
+.entry > :first-child {
+	margin-top: 0;
+}
+
+.read-more,
+.more-link {
+	white-space: nowrap;
+}
+
+.sticky {
+	padding: 12px 16px;
+	background: var(--qs-soft);
+	border-left: 3px solid var(--qs-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.post-tags {
+	font-size: 0.9em;
+	color: var(--qs-muted);
+}
+
+.page-links {
+	margin: 1.5em 0;
+}
+
+.page-links > span,
+.page-links > a {
+	margin-right: 5px;
+}
+
+
+/* 6. Images and block content
+------------------------------------- */
+
+.alignleft {
+	float: left;
+	margin: 5px 20px 10px 0;
+}
+
+.alignright {
+	float: right;
+	margin: 5px 0 10px 20px;
+}
+
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.alignwide,
+.alignfull {
+	max-width: 100%;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+embed,
+iframe,
+object,
+video {
+	max-width: 100%;
+}
+
+/* Thumbnails in post lists: rounded, on the right */
+.post-thumb {
+	margin: 4px 0 10px 18px;
+}
+
+.post-thumb img {
+	display: block;
+	border-radius: var(--bs-border-radius);
+}
+
+.post-image {
+	margin: 0 0 1.25em;
+}
+
+.post-image img {
+	display: block;
+	border-radius: var(--bs-border-radius);
+}
+
+figure {
+	margin: 1.5em 0;
+}
+
+.wp-caption {
+	max-width: 100%;
+}
+
+.wp-caption-text,
+.gallery-caption,
+figcaption {
+	font-size: 0.85em;
+	color: var(--qs-muted);
+	text-align: center;
+	margin-top: 5px;
+}
+
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	margin: 1.5em 0;
+}
+
+.gallery-columns-1 { grid-template-columns: 1fr; }
+.gallery-columns-2 { grid-template-columns: repeat(2, 1fr); }
+.gallery-columns-4 { grid-template-columns: repeat(4, 1fr); }
+.gallery-columns-5 { grid-template-columns: repeat(5, 1fr); }
+
+.gallery-item {
+	margin: 0;
+	text-align: center;
+}
+
+.entry table:not(.table),
+.wp-block-table table {
+	width: 100%;
+	margin: 1.5em 0;
+}
+
+.entry table:not(.table) th,
+.entry table:not(.table) td {
+	padding: 6px 8px;
+	border: 1px solid var(--qs-border);
+}
+
+.entry table:not(.table) th {
+	background: var(--qs-soft);
+}
+
+.wp-block-button__link,
+.wp-element-button {
+	background: var(--qs-accent);
+	color: var(--qs-on-accent);
+	border-radius: var(--bs-border-radius);
+}
+
+.entry .wp-block-button__link,
+.entry .btn {
+	text-decoration: none;
+}
+
+.wp-block-pullquote {
+	border-top: 3px solid var(--qs-accent);
+	border-bottom: 3px solid var(--qs-accent);
+}
+
+.wp-block-pullquote blockquote {
+	border: 0;
+	padding: 0;
+}
+
+
+/* 7. Sidebars
+------------------------------------- */
+
+.sidebar {
+	font-size: 0.9em;
+	line-height: 1.45;
+}
+
+.widget {
+	margin: 0 0 1.75rem;
+}
+
+/* Widget headings, sidebars and footer alike: a short accent underline */
+.widget-title,
+.sidebar h2,
+.footer-widgets h2 {
+	display: inline-block;
+	font-size: 1.15em;
+	margin: 0 0 8px;
+	padding-bottom: 3px;
+	border-bottom: 2px solid var(--qs-accent);
+}
+
+.sidebar ul,
+.sidebar ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* Sidebar lists: one line per item with a light rule between,
+   the QuickStrap look since the first version */
+.sidebar li {
+	padding: 4px 0;
+	border-bottom: 1px solid var(--qs-line);
+}
+
+.sidebar li li:last-child {
+	border-bottom: 0;
+}
+
+.sidebar ul ul {
+	margin: 4px 0 0 12px;
+}
+
+.sidebar select {
+	max-width: 100%;
+}
+
+/* Block widgets (the default in Appearance > Widgets) */
+
+.sidebar .wp-block-group__inner-container > * {
+	margin-top: 0;
+}
+
+.sidebar .wp-block-search__label {
+	display: block;
+	font-weight: 600;
+	margin: 0 0 6px;
+}
+
+.sidebar .wp-block-latest-comments,
+.footer-widgets .wp-block-latest-comments {
+	font-size: inherit;
+	padding: 0;
+}
+
+.sidebar .wp-block-latest-comments__comment {
+	margin: 0;
+	line-height: 1.4;
+}
+
+.sidebar .wp-block-latest-comments__comment-meta {
+	font-size: 1em;
+}
+
+.sidebar .wp-block-latest-posts__post-date {
+	font-size: 0.9em;
+	color: var(--qs-muted);
+}
+
+/* Above Posts widgets: plain, a little space before the post */
+.top-post {
+	margin: 0 0 1.25rem;
+}
+
+.top-post .widget {
+	margin-bottom: 1rem;
+}
+
+
+/* 8. Comments and forms
+------------------------------------- */
+
+/* Text fields: same height as the buttons, soft accent ring when typing.
+   :where() keeps these rules weaker than Bootstrap's own classes, so a
+   .form-control in a post still looks like Bootstrap's. */
+:where(input[type="text"], input[type="email"], input[type="url"], input[type="password"], input[type="search"], input[type="number"], input[type="tel"], select, textarea, .wp-block-search__input) {
+	max-width: 100%;
+	padding: 8px 11px;
+	line-height: 1.4;
+	border: 1px solid var(--qs-field-border);
+	border-radius: 6px;
+	background: var(--qs-field);
+	color: var(--bs-body-color);
+}
+
+:where(input, select, textarea):focus {
+	outline: none;
+	border-color: var(--qs-accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--qs-accent) 20%, transparent);
+}
+
+textarea {
+	width: 100%;
+}
+
+/* Buttons in forms and search boxes: accent colour, a touch darker on hover.
+   Bootstrap's own .btn buttons in posts keep their look. */
+input[type="submit"],
+.search-submit,
+.wp-block-search__button,
+.comment-form .submit {
+	cursor: pointer;
+	background: var(--qs-accent);
+	color: var(--qs-on-accent);
+	border: 1px solid var(--qs-accent);
+	border-radius: 6px;
+	padding: 8px 16px;
+	line-height: 1.4;
+	font-weight: 600;
+}
+
+input[type="submit"]:hover,
+.search-submit:hover,
+.wp-block-search__button:hover {
+	filter: brightness(0.9);
+}
+
+/* Search: box and button side by side, same height */
+.search-form,
+.wp-block-search__inside-wrapper {
+	display: flex;
+	align-items: stretch;
+	gap: 6px;
+}
+
+.search-form {
+	margin: 15px 0;
+}
+
+.search-form label,
+.wp-block-search__input {
+	flex: 1;
+	min-width: 0;
+}
+
+.search-field {
+	width: 100%;
+}
+
+.wp-block-search__button {
+	margin: 0;
+}
+
+.comments {
+	clear: both;
+	margin-top: 40px;
+}
+
+.comments-title {
+	font-size: 1.3em;
+	margin-bottom: 10px;
+}
+
+.commentlist,
+.commentlist .children {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.commentlist .children {
+	margin: 6px 0 0 14px;
+	border-left: 1px solid var(--qs-border);
+	padding-left: 10px;
+}
+
+/* Each comment: a compact box, 6px apart */
+.commentlist .comment-body {
+	border: 1px solid var(--qs-border);
+	border-radius: 6px;
+	padding: 8px 12px;
+	margin: 0 0 6px;
+}
+
+.comment-content p {
+	margin: 0 0 6px;
+}
+
+.comment-content p:last-child {
+	margin-bottom: 0;
+}
+
+.commentlist .bypostauthor > .comment-body {
+	background: var(--qs-soft);
+}
+
+.comment-author .avatar {
+	float: left;
+	margin: 0 8px 0 0;
+	border-radius: 50%;
+}
+
+.comment-author .fn {
+	font-style: normal;
+	font-weight: 600;
+}
+
+.comment-meta {
+	display: flow-root; /* holds the small avatar */
+	font-size: 0.8em;
+	line-height: 1.35;
+	margin-bottom: 4px;
+}
+
+.comment-meta a {
+	color: var(--qs-muted);
+}
+
+.reply {
+	margin-top: 3px;
+	font-size: 0.85em;
+}
+
+.comment-respond {
+	margin: 24px 0 20px;
+}
+
+.comment-form label {
+	display: block;
+	margin-bottom: 3px;
+	font-size: 0.9em;
+	font-weight: 600;
+}
+
+.comment-form p {
+	margin: 0 0 14px;
+}
+
+.comment-form-cookies-consent label {
+	display: inline;
+	font-weight: normal;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form input[type="url"] {
+	width: 100%;
+	max-width: 420px;
+}
+
+.no-comments {
+	color: var(--qs-muted);
+}
+
+
+/* 9. Navigation
+------------------------------------- */
+
+.navigation {
+	display: flow-root;
+	margin: 20px 0;
+}
+
+.post-nav .alignleft,
+.post-nav .alignright,
+.image-nav .alignleft,
+.image-nav .alignright {
+	margin: 0;
+	max-width: 48%;
+}
+
+.navigation.pagination {
+	display: block;
+}
+
+.pagination .nav-links,
+.comment-navigation .nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+
+.comment-navigation .nav-next {
+	margin-left: auto;
+}
+
+/* Page numbers: outlined boxes; the current page is filled in */
+.page-numbers {
+	display: inline-block;
+	min-width: 2.4em;
+	padding: 5px 11px;
+	line-height: 1.4;
+	text-align: center;
+	border: 1px solid var(--qs-border);
+	border-radius: 6px;
+	color: var(--qs-link);
+}
+
+a.page-numbers:hover {
+	text-decoration: none;
+	background: var(--qs-accent);
+	border-color: var(--qs-accent);
+	color: var(--qs-on-accent);
+}
+
+.page-numbers.current {
+	background: var(--qs-accent);
+	border-color: var(--qs-accent);
+	color: var(--qs-on-accent);
+	font-weight: bold;
+}
+
+.page-numbers.dots {
+	min-width: 0;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-color: transparent;
+	color: var(--qs-muted);
+}
+
+
+/* 10. Footer
+   A light band across the page, like the original QuickStrap.
+------------------------------------- */
+
+.site-footer {
+	margin-top: 1rem;
+	background: var(--qs-soft);
+	border-top: 1px solid var(--qs-border);
+	font-size: 0.9em;
+}
+
+.footer-widgets {
+	padding: 2rem 0 0.5rem;
+	line-height: 1.45;
+}
+
+.footer-widgets .widget {
+	margin-bottom: 1.5rem;
+}
+
+.footer-widgets ul,
+.footer-widgets ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.footer-widgets li {
+	margin: 0 0 4px;
+}
+
+.footer-widgets ul ul {
+	margin: 4px 0 0 12px;
+}
+
+.footer-widgets p {
+	margin: 0 0 8px;
+}
+
+.site-info {
+	padding: 1rem 0 1.25rem;
+	text-align: center;
+	color: var(--qs-muted);
+}
+
+.footer-widgets + .site-info {
+	border-top: 1px solid var(--qs-border);
+}
+
+.site-info p {
+	margin: 3px 0;
+}
+
+.footer-menu ul {
+	list-style: none;
+	margin: 0 0 10px;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 5px 18px;
+}
+
+.credits {
+	opacity: 0.85;
+}
+
+
+/* 11. Accessibility
+------------------------------------- */
+
+/* Hidden on screen but read aloud by screen readers */
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	word-wrap: normal !important;
+}
+
+/* The Skip to content link appears when reached with the Tab key */
+.skip-link:focus {
+	clip: auto;
+	clip-path: none;
+	height: auto;
+	width: auto;
+	margin: 0;
+	top: 10px;
+	left: 10px;
+	z-index: 100000;
+	padding: 10px 15px;
+	background: var(--bs-body-bg);
+	color: var(--qs-link);
+	font-weight: bold;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+a:focus-visible {
+	outline: 2px solid var(--qs-accent);
+	outline-offset: 2px;
+}
+
+
+/* 12. Phones and tablets
+------------------------------------- */
+
+/* Below 992px the menu folds behind the button; open, it lists the links */
+@media (max-width: 991.98px) {
+
+	.main-menu .navbar-nav {
+		padding-top: 10px;
+	}
+
+	.main-menu .current-menu-item > a::after {
+		bottom: 4px;
+	}
+
+	/* The left sidebar sits below the posts and right sidebar here:
+	   its widgets spread out side by side instead of one long column */
+	.sidebar-left {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 0 30px;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--qs-border);
+	}
+}
+
+@media (max-width: 767.98px) {
+
+	.site-header {
+		margin-bottom: 1.5rem;
+	}
+
+	/* The right sidebar under the posts, set off by a line */
+	.sidebar-right {
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--qs-border);
+	}
+
+	/* 16px fields stop iPhones zooming in when someone taps to type */
+	input,
+	select,
+	textarea {
+		font-size: 16px;
+	}
+
+	.gallery {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 480px) {
+
+	.alignleft,
+	.alignright {
+		float: none;
+		margin: 10px 0;
+	}
+
+	.post-thumb {
+		float: right;
+		margin: 4px 0 10px 15px;
+	}
+
+	.post-thumb img {
+		width: 80px;
+	}
 }

@@ -285,6 +285,10 @@ figcaption,
 	margin: 0.5rem 0 0.25rem;
 }
 
+.qs-faq {
+	margin: 1.5em 0;
+}
+
 /* Call to action pattern: a box tinted with the Accent colour */
 .qs-cta {
 	margin: 1.5em 0;

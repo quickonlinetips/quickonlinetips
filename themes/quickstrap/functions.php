@@ -770,8 +770,9 @@ function quickstrap_search_block( $block_content, $block ) {
 	if ( 'core/search' !== $block['blockName'] || is_admin() ) {
 		return $block_content;
 	}
-	$block_content = str_replace( 'class="wp-block-search__input', 'class="form-control wp-block-search__input', $block_content );
-	return str_replace( 'class="wp-block-search__button', 'class="btn btn-primary wp-block-search__button', $block_content );
+	// Only the <input> and the <button>: the form's own class also starts with "wp-block-search__button".
+	$block_content = preg_replace( '/<input([^>]*) class="wp-block-search__input/', '<input$1 class="form-control wp-block-search__input', $block_content, 1 );
+	return preg_replace( '/<button([^>]*) class="/', '<button$1 class="btn btn-primary ', $block_content, 1 );
 }
 add_filter( 'render_block', 'quickstrap_search_block', 10, 2 );
 

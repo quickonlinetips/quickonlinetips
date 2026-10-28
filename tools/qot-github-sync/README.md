@@ -4,19 +4,19 @@ A small helper plugin for test sites (such as a saved WordPress Playground). It 
 
 **Tools > QOT GitHub Sync** lists every plugin and theme in this repo:
 
-- **Pull latest / Install from GitHub** replaces the copy on the site with the latest version from GitHub and keeps its settings. Plugins are switched on after pulling; themes are left for you to activate.
+- **Update / Pull again / Install from GitHub** replaces the copy on the site with the latest version from GitHub and keeps its settings. Plugins are switched on after pulling; themes are left for you to activate.
 - **Readme** opens **Tools > QOT Readme Preview**, which shows the plugin's `readme.txt` laid out the way its WordPress.org page will look: banner, icon, description, screenshots, FAQ and changelog, plus checks for the short description length, tags, screenshot captions, the Stable tag and the changelog.
 
 The Plugins screen also has a **Readme preview** link under each QOT plugin.
 
 The readme is read fresh from GitHub each time, so after a change is pushed, just reload the page.
 
-## Updating itself
+## Update available
 
-The tool keeps itself up to date. While you use the admin it checks GitHub at most every 10 minutes, and again each time you open its page. When the `Version` in `qot-github-sync.php` on GitHub is higher than the copy on the site, it pulls the new copy and says so in a green notice. **Pull latest** in its own row still works too.
+Each row compares the copy on the site with GitHub, file by file, and shows **Update available** (with the new version number when it changed) or **Up to date**. Any changed, added or removed file counts, even if the version number wasn't raised. Click **Update** to pull it. Nothing updates on its own.
 
-So whenever `qot-github-sync.php` changes, raise its `Version`. It only updates itself when it is installed in a folder named `qot-github-sync`.
+The tool lists itself under **Tools**, so it shows its own updates the same way.
 
 ## Installing it
 
-Download [`tools/qot-github-sync.zip`](../qot-github-sync.zip) and upload it under Plugins > Add New > Upload Plugin. An older zip is fine: the tool updates itself to the latest version the first time you use the admin.
+Download [`tools/qot-github-sync.zip`](../qot-github-sync.zip) and upload it under Plugins > Add New > Upload Plugin. If the zip is older than GitHub, the tool's own row shows Update available.

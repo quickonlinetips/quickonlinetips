@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       QOT GitHub Sync
  * Description:       Pull the latest QuickOnlineTips plugins and themes from GitHub with one click, and preview each plugin's readme.txt the way WordPress.org will show it. For test sites only.
- * Version:           1.2
+ * Version:           1.3
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Quick Online Tips
@@ -14,8 +14,8 @@
  * QOT Readme Preview: the plugin's readme.txt from GitHub laid out like its
  * WordPress.org page, with the banner, icon and screenshots, plus a few checks.
  *
- * This helper lives in the repo's tools/ folder and updates itself: when the
- * Version above is raised on GitHub, sites pull the new copy on their own.
+ * Each row says whether GitHub has an update for it. This helper lives in the
+ * repo's tools/ folder, so it lists itself and is updated the same way.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -113,7 +113,7 @@ function qot_sync_raw_url( $sha, $path ) {
  * The latest commit on a branch and every file in it.
  *
  * @param string $branch Branch name.
- * @return array|WP_Error { sha, message, files: path => true }
+ * @return array|WP_Error { sha, message, files: path => blob hash }
  */
 function qot_sync_snapshot( $branch ) {
 	static $cache = array();
@@ -133,7 +133,7 @@ function qot_sync_snapshot( $branch ) {
 	$files = array();
 	foreach ( (array) $tree['tree'] as $item ) {
 		if ( 'blob' === $item['type'] ) {
-			$files[ $item['path'] ] = true;
+			$files[ $item['path'] ] = $item['sha'];
 		}
 	}
 
@@ -317,121 +317,81 @@ function qot_sync_delete( $dir ) {
 }
 
 /* ------------------------------------------------------------------ *
- * Updating itself
+ * Is an update available?
  * ------------------------------------------------------------------ */
 
-/*
- * This tool keeps itself up to date. While you use the admin, it checks
- * GitHub at most every 10 minutes (and every time you open its page). When
- * the Version line in qot-github-sync.php on GitHub is higher than this
- * copy's, it pulls itself like any other plugin. So whenever this file
- * changes, raise its Version, or sites won't pick the change up.
- */
-
-const QOT_SYNC_SELF = 'qot-github-sync';
-
 /**
- * This copy's version.
+ * Compare the copy on this site with GitHub, file by file.
  *
- * @return string
+ * GitHub's file list already carries a fingerprint (the git "blob" hash) of
+ * every file, so this needs no extra requests to GitHub. Any file changed,
+ * added or removed on GitHub counts as an update, even if the version number
+ * was not raised.
+ *
+ * @param string $kind     plugins, themes or tools.
+ * @param string $name     Folder name.
+ * @param array  $snapshot From qot_sync_snapshot().
+ * @return bool True when GitHub has something newer.
  */
-function qot_sync_self_version() {
-	$data = get_file_data( __FILE__, array( 'Version' => 'Version' ) );
-	return (string) $data['Version'];
+function qot_sync_has_update( $kind, $name, $snapshot ) {
+	$prefix = $kind . '/' . $name . '/';
+	$local  = qot_sync_base( $kind ) . '/' . $name;
+
+	$remote = array();
+	foreach ( $snapshot['files'] as $path => $hash ) {
+		if ( 0 === strpos( $path, $prefix ) ) {
+			$relative = substr( $path, strlen( $prefix ) );
+			if ( ! preg_match( QOT_SYNC_SKIP, $relative ) ) {
+				$remote[ $relative ] = $hash;
+			}
+		}
+	}
+
+	$mine  = array();
+	$files = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $local, FilesystemIterator::SKIP_DOTS ) );
+	foreach ( $files as $file ) {
+		if ( ! $file->isFile() ) {
+			continue;
+		}
+		$relative = str_replace( '\\', '/', substr( $file->getPathname(), strlen( $local ) + 1 ) );
+		if ( preg_match( QOT_SYNC_SKIP, $relative ) ) {
+			continue;
+		}
+		$contents          = (string) file_get_contents( $file->getPathname() ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$mine[ $relative ] = sha1( 'blob ' . strlen( $contents ) . "\0" . $contents );
+	}
+
+	ksort( $remote );
+	ksort( $mine );
+	return $remote !== $mine;
 }
 
 /**
- * The version on GitHub. Read from raw.githubusercontent.com, which doesn't
- * count against GitHub's hourly limit.
+ * The version number on GitHub, from the plugin's main file or the theme's
+ * style.css. Remembered per commit, so each is downloaded only once.
  *
- * @param string $branch Branch name.
- * @return string Empty if GitHub couldn't be reached.
+ * @param string $kind     plugins, themes or tools.
+ * @param string $name     Folder name.
+ * @param string $main     Main plugin file on this site, such as name/name.php.
+ * @param array  $snapshot From qot_sync_snapshot().
+ * @return string Empty if it couldn't be read.
  */
-function qot_sync_self_remote_version( $branch ) {
-	$response = wp_remote_get(
-		'https://raw.githubusercontent.com/' . QOT_SYNC_REPO . '/' . rawurlencode( $branch ) . '/tools/' . QOT_SYNC_SELF . '/' . QOT_SYNC_SELF . '.php',
-		array(
-			'timeout' => 10,
-			'headers' => array( 'User-Agent' => 'qot-github-sync' ),
-		)
-	);
-	if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
-		$php = wp_remote_retrieve_body( $response );
-	} else {
-		// If that address can't be reached, ask the GitHub API instead.
-		$file = qot_sync_github( 'contents/tools/' . QOT_SYNC_SELF . '/' . QOT_SYNC_SELF . '.php?ref=' . rawurlencode( $branch ) );
-		if ( is_wp_error( $file ) || ! isset( $file['content'] ) ) {
-			return '';
-		}
-		$php = base64_decode( $file['content'] ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- GitHub sends file contents in base64.
+function qot_sync_remote_version( $kind, $name, $main, $snapshot ) {
+	$file = $kind . '/' . $name . '/' . ( 'themes' === $kind ? 'style.css' : basename( $main ) );
+	if ( ! isset( $snapshot['files'][ $file ] ) ) {
+		return '';
 	}
-	if ( preg_match( '/^\s*\*?\s*Version:\s*(\S+)/mi', $php, $m ) ) {
-		return $m[1];
+
+	$key      = 'qot_sync_versions_' . substr( $snapshot['sha'], 0, 12 );
+	$versions = get_transient( $key );
+	$versions = is_array( $versions ) ? $versions : array();
+	if ( ! isset( $versions[ $file ] ) ) {
+		$contents          = qot_sync_raw( $snapshot['sha'], $file );
+		$versions[ $file ] = ( ! is_wp_error( $contents ) && preg_match( '/^[ \t\/*#@]*Version:\s*(\S+)/mi', $contents, $m ) ) ? $m[1] : '';
+		set_transient( $key, $versions, DAY_IN_SECONDS );
 	}
-	return '';
+	return $versions[ $file ];
 }
-
-/**
- * Pull this tool from GitHub if GitHub has a newer version.
- *
- * @param bool $force Check now, even if it was checked in the last 10 minutes.
- * @return string Message when it updated itself, otherwise empty.
- */
-function qot_sync_self_update( $force = false ) {
-	// Only when installed in its usual folder, so it never adds a second copy.
-	if ( basename( __DIR__ ) !== QOT_SYNC_SELF ) {
-		return '';
-	}
-	if ( ! $force && get_transient( 'qot_sync_self_checked' ) ) {
-		return '';
-	}
-	set_transient( 'qot_sync_self_checked', 1, 10 * MINUTE_IN_SECONDS );
-
-	$branch = get_option( 'qot_sync_branch', 'main' );
-	$mine   = qot_sync_self_version();
-	$latest = qot_sync_self_remote_version( $branch );
-	if ( '' === $latest || ! version_compare( $latest, $mine, '>' ) ) {
-		return '';
-	}
-
-	$result = qot_sync_run( 'tools', QOT_SYNC_SELF, $branch );
-	if ( is_wp_error( $result ) ) {
-		return '';
-	}
-	$message = 'QOT GitHub Sync updated itself from version ' . $mine . ' to ' . $latest . '.';
-	set_transient( 'qot_sync_self_notice', $message, HOUR_IN_SECONDS );
-	return $message;
-}
-
-add_action(
-	'admin_init',
-	function () {
-		if ( wp_doing_ajax() || ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		// Its own page checks for itself when it opens.
-		if ( isset( $_GET['page'] ) && 'qot-github-sync' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reads which page is open.
-			return;
-		}
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		qot_sync_self_update();
-	}
-);
-
-// Say once, on the next admin screen, that it updated itself.
-add_action(
-	'admin_notices',
-	function () {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		$message = get_transient( 'qot_sync_self_notice' );
-		if ( $message ) {
-			delete_transient( 'qot_sync_self_notice' );
-			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
-		}
-	}
-);
 
 /* ------------------------------------------------------------------ *
  * Admin pages
@@ -500,14 +460,6 @@ function qot_sync_page() {
 		}
 	}
 
-	// Check for a newer copy of this tool each time the page opens.
-	$updated = qot_sync_self_update( true );
-	if ( $updated ) {
-		delete_transient( 'qot_sync_self_notice' );
-		if ( ! $notice ) {
-			$notice = array( 'success', $updated );
-		}
-	}
 
 	$snapshot = qot_sync_snapshot( $branch );
 	$labels   = array(
@@ -537,6 +489,12 @@ function qot_sync_page() {
 				<p><button type="submit" class="button">Try again</button></p>
 			<?php else : ?>
 				<p class="description">Latest change on GitHub: <strong><?php echo esc_html( $snapshot['message'] ); ?></strong> (<?php echo esc_html( substr( $snapshot['sha'], 0, 7 ) ); ?>)</p>
+				<style>
+					.qot-sync-badge { display:inline-block; margin-top:4px; padding:1px 8px; border-radius:3px; background:#fcf0e1; color:#8a4b00; font-weight:600; }
+					.qot-sync-ok { color:#00703c; }
+					.qot-sync-update td:first-child { box-shadow:inset 3px 0 0 #dba617; }
+				</style>
+				<?php $updates = 0; ?>
 				<?php foreach ( qot_sync_items( $snapshot ) as $kind => $names ) : ?>
 					<?php
 					if ( ! $names ) {
@@ -551,29 +509,45 @@ function qot_sync_page() {
 							$installed = is_dir( qot_sync_base( $kind ) . '/' . $name );
 							$title     = $name;
 							$state     = 'Not on this site';
+							$version   = '';
+							$main      = '';
 							if ( $installed && 'themes' === $kind ) {
-								$theme = wp_get_theme( $name );
-								$title = $theme->exists() ? $theme->get( 'Name' ) : $name;
-								$state = 'Version ' . $theme->get( 'Version' ) . ( get_stylesheet() === $name ? ', active' : '' );
+								$theme   = wp_get_theme( $name );
+								$title   = $theme->exists() ? $theme->get( 'Name' ) : $name;
+								$version = (string) $theme->get( 'Version' );
+								$state   = 'Version ' . $version . ( get_stylesheet() === $name ? ', active' : '' );
 							} elseif ( $installed ) {
 								$main = qot_sync_main_file( $name );
 								if ( $main ) {
-									$data  = get_plugin_data( WP_PLUGIN_DIR . '/' . $main, false, false );
-									$title = $data['Name'];
-									$state = 'Version ' . $data['Version'] . ( is_plugin_active( $main ) ? ', active' : ', inactive' );
+									$data    = get_plugin_data( WP_PLUGIN_DIR . '/' . $main, false, false );
+									$title   = $data['Name'];
+									$version = (string) $data['Version'];
+									$state   = 'Version ' . $version . ( is_plugin_active( $main ) ? ', active' : ', inactive' );
 								}
+							}
+							$update = $installed && qot_sync_has_update( $kind, $name, $snapshot );
+							$latest = ( $update && ( $main || 'themes' === $kind ) ) ? qot_sync_remote_version( $kind, $name, $main, $snapshot ) : '';
+							if ( $update ) {
+								++$updates;
 							}
 							$has_readme = 'plugins' === $kind && isset( $snapshot['files'][ 'plugins/' . $name . '/readme.txt' ] );
 							?>
-							<tr>
+							<tr<?php echo $update ? ' class="qot-sync-update"' : ''; ?>>
 								<td><strong><?php echo esc_html( $title ); ?></strong><br><code><?php echo esc_html( $kind . '/' . $name ); ?></code></td>
-								<td><?php echo esc_html( $state ); ?></td>
+								<td>
+									<?php echo esc_html( $state ); ?>
+									<?php if ( $update ) : ?>
+										<br><span class="qot-sync-badge"><?php echo esc_html( ( $latest && $latest !== $version ) ? 'Update available: version ' . $latest : 'Update available: newer changes' ); ?></span>
+									<?php elseif ( $installed ) : ?>
+										<br><span class="qot-sync-ok">Up to date</span>
+									<?php endif; ?>
+								</td>
 								<td style="text-align:right;white-space:nowrap">
 									<?php if ( $has_readme ) : ?>
 										<a class="button" href="<?php echo esc_url( qot_readme_url( $name ) ); ?>">Readme</a>
 									<?php endif; ?>
-									<button type="submit" class="button button-primary" name="qot_sync_pull" value="<?php echo esc_attr( $kind . '|' . $name ); ?>">
-										<?php echo $installed ? 'Pull latest' : 'Install from GitHub'; ?>
+									<button type="submit" class="button<?php echo ( $update || ! $installed ) ? ' button-primary' : ''; ?>" name="qot_sync_pull" value="<?php echo esc_attr( $kind . '|' . $name ); ?>">
+										<?php echo esc_html( $installed ? ( $update ? 'Update' : 'Pull again' ) : 'Install from GitHub' ); ?>
 									</button>
 								</td>
 							</tr>
@@ -581,7 +555,8 @@ function qot_sync_page() {
 						</tbody>
 					</table>
 				<?php endforeach; ?>
-				<p class="description" style="margin-top:16px">This tool updates itself whenever a newer version is on GitHub<?php echo $updated ? '' : ' (this copy: version ' . esc_html( qot_sync_self_version() ) . ')'; ?>. Plugins are activated after pulling. Themes are not: activate them in Appearance &gt; Themes. Plugin banners, icons and screenshots are skipped, since the site doesn't need them. <strong>Readme</strong> shows how a plugin's page will look on WordPress.org.</p>
+				<p style="margin-top:16px"><strong><?php echo esc_html( $updates ? $updates . ( 1 === $updates ? ' update' : ' updates' ) . ' available.' : 'Everything on this site matches GitHub.' ); ?></strong></p>
+				<p class="description"><strong>Update available</strong> means at least one file differs from GitHub, even if the version number is the same. Plugins are activated after pulling. Themes are not: activate them in Appearance &gt; Themes. Plugin banners, icons and screenshots are skipped, since the site doesn't need them. <strong>Readme</strong> shows how a plugin's page will look on WordPress.org.</p>
 			<?php endif; ?>
 		</form>
 	</div>

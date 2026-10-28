@@ -205,6 +205,52 @@ function quickpress_add_editor_styles() {
 }
 add_action( 'after_setup_theme', 'quickpress_add_editor_styles' );
 
+/*
+ * Block styles: extra looks in the block editor's Styles panel.
+ * The CSS lives in style.css and custom-editor-style.css, so nothing extra loads.
+ */
+function quickpress_block_styles() {
+	register_block_style( 'core/quote', array(
+		'name'  => 'qp-accent',
+		'label' => __( 'Accent bar', 'quickpress' ),
+	) );
+	register_block_style( 'core/group', array(
+		'name'  => 'qp-soft-box',
+		'label' => __( 'Soft box', 'quickpress' ),
+	) );
+}
+add_action( 'init', 'quickpress_block_styles' );
+
+/*
+ * Block patterns: ready-made boxes in the editor's Patterns tab, under QuickPress.
+ * Handy in a post or in the Below Posts widget area.
+ */
+function quickpress_block_patterns() {
+	register_block_pattern_category( 'quickpress', array( 'label' => __( 'QuickPress', 'quickpress' ) ) );
+
+	register_block_pattern( 'quickpress/newsletter-box', array(
+		'title'       => __( 'Newsletter sign-up box', 'quickpress' ),
+		'description' => __( 'A soft box asking readers to subscribe, with a button.', 'quickpress' ),
+		'categories'  => array( 'quickpress' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qp-soft-box"} --><div class="wp-block-group is-style-qp-soft-box">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'Enjoyed this post?', 'quickpress' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'Get new posts by email. No spam, unsubscribe any time.', 'quickpress' ) . '</p><!-- /wp:paragraph -->'
+			. '<!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button">' . esc_html__( 'Subscribe', 'quickpress' ) . '</a></div><!-- /wp:button --></div><!-- /wp:buttons -->'
+			. '</div><!-- /wp:group -->',
+	) );
+
+	register_block_pattern( 'quickpress/about-author', array(
+		'title'       => __( 'About the author', 'quickpress' ),
+		'description' => __( 'A soft box with a short note about the writer.', 'quickpress' ),
+		'categories'  => array( 'quickpress' ),
+		'content'     => '<!-- wp:group {"className":"is-style-qp-soft-box"} --><div class="wp-block-group is-style-qp-soft-box">'
+			. '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">' . esc_html__( 'About the author', 'quickpress' ) . '</h3><!-- /wp:heading -->'
+			. '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you: what you write about, and why readers should come back.', 'quickpress' ) . '</p><!-- /wp:paragraph -->'
+			. '</div><!-- /wp:group -->',
+	) );
+}
+add_action( 'init', 'quickpress_block_patterns' );
+
 // The owner's colours in the editor too.
 function quickpress_editor_colors( $settings ) {
 	$colors = quickpress_colors_css();

@@ -573,6 +573,7 @@ figure {
 }
 
 .wp-caption-text,
+.gallery-caption,
 figcaption {
 	font-size: 0.85em;
 	color: var(--qp-muted);
@@ -672,6 +673,32 @@ figcaption {
 
 .entry .wp-block-query-pagination a {
 	text-decoration: none;
+}
+
+/* Block styles from the editor's Styles panel */
+.is-style-qp-accent,
+.wp-block-quote.is-style-qp-accent {
+	margin: 1.5em 0;
+	padding: 2px 0 2px 16px;
+	border-left: 4px solid var(--qp-accent);
+	color: var(--qp-text);
+	font-size: 1.1em;
+}
+
+.is-style-qp-soft-box {
+	margin: 1.5em 0;
+	padding: 14px 18px;
+	background: var(--qp-soft);
+	border-left: 3px solid var(--qp-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.is-style-qp-soft-box > :first-child {
+	margin-top: 0;
+}
+
+.is-style-qp-soft-box > :last-child {
+	margin-bottom: 0;
 }
 
 /* Blocks with their own background colour: keep text off the edges */

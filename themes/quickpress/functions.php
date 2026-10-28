@@ -313,6 +313,21 @@ function quickpress_excerpt_more( $more ) {
 }
 add_filter( 'excerpt_more', 'quickpress_excerpt_more' );
 
+// WordPress leaves out the link in two cases where the post does go on:
+// a hand-written excerpt (the Excerpt box in the editor), and a post with a
+// More block early on, whose excerpt stops there. Add it in both, so every
+// post that continues ends with Read More.
+function quickpress_manual_excerpt_more( $excerpt ) {
+	if ( is_admin() || is_feed() || ! in_the_loop() || false !== strpos( $excerpt, 'class="read-more"' ) ) {
+		return $excerpt;
+	}
+	if ( has_excerpt() || false !== strpos( get_post_field( 'post_content', get_the_ID() ), '<!--more' ) ) {
+		return $excerpt . quickpress_read_more_link();
+	}
+	return $excerpt;
+}
+add_filter( 'get_the_excerpt', 'quickpress_manual_excerpt_more', 20 );
+
 // Post date, author, comments and categories line, used in lists and single posts
 function quickpress_post_meta( $show_comments = true ) {
 	echo '<p class="post-meta">';
@@ -392,6 +407,71 @@ function quickpress_customize_register( $wp_customize ) {
 	) );
 }
 add_action( 'customize_register', 'quickpress_customize_register' );
+
+/*
+ * Customizer: Appearance > Customize > Post Lists
+ * - Show excerpts (default) or full posts on the home page and archives.
+ * - Excerpt length in words (WordPress's default is 55).
+ * Search results always show excerpts.
+ */
+function quickpress_customize_post_lists( $wp_customize ) {
+
+	$wp_customize->add_section( 'quickpress_post_lists', array(
+		'title'       => __( 'Post Lists', 'quickpress' ),
+		'description' => __( 'How posts appear on the home page and in category, tag, date and author archives.', 'quickpress' ),
+		'priority'    => 45,
+	) );
+
+	$wp_customize->add_setting( 'quickpress_list_display', array(
+		'default'           => 'excerpt',
+		'sanitize_callback' => 'quickpress_sanitize_list_display',
+	) );
+	$wp_customize->add_control( 'quickpress_list_display', array(
+		'type'        => 'radio',
+		'label'       => __( 'Show', 'quickpress' ),
+		'description' => __( 'With full posts, add a More block in a post to choose where it breaks.', 'quickpress' ),
+		'section'     => 'quickpress_post_lists',
+		'choices'     => array(
+			'excerpt' => __( 'A short excerpt with Read More', 'quickpress' ),
+			'full'    => __( 'The full post', 'quickpress' ),
+		),
+	) );
+
+	$wp_customize->add_setting( 'quickpress_excerpt_length', array(
+		'default'           => 55,
+		'sanitize_callback' => 'quickpress_sanitize_excerpt_length',
+	) );
+	$wp_customize->add_control( 'quickpress_excerpt_length', array(
+		'type'        => 'number',
+		'label'       => __( 'Excerpt length (words)', 'quickpress' ),
+		'description' => __( 'Between 10 and 200. WordPress uses 55.', 'quickpress' ),
+		'section'     => 'quickpress_post_lists',
+		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
+	) );
+}
+add_action( 'customize_register', 'quickpress_customize_post_lists' );
+
+function quickpress_sanitize_list_display( $value ) {
+	return 'full' === $value ? 'full' : 'excerpt';
+}
+
+function quickpress_sanitize_excerpt_length( $value ) {
+	return max( 10, min( 200, absint( $value ) ) );
+}
+
+// Should this post list show full posts? Search results always use excerpts.
+function quickpress_show_full_posts() {
+	return ! is_search() && 'full' === get_theme_mod( 'quickpress_list_display', 'excerpt' );
+}
+
+// The excerpt length chosen in Customize > Post Lists.
+function quickpress_excerpt_length( $length ) {
+	if ( is_admin() ) {
+		return $length;
+	}
+	return quickpress_sanitize_excerpt_length( get_theme_mod( 'quickpress_excerpt_length', 55 ) );
+}
+add_filter( 'excerpt_length', 'quickpress_excerpt_length' );
 
 // The theme's two colours: the saved one, or the default.
 function quickpress_colors() {

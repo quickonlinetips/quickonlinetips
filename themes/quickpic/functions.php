@@ -182,6 +182,79 @@ function quickpic_post_meta( $show_comments = true ) {
 	echo '</p>';
 }
 
+/*
+ * Customizer: Appearance > Customize > Colours
+ * - Header colour: the green of the header band and the bottom box.
+ * - Accent colour: links, buttons and page numbers.
+ * - Dark mode: follow the reader's device setting (on by default) or stay light.
+ */
+function quickpic_customize_register( $wp_customize ) {
+
+	$wp_customize->add_setting( 'quickpic_brand_color', array(
+		'default'           => '#005500',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickpic_brand_color', array(
+		'label'       => __( 'Header colour', 'quickpic' ),
+		'description' => __( 'The header band and the box at the bottom of every page. Pick a darker colour so white text stays readable on it.', 'quickpic' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickpic_accent_color', array(
+		'default'           => '#088000',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'quickpic_accent_color', array(
+		'label'       => __( 'Accent colour', 'quickpic' ),
+		'description' => __( 'Links, buttons and page numbers.', 'quickpic' ),
+		'section'     => 'colors',
+	) ) );
+
+	$wp_customize->add_setting( 'quickpic_dark_mode', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'quickpic_dark_mode', array(
+		'type'        => 'checkbox',
+		'label'       => __( 'Dark mode for readers who use it', 'quickpic' ),
+		'description' => __( 'Turns the site dark when the reader\'s phone or computer is set to dark. Untick to always stay light.', 'quickpic' ),
+		'section'     => 'colors',
+	) );
+}
+add_action( 'customize_register', 'quickpic_customize_register' );
+
+// The theme's two colours: the saved one, or the default.
+function quickpic_colors() {
+	$brand  = sanitize_hex_color( get_theme_mod( 'quickpic_brand_color', '#005500' ) );
+	$accent = sanitize_hex_color( get_theme_mod( 'quickpic_accent_color', '#088000' ) );
+	return array(
+		'brand'  => $brand ? $brand : '#005500',
+		'accent' => $accent ? $accent : '#088000',
+	);
+}
+
+// The owner's colours as CSS, or '' when both are the defaults.
+function quickpic_colors_css() {
+	$colors = quickpic_colors();
+	$css    = '';
+	if ( '#005500' !== strtolower( $colors['brand'] ) ) {
+		$css .= '--qpic-brand:' . $colors['brand'] . ';';
+	}
+	if ( '#088000' !== strtolower( $colors['accent'] ) ) {
+		$css .= '--qpic-accent:' . $colors['accent'] . ';';
+	}
+	return $css ? ':root{' . $css . '}' : '';
+}
+
+// Body class when the owner switched dark mode off.
+function quickpic_body_classes( $classes ) {
+	if ( ! get_theme_mod( 'quickpic_dark_mode', true ) ) {
+		$classes[] = 'qpic-light-only';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'quickpic_body_classes' );
+
 // Load stylesheets
 function quickpic_scripts() {
 
@@ -190,6 +263,12 @@ function quickpic_scripts() {
 
 	// The whole theme is one small stylesheet.
 	wp_enqueue_style( 'quickpic', get_stylesheet_uri(), array(), $version );
+
+	// The owner's colours, if they picked any (a few bytes, no extra file).
+	$colors = quickpic_colors_css();
+	if ( $colors ) {
+		wp_add_inline_style( 'quickpic', $colors );
+	}
 
 	// WordPress's own script for threaded comment replies, only where needed.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

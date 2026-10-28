@@ -70,6 +70,31 @@ function quickpress_widgets_init() {
 			'after_title'   => '</h2>',
 		) );
 	}
+
+	// Below each post: newsletter sign-up, author note, related links, an ad.
+	register_sidebar( array(
+		'name'          => __( 'Below Posts', 'quickpress' ),
+		'id'            => 'after-post',
+		'description'   => __( 'Shown under the post on each single post, before the comments. Empty means hidden.', 'quickpress' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+
+	// Footer: up to three columns. Only the ones with widgets are shown.
+	for ( $i = 1; $i <= 3; $i++ ) {
+		register_sidebar( array(
+			/* translators: %d: footer column number, 1 to 3 */
+			'name'          => sprintf( __( 'Footer %d', 'quickpress' ), $i ),
+			'id'            => 'footer-' . $i,
+			'description'   => __( 'A column at the bottom of every page. Leave all three empty for no footer widgets.', 'quickpress' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		) );
+	}
 }
 add_action( 'widgets_init', 'quickpress_widgets_init' );
 

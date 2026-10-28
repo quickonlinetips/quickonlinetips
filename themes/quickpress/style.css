@@ -610,10 +610,11 @@ figcaption {
 	margin: 0 0 22px;
 }
 
-/* Widget headings: small capitals in the accent colour over a thin line,
-   the QuickPress look since the first version */
+/* Widget headings, sidebar and footer alike: capitals in the accent colour
+   over a thin line, the QuickPress look since the first version */
 .widget-title,
-#sidebar h2 {
+#sidebar h2,
+.footer-widgets h2 {
 	display: block;
 	font-size: 1.05em;
 	text-transform: uppercase;
@@ -678,6 +679,38 @@ figcaption {
 
 #sidebar select {
 	max-width: 100%;
+}
+
+
+/* Below Posts widgets: a soft box under the post */
+
+.after-post {
+	margin: 25px 0;
+	padding: 14px 18px;
+	background: var(--qp-soft);
+	border-left: 3px solid var(--qp-accent);
+	border-radius: 0 6px 6px 0;
+}
+
+.after-post .widget {
+	margin: 0 0 14px;
+}
+
+.after-post .widget:last-child {
+	margin-bottom: 0;
+}
+
+/* Below Posts headings stay plain: the box already has an accent edge */
+.after-post h2,
+.after-post .widget-title {
+	display: block;
+	font-size: 1.15em;
+	text-transform: none;
+	letter-spacing: 0;
+	color: var(--qp-text);
+	margin: 0 0 6px;
+	padding-bottom: 0;
+	border-bottom: 0;
 }
 
 
@@ -937,6 +970,49 @@ a.page-numbers:hover {
 #footer {
 	margin: 20px 0 0;
 	font-size: 0.95em;
+}
+
+/* Footer widgets: up to three columns on the page background,
+   above the dark band (no grey panel behind them) */
+.footer-widgets {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px 30px;
+	padding: 20px 25px 25px;
+	border-top: 1px solid var(--qp-border);
+	line-height: 1.45;
+}
+
+.footer-widgets .widget {
+	margin: 0 0 18px;
+}
+
+.footer-widgets .widget:last-child {
+	margin-bottom: 0;
+}
+
+.footer-widgets ul,
+.footer-widgets ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.footer-widgets li {
+	margin: 0 0 4px;
+}
+
+.footer-widgets ul ul {
+	margin: 4px 0 0 12px;
+}
+
+.footer-widgets p {
+	margin: 0 0 8px;
+}
+
+.footer-widgets .wp-block-latest-comments {
+	font-size: inherit;
+	padding: 0;
 }
 
 /* The dark band at the bottom, in the header's colour */

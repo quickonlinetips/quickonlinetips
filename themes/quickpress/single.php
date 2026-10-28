@@ -38,6 +38,12 @@
 
 			</div>
 
+			<?php if ( ! is_attachment() && is_active_sidebar( 'after-post' ) ) : ?>
+				<aside class="after-post widget-area" aria-label="<?php esc_attr_e( 'Below post', 'quickpress' ); ?>">
+					<?php dynamic_sidebar( 'after-post' ); ?>
+				</aside>
+			<?php endif; ?>
+
 			<?php if ( ! is_attachment() ) : ?>
 				<nav class="navigation post-nav" aria-label="<?php esc_attr_e( 'Posts', 'quickpress' ); ?>">
 					<div class="alignleft"><?php previous_post_link( '&laquo; %link' ); ?></div>

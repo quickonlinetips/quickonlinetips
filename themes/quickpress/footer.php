@@ -2,6 +2,18 @@
 
 	<footer id="footer">
 
+		<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) || is_active_sidebar( 'footer-3' ) ) : ?>
+			<div class="footer-widgets">
+				<?php for ( $quickpress_i = 1; $quickpress_i <= 3; $quickpress_i++ ) : ?>
+					<?php if ( is_active_sidebar( 'footer-' . $quickpress_i ) ) : ?>
+						<div class="footer-column">
+							<?php dynamic_sidebar( 'footer-' . $quickpress_i ); ?>
+						</div>
+					<?php endif; ?>
+				<?php endfor; ?>
+			</div>
+		<?php endif; ?>
+
 		<div class="site-info">
 
 		<?php

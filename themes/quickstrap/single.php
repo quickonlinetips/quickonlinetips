@@ -17,6 +17,8 @@
 
 			<?php quickstrap_post_meta( false ); ?>
 
+			<?php do_action( 'quickstrap_before_post_content' ); // Single posts: under the title and meta. ?>
+
 			<div class="entry">
 
 				<?php if ( has_post_thumbnail() && ! is_attachment() ) : ?>
@@ -44,6 +46,8 @@
 				<?php the_tags( '<p class="post-tags">' . esc_html__( 'Tags: ', 'quickstrap' ), ', ', '</p>' ); ?>
 
 			</div>
+
+			<?php do_action( 'quickstrap_after_post_content' ); // Single posts: after the text and tags, before Below Posts. ?>
 
 			<?php if ( ! is_attachment() && is_active_sidebar( 'bottom-post' ) ) : ?>
 				<aside class="after-post widget-area" aria-label="<?php esc_attr_e( 'Below post', 'quickstrap' ); ?>">

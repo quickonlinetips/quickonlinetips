@@ -1,5 +1,8 @@
 	</div> <!-- /row -->
+	<?php do_action( 'quickstrap_after_content' ); // Full width, below the posts and sidebars. ?>
 </div> <!-- /page -->
+
+<?php do_action( 'quickstrap_before_footer' ); ?>
 
 <footer id="colophon" class="site-footer">
 
@@ -34,6 +37,8 @@
 			}
 			?>
 
+			<?php do_action( 'quickstrap_footer_start' ); // In the footer band, above the copyright line. ?>
+
 			<p>
 				&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?>
 				<?php bloginfo( 'name' ); ?>.
@@ -48,6 +53,8 @@
 	</div>
 
 </footer>
+
+<?php do_action( 'quickstrap_after_footer' ); ?>
 
 <?php wp_footer(); ?>
 </body>

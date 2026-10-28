@@ -546,6 +546,10 @@ figcaption {
 	border-radius: var(--bs-border-radius);
 }
 
+.entry .wp-block-buttons {
+	margin: 0 0 1rem;
+}
+
 .entry .wp-block-button__link,
 .entry .btn {
 	text-decoration: none;

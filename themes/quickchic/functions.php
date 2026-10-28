@@ -56,8 +56,8 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 				'sidebar' => array(
 					'search'     => array( 'block', array( 'content' => '<!-- wp:search {"showLabel":false} /-->' ) ),
 					'recent'     => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Recent Posts', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:latest-posts /-->' ) ),
-					'categories' => array( 'block', array( 'content' => quickchic_details_block( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ) ) ),
-					'archives'   => array( 'block', array( 'content' => quickchic_details_block( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ) ) ),
+					'categories' => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Categories', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:categories /-->' ) ),
+					'archives'   => array( 'block', array( 'content' => '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html__( 'Archives', 'quickchic' ) . '</h2><!-- /wp:heading --><!-- wp:archives /-->' ) ),
 				),
 			),
 			'posts'     => array( 'about', 'contact' ),
@@ -112,14 +112,6 @@ function quickchic_widgets_init() {
 add_action( 'widgets_init', 'quickchic_widgets_init' );
 
 /*
- * A Details block: a title that opens to show a long list (categories, archives).
- * Plain HTML <details>, so it needs no JavaScript, unlike the dropdown versions.
- */
-function quickchic_details_block( $title, $inner_block ) {
-	return '<!-- wp:details --><details class="wp-block-details"><summary>' . esc_html( $title ) . '</summary>' . $inner_block . '</details><!-- /wp:details -->';
-}
-
-/*
  * Default sidebar, shown only while the Sidebar has no widgets.
  * Built from WordPress's own blocks, so it needs no plugin and looks the same
  * as the block widgets people add later in Appearance > Widgets.
@@ -138,8 +130,8 @@ function quickchic_default_sidebar() {
 			'buttonText' => __( 'Search', 'quickchic' ),
 		) ) . ' /-->' ),
 		'widget_recent_entries'  => array( __( 'Recent Posts', 'quickchic' ), '<!-- wp:latest-posts /-->' ),
-		'widget_categories'      => array( '', quickchic_details_block( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ) ),
-		'widget_archive'         => array( '', quickchic_details_block( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ) ),
+		'widget_categories'      => array( __( 'Categories', 'quickchic' ), '<!-- wp:categories /-->' ),
+		'widget_archive'         => array( __( 'Archives', 'quickchic' ), '<!-- wp:archives /-->' ),
 	);
 
 	foreach ( $sections as $class => $section ) {

@@ -14,7 +14,14 @@
 			</a>
 		<?php endif; ?>
 
-		<?php the_excerpt(); ?>
+		<?php
+		if ( quickchic_show_full_posts() ) {
+			// Full post, up to a More block if the post has one.
+			the_content( esc_html__( 'Read More', 'quickchic' ) . ' &raquo;' );
+		} else {
+			the_excerpt();
+		}
+		?>
 
 	</div>
 

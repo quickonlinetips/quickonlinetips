@@ -481,7 +481,8 @@ hr {
 	margin-top: 10px;
 }
 
-.read-more {
+.read-more,
+.more-link {
 	white-space: nowrap;
 }
 

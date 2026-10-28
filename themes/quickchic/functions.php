@@ -368,6 +368,71 @@ function quickchic_customize_register( $wp_customize ) {
 }
 add_action( 'customize_register', 'quickchic_customize_register' );
 
+/*
+ * Customizer: Appearance > Customize > Post Lists
+ * - Show excerpts (default) or full posts on the home page and archives.
+ * - Excerpt length in words (WordPress's default is 55).
+ * Search results always show excerpts.
+ */
+function quickchic_customize_post_lists( $wp_customize ) {
+
+	$wp_customize->add_section( 'quickchic_post_lists', array(
+		'title'       => __( 'Post Lists', 'quickchic' ),
+		'description' => __( 'How posts appear on the home page and in category, tag, date and author archives.', 'quickchic' ),
+		'priority'    => 45,
+	) );
+
+	$wp_customize->add_setting( 'quickchic_list_display', array(
+		'default'           => 'excerpt',
+		'sanitize_callback' => 'quickchic_sanitize_list_display',
+	) );
+	$wp_customize->add_control( 'quickchic_list_display', array(
+		'type'        => 'radio',
+		'label'       => __( 'Show', 'quickchic' ),
+		'description' => __( 'With full posts, add a More block in a post to choose where it breaks.', 'quickchic' ),
+		'section'     => 'quickchic_post_lists',
+		'choices'     => array(
+			'excerpt' => __( 'A short excerpt with Read More', 'quickchic' ),
+			'full'    => __( 'The full post', 'quickchic' ),
+		),
+	) );
+
+	$wp_customize->add_setting( 'quickchic_excerpt_length', array(
+		'default'           => 55,
+		'sanitize_callback' => 'quickchic_sanitize_excerpt_length',
+	) );
+	$wp_customize->add_control( 'quickchic_excerpt_length', array(
+		'type'        => 'number',
+		'label'       => __( 'Excerpt length (words)', 'quickchic' ),
+		'description' => __( 'Between 10 and 200. WordPress uses 55.', 'quickchic' ),
+		'section'     => 'quickchic_post_lists',
+		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
+	) );
+}
+add_action( 'customize_register', 'quickchic_customize_post_lists' );
+
+function quickchic_sanitize_list_display( $value ) {
+	return 'full' === $value ? 'full' : 'excerpt';
+}
+
+function quickchic_sanitize_excerpt_length( $value ) {
+	return max( 10, min( 200, absint( $value ) ) );
+}
+
+// Should this post list show full posts? Search results always use excerpts.
+function quickchic_show_full_posts() {
+	return ! is_search() && 'full' === get_theme_mod( 'quickchic_list_display', 'excerpt' );
+}
+
+// The excerpt length chosen in Customize > Post Lists.
+function quickchic_excerpt_length( $length ) {
+	if ( is_admin() ) {
+		return $length;
+	}
+	return quickchic_sanitize_excerpt_length( get_theme_mod( 'quickchic_excerpt_length', 55 ) );
+}
+add_filter( 'excerpt_length', 'quickchic_excerpt_length' );
+
 // The accent colour, or '' when it is the default pink.
 function quickchic_accent_css() {
 	$accent = sanitize_hex_color( get_theme_mod( 'quickchic_accent_color', '#c32364' ) );

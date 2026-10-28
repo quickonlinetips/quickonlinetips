@@ -56,6 +56,10 @@ In the editor, open the Post (or Page) settings, find Template and pick "Full wi
 
 Appearance > Widgets has five areas: Sidebar, Below Posts (under each single post, before the comments) and Footer 1, 2 and 3. Empty areas are hidden, so add only what you need.
 
+= Can I show full posts on the home page, or shorter excerpts? =
+
+Yes. Appearance > Customize > Post Lists lets you show a short excerpt with Read More (the default) or the full post, and set the excerpt length in words. With full posts, add a More block in a post to choose where it breaks. Search results always show excerpts.
+
 = Can I turn off dark mode? =
 
 Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it".
@@ -70,6 +74,8 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Editor looks like the site; theme colours and text sizes in the block editor
 * Text sizes scale smoothly from phone to desktop
 * Updated date shown on edited posts
+* Customize > Post Lists: excerpts or full posts, and the excerpt length
+* Read More also shows after hand-written excerpts
 * Print styles
 * Block widgets work out of the box; no Classic Widgets plugin needed
 * Sidebar shows Search, Recent Posts and Categories until you add widgets

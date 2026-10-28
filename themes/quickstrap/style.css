@@ -201,3 +201,21 @@ video {
     z-index: 100000;
     /* Above WP toolbar. */
 }
+
+
+/* Menu button without JavaScript ------- */
+
+.qs-menu-toggle {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.qs-menu-toggle:checked ~ .navbar-collapse {
+	display: block;
+}
+
+.qs-menu-toggle:focus-visible + .navbar-toggler {
+	box-shadow: 0 0 0 var(--bs-navbar-toggler-focus-width);
+}

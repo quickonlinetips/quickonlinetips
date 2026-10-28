@@ -103,6 +103,18 @@ function quickstrap_widgets_init() {
 }
 add_action( 'widgets_init', 'quickstrap_widgets_init' );
 
+// Main menu links get Bootstrap's nav-link class, so they look like a Bootstrap navbar.
+function quickstrap_menu_link_class( $atts, $item, $args ) {
+	if ( isset( $args->theme_location ) && 'header-nav' === $args->theme_location ) {
+		$atts['class'] = trim( ( isset( $atts['class'] ) ? $atts['class'] : '' ) . ' nav-link' );
+		if ( in_array( 'current-menu-item', (array) $item->classes, true ) ) {
+			$atts['class'] .= ' active';
+		}
+	}
+	return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'quickstrap_menu_link_class', 10, 3 );
+
 // Editor style: posts look in the editor much like they do on the site.
 function quickstrap_add_editor_styles() {
 	add_theme_support( 'editor-styles' );

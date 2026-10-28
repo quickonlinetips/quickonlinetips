@@ -478,6 +478,11 @@ dd {
 	margin-bottom: 2px;
 }
 
+/* Post titles in lists: as large as the original QuickPress (1.8em, about 26px) */
+#content main > article > h2.entry-title {
+	font-size: clamp(1.4em, 1.2em + 0.9vw, 1.8em);
+}
+
 .post-meta {
 	margin: 0 0 6px;
 	line-height: 1.4;

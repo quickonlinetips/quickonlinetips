@@ -1,18 +1,35 @@
-</div> <!-- end row -->
+	</div> <!-- end row -->
 
-<footer id="footer">
+	<footer id="footer">
 
-    <p>
-        &copy;
-        <?php _e('Copyright', 'quickchic'); ?>
-        <?php echo date('Y'); ?> -
-        <?php bloginfo('name'); ?>
-    </p>
-    <?php wp_footer(); ?>
+		<?php
+		if ( has_nav_menu( 'footer' ) ) {
+			wp_nav_menu( array(
+				'theme_location'       => 'footer',
+				'container'            => 'nav',
+				'container_class'      => 'footer-menu',
+				'container_aria_label' => __( 'Footer menu', 'quickchic' ),
+				'depth'                => 1,
+			) );
+		}
+		?>
 
-</footer>
+		<p>
+			&copy; <?php esc_html_e( 'Copyright', 'quickchic' ); ?>
+			<?php echo esc_html( wp_date( 'Y' ) ); ?> &ndash;
+			<?php bloginfo( 'name' ); ?>
+		</p>
+
+		<p class="credits">
+			<a href="https://wordpress.org/themes/quickchic/" rel="nofollow">QuickChic Theme</a> &bull; <?php esc_html_e( 'Powered by WordPress', 'quickchic' ); ?>
+		</p>
+
+	</footer>
+
 </div>
 <!-- /page -->
+
+<?php wp_footer(); ?>
 </body>
 
 </html>

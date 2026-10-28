@@ -77,14 +77,6 @@ function quickchic_excerpt_more( $more ) {
 }
 add_filter( 'excerpt_more', 'quickchic_excerpt_more' );
 
-// Credits
-function quickchic_credits() {
-	echo '<p class="center">
-	<a href="https://wordpress.org/themes/quickchic/" target="_blank" rel="nofollow noopener noreferrer">QuickChic Theme</a> &bull; Powered by WordPress
-	</p>';
-}
-add_action( 'wp_footer', 'quickchic_credits' );
-
 // Load stylesheets
 function quickchic_scripts() {
 

@@ -26,12 +26,26 @@ if ( ! function_exists( 'quickchic_setup' ) ) :
 			'default-image' => '',
 		) ) );
 
+		// Optional logo above the site title (Appearance > Customize > Site Identity).
+		add_theme_support( 'custom-logo', array(
+			'height'      => 120,
+			'width'       => 300,
+			'flex-height' => true,
+			'flex-width'  => true,
+		) );
+
+		// Menus: one under the site title, one in the footer (Appearance > Menus).
+		register_nav_menus( array(
+			'primary' => __( 'Main Menu', 'quickchic' ),
+			'footer'  => __( 'Footer Menu', 'quickchic' ),
+		) );
+
 		// More theme support
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'automatic-feed-links' );
 		add_theme_support( 'wp-block-styles' );
 		add_theme_support( 'responsive-embeds' );
-		add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script' ) );
+		add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'align-wide' );
 	}
 endif; // quickchic_setup
@@ -42,10 +56,11 @@ function quickchic_widgets_init() {
 	register_sidebar( array(
 		'name'          => __( 'Sidebar', 'quickchic' ),
 		'id'            => 'sidebar',
-		'before_widget' => '',
-		'after_widget'  => '',
-		'before_title'  => '<h4>',
-		'after_title'   => '</h4>',
+		'description'   => __( 'Shown in the right column, below the site title.', 'quickchic' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
 	) );
 }
 add_action( 'widgets_init', 'quickchic_widgets_init' );

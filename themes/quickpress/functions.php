@@ -48,6 +48,41 @@ if ( ! function_exists( 'quickpress_setup' ) ) :
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'align-wide' );
+
+		// Starter content: on a brand-new site, the Customizer offers ready
+		// widgets (as blocks), a few pages and a main menu, so the whole design
+		// shows. Nothing is saved until the owner clicks Publish, and existing
+		// sites never see it.
+		$quickpress_heading = function ( $text ) {
+			return '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html( $text ) . '</h2><!-- /wp:heading -->';
+		};
+		add_theme_support( 'starter-content', array(
+			'widgets'   => array(
+				'sidebar-1' => array(
+					'recent' => array( 'block', array( 'content' => $quickpress_heading( __( 'Recent Posts', 'quickpress' ) ) . '<!-- wp:latest-posts /-->' ) ),
+				),
+				'sidebar-2' => array(
+					'categories' => array( 'block', array( 'content' => $quickpress_heading( __( 'Categories', 'quickpress' ) ) . '<!-- wp:categories {"className":"qp-short"} /-->' ) ),
+				),
+				'sidebar-3' => array(
+					'comments' => array( 'block', array( 'content' => $quickpress_heading( __( 'Recent Comments', 'quickpress' ) ) . '<!-- wp:latest-comments {"displayAvatar":false,"displayDate":false,"displayExcerpt":false} /-->' ) ),
+				),
+				// Footer columns, so a new site shows the footer too.
+				'footer-1'  => array(
+					'about_site' => array( 'block', array( 'content' => $quickpress_heading( __( 'About This Site', 'quickpress' ) ) . '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you and what you write about. Change this in Appearance > Widgets.', 'quickpress' ) . '</p><!-- /wp:paragraph -->' ) ),
+				),
+				'footer-2'  => array(
+					'pages' => array( 'block', array( 'content' => $quickpress_heading( __( 'Pages', 'quickpress' ) ) . '<!-- wp:page-list {"className":"qp-short"} /-->' ) ),
+				),
+			),
+			'posts'     => array( 'about', 'contact' ),
+			'nav_menus' => array(
+				'header-nav' => array(
+					'name'  => __( 'Main Menu', 'quickpress' ),
+					'items' => array( 'link_home', 'page_about', 'page_contact' ),
+				),
+			),
+		) );
 	}
 endif; // quickpress_setup
 add_action( 'after_setup_theme', 'quickpress_setup' );

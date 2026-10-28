@@ -1,19 +1,20 @@
 /*
 Theme Name: QuickPic
 Theme URI: https://www.quickonlinetips.com/archives/quickpic-wordpress-theme/
-Description: 1-column, lightweight, widget ready, fast loading, SEO optimized, easy to customize WordPress theme.
-Version: 1.6.2
-Requires at least: 5.0
-Tested up to: 6.1
-Requires PHP: 7.0
+Description: QuickPic is a fast, clean one-column theme for photo bloggers and anyone who wants their pictures and words to have the whole page. One small stylesheet, no JavaScript and no web fonts, so pages load instantly, and there is nothing to set up: activate it and start posting. A green header with your site title, a menu bar, your posts in one framed column, and a green box at the bottom with a search form and up to three widget columns. Includes automatic dark mode, header and accent colour pickers, a wide template for big photos, featured images and print styles. Uses the familiar Widgets and Menus screens and works with the block editor.
+Version: 1.7
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
 Author: QuickOnlineTips
 Author URI: https://www.quickonlinetips.com/
-Tags: one-column, threaded-comments, sticky-post, custom-background, footer-widgets
+Tags: blog, photography, one-column, custom-background, custom-colors, custom-logo, custom-menu, editor-style, featured-images, footer-widgets, block-styles, sticky-post, threaded-comments, translation-ready
 Text Domain: quickpic
-License: GNU General Public License v2.0
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-QuickPic WordPress Theme, Copyright 2019 QuickOnlineTips.com
-QuickPic is distributed under the terms of the GNU GPL
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+QuickPic WordPress Theme, Copyright 2026 QuickOnlineTips.com
+QuickPic is distributed under the terms of the GNU GPL.
 */
 
 /* Contents

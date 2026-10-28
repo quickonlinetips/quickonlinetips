@@ -1178,6 +1178,20 @@ a.page-numbers:hover {
 	margin: 0 0 8px;
 }
 
+/* Footer links in the text colour, pink on hover, like the menu bar:
+   blue links would blend into the light blue tint */
+.footer-widgets a {
+	color: var(--qp-text);
+}
+
+.footer-widgets a:hover {
+	color: var(--qp-accent-text);
+}
+
+.footer-widgets .qp-more summary {
+	color: var(--qp-accent-text);
+}
+
 .footer-widgets .wp-block-latest-comments {
 	font-size: inherit;
 	padding: 0;

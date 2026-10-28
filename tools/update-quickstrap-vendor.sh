@@ -66,6 +66,28 @@ cp "$work/fa/css/all.min.css" "$vendor/font-awesome/css/all.min.css"
 cp "$work/fa"/webfonts/*.woff2 "$vendor/font-awesome/webfonts/"
 cp "$work/fa/LICENSE.txt" "$vendor/font-awesome/LICENSE.txt"
 
+# Dark mode: Bootstrap keeps its dark colours under [data-bs-theme=dark],
+# which only JavaScript can switch on. Copy those rules into style.css
+# (between the quickstrap-bootstrap-dark markers) under the reader's own
+# dark setting, so dark mode needs no script and follows each new Bootstrap.
+dark_css="$work/bootstrap-dark.css"
+perl -0777 -ne '
+	print "\@media (prefers-color-scheme: dark) {\n";
+	while ( /(?<=\})([^{}]+)\{([^{}]*)\}/g ) {
+		my ( $sel, $body ) = ( $1, $2 );
+		my @parts = split /,/, $sel;
+		next if grep { $_ !~ /^\s*\[data-bs-theme=dark\]/ } @parts;
+		$sel =~ s/\[data-bs-theme=dark\]/body:not(.qs-light-only)/g;
+		print "\t$sel {$body}\n";
+	}
+	print "}\n";
+' "$vendor/bootstrap/bootstrap.min.css" > "$dark_css"
+perl -0777 -i -pe '
+	BEGIN { local $/; open my $f, "<", shift @ARGV or die; $css = <$f>; }
+	s{(/\* quickstrap-bootstrap-dark:start.*?\*/\n).*?(/\* quickstrap-bootstrap-dark:end \*/)}{$1$css$2}s
+		or die "Dark mode markers not found in style.css\n";
+' "$dark_css" "$theme/style.css"
+
 # Version numbers used to load the files (they also bust browser caches).
 sed -i \
 	-e "s/define( 'QUICKSTRAP_BOOTSTRAP_VERSION', '[^']*' );/define( 'QUICKSTRAP_BOOTSTRAP_VERSION', '${bs_tag#v}' );/" \

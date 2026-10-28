@@ -1,0 +1,24 @@
+/*
+Theme Name:   QuickPress Child
+Theme URI:    https://www.quickonlinetips.com/archives/quickpress-wordpress-theme/
+Description:  A blank child theme for QuickPress. Add your own CSS below and your own PHP in functions.php; your changes stay safe when QuickPress updates.
+Author:       QuickOnlineTips
+Author URI:   https://www.quickonlinetips.com/
+Template:     quickpress
+Version:      1.1
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
+License:      GNU General Public License v2 or later
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  quickpress-child
+*/
+
+/* Your CSS goes below. QuickPress's colours are CSS variables, so you can
+   change them here, for example:
+
+:root {
+	--qp-brand: #1f6f5c;
+	--qp-accent: #d35400;
+}
+*/

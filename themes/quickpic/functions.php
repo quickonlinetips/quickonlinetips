@@ -48,6 +48,34 @@ if ( ! function_exists( 'quickpic_setup' ) ) :
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'align-wide' );
+
+		// Starter content: on a brand-new site, the Customizer offers ready
+		// widgets (as blocks) for the green bottom box, a few pages and a main
+		// menu, so the whole design shows. Nothing is saved until the owner
+		// clicks Publish, and existing sites never see it.
+		$quickpic_heading = function ( $text ) {
+			return '<!-- wp:heading --><h2 class="wp-block-heading">' . esc_html( $text ) . '</h2><!-- /wp:heading -->';
+		};
+		add_theme_support( 'starter-content', array(
+			'widgets'   => array(
+				'footer-1' => array(
+					'about_site' => array( 'block', array( 'content' => $quickpic_heading( __( 'About This Site', 'quickpic' ) ) . '<!-- wp:paragraph --><p>' . esc_html__( 'A few words about you and the pictures you share. Change this in Appearance > Widgets.', 'quickpic' ) . '</p><!-- /wp:paragraph -->' ) ),
+				),
+				'footer-2' => array(
+					'recent' => array( 'block', array( 'content' => $quickpic_heading( __( 'Recent Posts', 'quickpic' ) ) . '<!-- wp:latest-posts /-->' ) ),
+				),
+				'footer-3' => array(
+					'pages' => array( 'block', array( 'content' => $quickpic_heading( __( 'Pages', 'quickpic' ) ) . '<!-- wp:page-list {"className":"qpic-short"} /-->' ) ),
+				),
+			),
+			'posts'     => array( 'about', 'contact' ),
+			'nav_menus' => array(
+				'header-nav' => array(
+					'name'  => __( 'Main Menu', 'quickpic' ),
+					'items' => array( 'link_home', 'page_about', 'page_contact' ),
+				),
+			),
+		) );
 	}
 endif; // quickpic_setup
 add_action( 'after_setup_theme', 'quickpic_setup' );

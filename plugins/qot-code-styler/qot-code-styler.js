@@ -1,16 +1,16 @@
 /*
- * Quick Code Styler
+ * QOT Code Styler
  * Adds syntax colours and a Copy button to code blocks.
  * From QuickOnlineTips.com - Tech help that works. Since 2004.
  *
  * No outside library. The plugin only loads this file on pages that
  * show code, and only when at least one of the two switches on the
- * settings page is on. The switches arrive in window.quickCodeStyler.
+ * settings page is on. The switches arrive in window.qotCodeStyler.
  */
 ( function () {
 	'use strict';
 
-	var settings = window.quickCodeStyler || {};
+	var settings = window.qotCodeStyler || {};
 	var doc = document;
 
 	/*

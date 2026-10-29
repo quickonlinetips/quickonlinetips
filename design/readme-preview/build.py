@@ -20,7 +20,7 @@ import markdown
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ORDER = ["quick-meta-keywords", "simple-feed-copyright", "display-wordpress-version", "quick-code-styler"]
+ORDER = ["quick-meta-keywords", "simple-feed-copyright", "display-wordpress-version", "qot-code-styler"]
 LIMIT_SHORT = 150  # WordPress.org cuts the short description after 150 characters
 LIMIT_TAGS = 5     # and shows only the first 5 tags
 
@@ -123,7 +123,7 @@ def plugin_page(slug):
     tags = "".join(f"<span>{html.escape(t.strip())}</span>" for t in fields.get("Tags", "").split(",") if t.strip())
     chk = "".join(f'<li class="{c}">{html.escape(t)}</li>' for c, t in checks(fields, short, sec, len(shots)))
     live = (f'<a href="https://wordpress.org/plugins/{slug}/">Current live page</a>'
-            if slug != "quick-code-styler" else "<span>Not on WordPress.org yet</span>")
+            if slug != "qot-code-styler" else "<span>Not on WordPress.org yet</span>")
 
     banner = os.path.join(d, "assets", "banner-1544x500.png")
     icon = os.path.join(d, "assets", "icon-256x256.png")

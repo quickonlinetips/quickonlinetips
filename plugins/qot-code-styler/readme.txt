@@ -1,4 +1,4 @@
-=== Quick Code Styler ===
+=== QOT Code Styler ===
 Contributors: pchere
 Tags: code, syntax highlighting, code block, copy button, dark mode
 Requires at least: 6.0
@@ -12,7 +12,7 @@ Beautiful code blocks with syntax colours and a Copy button. Dark, light or auto
 
 == Description ==
 
-Quick Code Styler makes the code in your posts easy to read and easy to copy. Activate it and every code block on your site gets a clean code window, syntax colours and a Copy button, in new posts and old ones.
+QOT Code Styler makes the code in your posts easy to read and easy to copy. Activate it and every code block on your site gets a clean code window, syntax colours and a Copy button, in new posts and old ones.
 
 It works with the standard WordPress Code block and classic `<pre>` code, so there is no special block to learn and nothing to change in your posts.
 
@@ -35,16 +35,16 @@ It works with the standard WordPress Code block and classic `<pre>` code, so the
 * Turn off the colours and the Copy button and it loads no JavaScript at all.
 * No special block or shortcode, so nothing breaks if you ever switch it off. Your code simply goes back to your theme's style.
 
-Made by Quick Online Tips, tech help that works since 2004. See the [Quick Code Styler plugin page](https://www.quickonlinetips.com/archives/quick-code-styler-wordpress-plugin/) for more.
+Made by Quick Online Tips, tech help that works since 2004. See the [QOT Code Styler plugin page](https://www.quickonlinetips.com/archives/quick-code-styler-wordpress-plugin/) for more.
 
 == Installation ==
 
-1. In your WordPress dashboard, go to Plugins > Add New and search for "Quick Code Styler".
+1. In your WordPress dashboard, go to Plugins > Add New and search for "QOT Code Styler".
 2. Click Install Now, then Activate.
 3. That's it. Open any post that has code to see the new look.
-4. To change the look or colours, go to Settings > Quick Code Styler.
+4. To change the look or colours, go to Settings > QOT Code Styler.
 
-To install by hand, upload the `quick-code-styler` folder to `/wp-content/plugins/` and activate it on the Plugins screen.
+To install by hand, upload the `qot-code-styler` folder to `/wp-content/plugins/` and activate it on the Plugins screen.
 
 == Frequently Asked Questions ==
 
@@ -54,7 +54,7 @@ The colouring is simple and general, so it suits most short code you would show 
 
 = How is this different from a full syntax highlighter? =
 
-Full highlighters understand hundreds of languages in detail, but load much larger files. Quick Code Styler is made for blogs, tutorials and how-to guides, where code is usually short. It gives you most of the look for a fraction of the weight.
+Full highlighters understand hundreds of languages in detail, but load much larger files. QOT Code Styler is made for blogs, tutorials and how-to guides, where code is usually short. It gives you most of the look for a fraction of the weight.
 
 = How do I show a keyboard key? =
 
@@ -62,7 +62,7 @@ Wrap the key in kbd tags, for example `<kbd>Ctrl</kbd>`. In the block editor, us
 
 = Can I change the colours? =
 
-Yes. Go to Settings > Quick Code Styler, choose Dark or Light, and pick your own colours. A preview shows the result before you save. Click Default under any colour to undo a change.
+Yes. Go to Settings > QOT Code Styler, choose Dark or Light, and pick your own colours. A preview shows the result before you save. Click Default under any colour to undo a change.
 
 = What does Automatic do? =
 
@@ -76,7 +76,7 @@ Yes. Turn off both Syntax colours and Copy button in the settings, and the plugi
 
 The plugin looks for code in the post content. If your builder stores content elsewhere, add this to your theme's functions.php to load the styles on every page:
 
-`add_filter( 'quick_code_styler_load', '__return_true' );`
+`add_filter( 'qot_code_styler_load', '__return_true' );`
 
 = Does it slow my site down? =
 

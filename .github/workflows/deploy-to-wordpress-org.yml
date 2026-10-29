@@ -33,7 +33,7 @@ on:
           - quick-meta-keywords
           - simple-feed-copyright
           - display-wordpress-version
-          - quick-code-styler
+          - qot-code-styler
       version:
         description: "Version to send, for example 2.0"
         required: true

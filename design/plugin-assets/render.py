@@ -102,8 +102,8 @@ PLUGINS = {
                   font-weight="bold" font-size="56" fill="#181d2a">&copy;</text>
           </svg>""",
     },
-    "quick-code-styler": {
-        "title": 'Quick <span class="g">Code</span><br>Styler',
+    "qot-code-styler": {
+        "title": 'QOT <span class="g">Code</span><br>Styler',
         "sub": "Code blocks with syntax colours and a Copy button.",
         "winw": 690,
         "window": f"""

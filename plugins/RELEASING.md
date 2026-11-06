@@ -36,7 +36,7 @@ The plugin's zip is also attached to the GitHub release, in case you want a copy
 | Quick Feed Copyright | `simple-feed-copyright-2.0` |
 | Quick WordPress Version | `display-wordpress-version-2.0` |
 | QOT Code Styler | `qot-code-styler-1.0` (only after WordPress.org approves it) |
-| Quick Code Inserter | `quick-code-inserter-1.0` (only after WordPress.org approves it) |
+| QOT Code Inserter | `qot-code-inserter-1.0` (only after WordPress.org approves it) |
 
 The tag uses the plugin's WordPress.org address, which never changes, even when the plugin's display name does.
 

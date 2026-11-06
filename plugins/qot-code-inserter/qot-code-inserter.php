@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       Quick Code Inserter
- * Plugin URI:        https://www.quickonlinetips.com/archives/quick-code-inserter-wordpress-plugin/
+ * Plugin Name:       QOT Code Inserter
+ * Plugin URI:        https://www.quickonlinetips.com/archives/qot-code-inserter-wordpress-plugin/
  * Description:       Paste any code (analytics, ads, banners, forms) and pick where it goes: the page head, before or after posts, after a paragraph, the sidebar, the footer and more. A live map shows each spot. Tiny, no PHP to break your site.
  * Version:           1.0
  * Requires at least: 6.0
@@ -10,7 +10,7 @@
  * Author URI:        https://www.quickonlinetips.com
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       quick-code-inserter
+ * Text Domain:       qot-code-inserter
  */
 
 // Stop the file being opened directly in a browser.
@@ -18,8 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUICK_CODE_INSERTER_OPTION', 'quick_code_inserter' );
-define( 'QUICK_CODE_INSERTER_MAX_SLOTS', 30 );
+define( 'QOT_CODE_INSERTER_OPTION', 'qot_code_inserter' );
+define( 'QOT_CODE_INSERTER_MAX_SLOTS', 30 );
 
 /* ------------------------------------------------------------------ *
  * Places, page choices and settings
@@ -33,83 +33,83 @@ define( 'QUICK_CODE_INSERTER_MAX_SLOTS', 30 );
  *
  * @return array<string, array{label: string, group: string, note: string, themes: string}>
  */
-function quick_code_inserter_locations() {
-	$top     = __( 'Top of the page', 'quick-code-inserter' );
-	$post    = __( 'In the post', 'quick-code-inserter' );
-	$side    = __( 'Comments and sidebar', 'quick-code-inserter' );
-	$bottom  = __( 'Bottom of the page', 'quick-code-inserter' );
+function qot_code_inserter_locations() {
+	$top     = __( 'Top of the page', 'qot-code-inserter' );
+	$post    = __( 'In the post', 'qot-code-inserter' );
+	$side    = __( 'Comments and sidebar', 'qot-code-inserter' );
+	$bottom  = __( 'Bottom of the page', 'qot-code-inserter' );
 
 	return array(
 		'head'            => array(
-			'label'  => __( 'In the page head (hidden)', 'quick-code-inserter' ),
+			'label'  => __( 'In the page head (hidden)', 'qot-code-inserter' ),
 			'group'  => $top,
-			'note'   => __( 'For Google Analytics, site verification tags and anything that asks to go in the <head>. Visitors don\'t see it.', 'quick-code-inserter' ),
+			'note'   => __( 'For Google Analytics, site verification tags and anything that asks to go in the <head>. Visitors don\'t see it.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'body_open'       => array(
-			'label'  => __( 'Right after the <body> tag', 'quick-code-inserter' ),
+			'label'  => __( 'Right after the <body> tag', 'qot-code-inserter' ),
 			'group'  => $top,
-			'note'   => __( 'For Google Tag Manager\'s second part and similar codes that must come first in the page.', 'quick-code-inserter' ),
+			'note'   => __( 'For Google Tag Manager\'s second part and similar codes that must come first in the page.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'after_header'    => array(
-			'label'  => __( 'Below the site header', 'quick-code-inserter' ),
+			'label'  => __( 'Below the site header', 'qot-code-inserter' ),
 			'group'  => $top,
-			'note'   => __( 'For a notice bar or a banner across the top of every page.', 'quick-code-inserter' ),
+			'note'   => __( 'For a notice bar or a banner across the top of every page.', 'qot-code-inserter' ),
 			'themes' => 'block',
 		),
 		'before_content'  => array(
-			'label'  => __( 'Before the post', 'quick-code-inserter' ),
+			'label'  => __( 'Before the post', 'qot-code-inserter' ),
 			'group'  => $post,
-			'note'   => __( 'Shows above the text of each post or page, below its title.', 'quick-code-inserter' ),
+			'note'   => __( 'Shows above the text of each post or page, below its title.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'after_paragraph' => array(
-			'label'  => __( 'After a paragraph of the post', 'quick-code-inserter' ),
+			'label'  => __( 'After a paragraph of the post', 'qot-code-inserter' ),
 			'group'  => $post,
-			'note'   => __( 'For an ad or a sign-up box inside the post, where readers are. Shorter posts get it after their last paragraph.', 'quick-code-inserter' ),
+			'note'   => __( 'For an ad or a sign-up box inside the post, where readers are. Shorter posts get it after their last paragraph.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'after_content'   => array(
-			'label'  => __( 'After the post', 'quick-code-inserter' ),
+			'label'  => __( 'After the post', 'qot-code-inserter' ),
 			'group'  => $post,
-			'note'   => __( 'For share buttons, an author box or a newsletter form at the end of each post.', 'quick-code-inserter' ),
+			'note'   => __( 'For share buttons, an author box or a newsletter form at the end of each post.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'before_comments' => array(
-			'label'  => __( 'Above the comment form', 'quick-code-inserter' ),
+			'label'  => __( 'Above the comment form', 'qot-code-inserter' ),
 			'group'  => $side,
-			'note'   => __( 'For comment rules or a short message before people reply.', 'quick-code-inserter' ),
+			'note'   => __( 'For comment rules or a short message before people reply.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'after_comments'  => array(
-			'label'  => __( 'Below the comment form', 'quick-code-inserter' ),
+			'label'  => __( 'Below the comment form', 'qot-code-inserter' ),
 			'group'  => $side,
-			'note'   => __( 'For related links or an ad after the comments.', 'quick-code-inserter' ),
+			'note'   => __( 'For related links or an ad after the comments.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'sidebar_top'     => array(
-			'label'  => __( 'Top of the sidebar', 'quick-code-inserter' ),
+			'label'  => __( 'Top of the sidebar', 'qot-code-inserter' ),
 			'group'  => $side,
-			'note'   => __( 'Above the widgets in the first widget area on the page, usually the main sidebar.', 'quick-code-inserter' ),
+			'note'   => __( 'Above the widgets in the first widget area on the page, usually the main sidebar.', 'qot-code-inserter' ),
 			'themes' => 'classic',
 		),
 		'sidebar_bottom'  => array(
-			'label'  => __( 'Bottom of the sidebar', 'quick-code-inserter' ),
+			'label'  => __( 'Bottom of the sidebar', 'qot-code-inserter' ),
 			'group'  => $side,
-			'note'   => __( 'Below the widgets in the first widget area on the page, usually the main sidebar.', 'quick-code-inserter' ),
+			'note'   => __( 'Below the widgets in the first widget area on the page, usually the main sidebar.', 'qot-code-inserter' ),
 			'themes' => 'classic',
 		),
 		'before_footer'   => array(
-			'label'  => __( 'Above the site footer', 'quick-code-inserter' ),
+			'label'  => __( 'Above the site footer', 'qot-code-inserter' ),
 			'group'  => $bottom,
-			'note'   => __( 'For a call to action or a banner at the end of every page.', 'quick-code-inserter' ),
+			'note'   => __( 'For a call to action or a banner at the end of every page.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 		'footer'          => array(
-			'label'  => __( 'Very end of the page, before </body> (hidden)', 'quick-code-inserter' ),
+			'label'  => __( 'Very end of the page, before </body> (hidden)', 'qot-code-inserter' ),
 			'group'  => $bottom,
-			'note'   => __( 'For chat widgets, tracking pixels and scripts that should load last, so the page shows first.', 'quick-code-inserter' ),
+			'note'   => __( 'For chat widgets, tracking pixels and scripts that should load last, so the page shows first.', 'qot-code-inserter' ),
 			'themes' => 'all',
 		),
 	);
@@ -121,8 +121,8 @@ function quick_code_inserter_locations() {
  * @param string $key Place key.
  * @return bool
  */
-function quick_code_inserter_location_works( $key ) {
-	$locations = quick_code_inserter_locations();
+function qot_code_inserter_location_works( $key ) {
+	$locations = qot_code_inserter_locations();
 	if ( ! isset( $locations[ $key ] ) ) {
 		return false;
 	}
@@ -139,13 +139,13 @@ function quick_code_inserter_location_works( $key ) {
  *
  * @return array<string, string>
  */
-function quick_code_inserter_show_choices() {
+function qot_code_inserter_show_choices() {
 	return array(
-		'all'      => __( 'Every page', 'quick-code-inserter' ),
-		'singular' => __( 'Posts and pages only', 'quick-code-inserter' ),
-		'posts'    => __( 'Posts only', 'quick-code-inserter' ),
-		'pages'    => __( 'Pages only', 'quick-code-inserter' ),
-		'home'     => __( 'Homepage only', 'quick-code-inserter' ),
+		'all'      => __( 'Every page', 'qot-code-inserter' ),
+		'singular' => __( 'Posts and pages only', 'qot-code-inserter' ),
+		'posts'    => __( 'Posts only', 'qot-code-inserter' ),
+		'pages'    => __( 'Pages only', 'qot-code-inserter' ),
+		'home'     => __( 'Homepage only', 'qot-code-inserter' ),
 	);
 }
 
@@ -154,7 +154,7 @@ function quick_code_inserter_show_choices() {
  *
  * @return array{on: bool, name: string, location: string, paragraph: int, show: string, guests: bool, code: string}
  */
-function quick_code_inserter_blank_slot() {
+function qot_code_inserter_blank_slot() {
 	return array(
 		'on'        => true,
 		'name'      => '',
@@ -173,9 +173,9 @@ function quick_code_inserter_blank_slot() {
  * @param mixed $slot Saved or posted slot.
  * @return array
  */
-function quick_code_inserter_clean_slot( $slot ) {
+function qot_code_inserter_clean_slot( $slot ) {
 	$slot  = is_array( $slot ) ? $slot : array();
-	$blank = quick_code_inserter_blank_slot();
+	$blank = qot_code_inserter_blank_slot();
 
 	$location = isset( $slot['location'] ) ? (string) $slot['location'] : $blank['location'];
 	$show     = isset( $slot['show'] ) ? (string) $slot['show'] : $blank['show'];
@@ -183,9 +183,9 @@ function quick_code_inserter_clean_slot( $slot ) {
 	return array(
 		'on'        => ! empty( $slot['on'] ),
 		'name'      => isset( $slot['name'] ) ? sanitize_text_field( $slot['name'] ) : '',
-		'location'  => array_key_exists( $location, quick_code_inserter_locations() ) ? $location : $blank['location'],
+		'location'  => array_key_exists( $location, qot_code_inserter_locations() ) ? $location : $blank['location'],
 		'paragraph' => isset( $slot['paragraph'] ) ? min( 50, max( 1, absint( $slot['paragraph'] ) ) ) : $blank['paragraph'],
-		'show'      => array_key_exists( $show, quick_code_inserter_show_choices() ) ? $show : $blank['show'],
+		'show'      => array_key_exists( $show, qot_code_inserter_show_choices() ) ? $show : $blank['show'],
 		'guests'    => ! empty( $slot['guests'] ),
 		'code'      => isset( $slot['code'] ) ? (string) $slot['code'] : '',
 	);
@@ -196,14 +196,14 @@ function quick_code_inserter_clean_slot( $slot ) {
  *
  * @return array{enabled: bool, slots: array<int, array>}
  */
-function quick_code_inserter_settings() {
-	$saved = get_option( QUICK_CODE_INSERTER_OPTION, array() );
+function qot_code_inserter_settings() {
+	$saved = get_option( QOT_CODE_INSERTER_OPTION, array() );
 	$saved = is_array( $saved ) ? $saved : array();
 	$slots = array();
 
 	if ( isset( $saved['slots'] ) && is_array( $saved['slots'] ) ) {
 		foreach ( $saved['slots'] as $slot ) {
-			$slots[] = quick_code_inserter_clean_slot( $slot );
+			$slots[] = qot_code_inserter_clean_slot( $slot );
 		}
 	}
 
@@ -224,13 +224,13 @@ function quick_code_inserter_settings() {
  * @param mixed $input Values from the settings form.
  * @return array
  */
-function quick_code_inserter_sanitize( $input ) {
+function qot_code_inserter_sanitize( $input ) {
 	$input = is_array( $input ) ? $input : array();
 	$slots = array();
 
 	if ( isset( $input['slots'] ) && is_array( $input['slots'] ) ) {
 		foreach ( $input['slots'] as $raw ) {
-			$slot = quick_code_inserter_clean_slot( $raw );
+			$slot = qot_code_inserter_clean_slot( $raw );
 
 			if ( ! current_user_can( 'unfiltered_html' ) ) {
 				$slot['code'] = wp_kses_post( $slot['code'] );
@@ -242,7 +242,7 @@ function quick_code_inserter_sanitize( $input ) {
 			}
 
 			$slots[] = $slot;
-			if ( count( $slots ) >= QUICK_CODE_INSERTER_MAX_SLOTS ) {
+			if ( count( $slots ) >= QOT_CODE_INSERTER_MAX_SLOTS ) {
 				break;
 			}
 		}
@@ -264,7 +264,7 @@ function quick_code_inserter_sanitize( $input ) {
  * @param string $show Page choice key.
  * @return bool
  */
-function quick_code_inserter_show_matches( $show ) {
+function qot_code_inserter_show_matches( $show ) {
 	switch ( $show ) {
 		case 'singular':
 			return is_singular();
@@ -285,7 +285,7 @@ function quick_code_inserter_show_matches( $show ) {
  *
  * @return array<string, array<int, array>>
  */
-function quick_code_inserter_page_slots() {
+function qot_code_inserter_page_slots() {
 	static $by_place = null;
 
 	if ( null !== $by_place ) {
@@ -304,7 +304,7 @@ function quick_code_inserter_page_slots() {
 		return $by_place;
 	}
 
-	$settings = quick_code_inserter_settings();
+	$settings = qot_code_inserter_settings();
 	if ( ! $settings['enabled'] ) {
 		return $by_place;
 	}
@@ -316,7 +316,7 @@ function quick_code_inserter_page_slots() {
 		if ( $slot['guests'] && is_user_logged_in() ) {
 			continue;
 		}
-		if ( ! quick_code_inserter_show_matches( $slot['show'] ) ) {
+		if ( ! qot_code_inserter_show_matches( $slot['show'] ) ) {
 			continue;
 		}
 		$by_place[ $slot['location'] ][] = $slot;
@@ -332,8 +332,8 @@ function quick_code_inserter_page_slots() {
  * @param string $place Place key.
  * @return string
  */
-function quick_code_inserter_code_for( $place ) {
-	$by_place = quick_code_inserter_page_slots();
+function qot_code_inserter_code_for( $place ) {
+	$by_place = qot_code_inserter_page_slots();
 
 	if ( empty( $by_place[ $place ] ) ) {
 		return '';
@@ -352,17 +352,17 @@ function quick_code_inserter_code_for( $place ) {
  *
  * @param string $place Place key.
  */
-function quick_code_inserter_print( $place ) {
+function qot_code_inserter_print( $place ) {
 	// The code is the site owner's own, saved by someone allowed to add it, so it is printed as is.
-	echo quick_code_inserter_code_for( $place ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo qot_code_inserter_code_for( $place ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
  * Once WordPress knows which page it is showing, hook in only the places
  * that have code for this page. Pages with no code get nothing extra.
  */
-function quick_code_inserter_setup() {
-	$by_place = quick_code_inserter_page_slots();
+function qot_code_inserter_setup() {
+	$by_place = qot_code_inserter_page_slots();
 
 	if ( empty( $by_place ) ) {
 		return;
@@ -381,7 +381,7 @@ function quick_code_inserter_setup() {
 			add_action(
 				$hook[0],
 				function () use ( $place ) {
-					quick_code_inserter_print( $place );
+					qot_code_inserter_print( $place );
 				},
 				$hook[1]
 			);
@@ -390,25 +390,25 @@ function quick_code_inserter_setup() {
 
 	if ( ! empty( $by_place['before_content'] ) || ! empty( $by_place['after_paragraph'] ) || ! empty( $by_place['after_content'] ) ) {
 		// After WordPress has made paragraphs and run shortcodes (priority 11), so paragraphs can be counted.
-		add_filter( 'the_content', 'quick_code_inserter_content', 20 );
+		add_filter( 'the_content', 'qot_code_inserter_content', 20 );
 	}
 
 	if ( ! empty( $by_place['sidebar_top'] ) || ! empty( $by_place['sidebar_bottom'] ) ) {
-		add_action( 'dynamic_sidebar_before', 'quick_code_inserter_sidebar_top', 10, 2 );
-		add_action( 'dynamic_sidebar_after', 'quick_code_inserter_sidebar_bottom', 10, 2 );
+		add_action( 'dynamic_sidebar_before', 'qot_code_inserter_sidebar_top', 10, 2 );
+		add_action( 'dynamic_sidebar_after', 'qot_code_inserter_sidebar_bottom', 10, 2 );
 	}
 
 	if ( ! empty( $by_place['after_header'] ) || ! empty( $by_place['before_footer'] ) ) {
 		// Block themes: their header and footer are template parts.
-		add_filter( 'render_block_core/template-part', 'quick_code_inserter_template_part', 10, 2 );
+		add_filter( 'render_block_core/template-part', 'qot_code_inserter_template_part', 10, 2 );
 	}
 
 	if ( ! empty( $by_place['before_footer'] ) ) {
 		// Classic themes: fires just before the theme's footer.php.
-		add_action( 'get_footer', 'quick_code_inserter_classic_footer' );
+		add_action( 'get_footer', 'qot_code_inserter_classic_footer' );
 	}
 }
-add_action( 'template_redirect', 'quick_code_inserter_setup' );
+add_action( 'template_redirect', 'qot_code_inserter_setup' );
 
 /**
  * Add code before, inside and after the main post text.
@@ -419,14 +419,14 @@ add_action( 'template_redirect', 'quick_code_inserter_setup' );
  * @param string $content Post content.
  * @return string
  */
-function quick_code_inserter_content( $content ) {
+function qot_code_inserter_content( $content ) {
 	if ( ! in_the_loop() || ! is_main_query() ) {
 		return $content;
 	}
 
-	$by_place = quick_code_inserter_page_slots();
-	$before   = quick_code_inserter_code_for( 'before_content' );
-	$after    = quick_code_inserter_code_for( 'after_content' );
+	$by_place = qot_code_inserter_page_slots();
+	$before   = qot_code_inserter_code_for( 'before_content' );
+	$after    = qot_code_inserter_code_for( 'after_content' );
 
 	if ( ! empty( $by_place['after_paragraph'] ) ) {
 		$parts = explode( '</p>', $content );
@@ -467,7 +467,7 @@ function quick_code_inserter_content( $content ) {
  * @param string|int|null $index Widget area to remember, or null to read it.
  * @return string|int|null
  */
-function quick_code_inserter_first_sidebar( $index = null ) {
+function qot_code_inserter_first_sidebar( $index = null ) {
 	static $first = null;
 	if ( null !== $index && null === $first ) {
 		$first = $index;
@@ -481,12 +481,12 @@ function quick_code_inserter_first_sidebar( $index = null ) {
  * @param string|int $index       Widget area ID.
  * @param bool       $has_widgets Whether it has widgets.
  */
-function quick_code_inserter_sidebar_top( $index, $has_widgets ) {
-	if ( ! $has_widgets || null !== quick_code_inserter_first_sidebar() ) {
+function qot_code_inserter_sidebar_top( $index, $has_widgets ) {
+	if ( ! $has_widgets || null !== qot_code_inserter_first_sidebar() ) {
 		return;
 	}
-	quick_code_inserter_first_sidebar( $index );
-	quick_code_inserter_print( 'sidebar_top' );
+	qot_code_inserter_first_sidebar( $index );
+	qot_code_inserter_print( 'sidebar_top' );
 }
 
 /**
@@ -495,13 +495,13 @@ function quick_code_inserter_sidebar_top( $index, $has_widgets ) {
  * @param string|int $index       Widget area ID.
  * @param bool       $has_widgets Whether it has widgets.
  */
-function quick_code_inserter_sidebar_bottom( $index, $has_widgets ) {
+function qot_code_inserter_sidebar_bottom( $index, $has_widgets ) {
 	static $done = false;
-	if ( $done || ! $has_widgets || quick_code_inserter_first_sidebar() !== $index ) {
+	if ( $done || ! $has_widgets || qot_code_inserter_first_sidebar() !== $index ) {
 		return;
 	}
 	$done = true;
-	quick_code_inserter_print( 'sidebar_bottom' );
+	qot_code_inserter_print( 'sidebar_bottom' );
 }
 
 /**
@@ -512,7 +512,7 @@ function quick_code_inserter_sidebar_bottom( $index, $has_widgets ) {
  * @param array  $block The block, with its settings.
  * @return string
  */
-function quick_code_inserter_template_part( $html, $block ) {
+function qot_code_inserter_template_part( $html, $block ) {
 	static $done = array();
 
 	$attrs = isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array();
@@ -521,10 +521,10 @@ function quick_code_inserter_template_part( $html, $block ) {
 
 	if ( ( 'header' === $slug || 'header' === $tag ) && empty( $done['header'] ) ) {
 		$done['header'] = true;
-		$html          .= quick_code_inserter_code_for( 'after_header' );
+		$html          .= qot_code_inserter_code_for( 'after_header' );
 	} elseif ( ( 'footer' === $slug || 'footer' === $tag ) && empty( $done['footer'] ) ) {
 		$done['footer'] = true;
-		$html           = quick_code_inserter_code_for( 'before_footer' ) . $html;
+		$html           = qot_code_inserter_code_for( 'before_footer' ) . $html;
 	}
 
 	return $html;
@@ -533,65 +533,65 @@ function quick_code_inserter_template_part( $html, $block ) {
 /**
  * Classic themes: code just before the footer.
  */
-function quick_code_inserter_classic_footer() {
+function qot_code_inserter_classic_footer() {
 	static $done = false;
 	if ( $done ) {
 		return;
 	}
 	$done = true;
-	quick_code_inserter_print( 'before_footer' );
+	qot_code_inserter_print( 'before_footer' );
 }
 
 /* ------------------------------------------------------------------ *
- * Settings page: Settings > Quick Code Inserter
+ * Settings page: Settings > QOT Code Inserter
  * ------------------------------------------------------------------ */
 
 /**
  * Register the one option that holds all settings.
  */
-function quick_code_inserter_register_setting() {
+function qot_code_inserter_register_setting() {
 	register_setting(
-		'quick_code_inserter',
-		QUICK_CODE_INSERTER_OPTION,
+		'qot_code_inserter',
+		QOT_CODE_INSERTER_OPTION,
 		array(
 			'type'              => 'array',
-			'sanitize_callback' => 'quick_code_inserter_sanitize',
+			'sanitize_callback' => 'qot_code_inserter_sanitize',
 		)
 	);
 }
-add_action( 'admin_init', 'quick_code_inserter_register_setting' );
+add_action( 'admin_init', 'qot_code_inserter_register_setting' );
 
 /**
  * Add the page to the Settings menu.
  */
-function quick_code_inserter_add_page() {
+function qot_code_inserter_add_page() {
 	$hook = add_options_page(
-		__( 'Quick Code Inserter', 'quick-code-inserter' ),
-		__( 'Quick Code Inserter', 'quick-code-inserter' ),
+		__( 'QOT Code Inserter', 'qot-code-inserter' ),
+		__( 'QOT Code Inserter', 'qot-code-inserter' ),
 		'manage_options',
-		'quick-code-inserter',
-		'quick_code_inserter_render_page'
+		'qot-code-inserter',
+		'qot_code_inserter_render_page'
 	);
 
 	add_action(
 		'admin_enqueue_scripts',
 		function ( $current ) use ( $hook ) {
 			if ( $current === $hook ) {
-				quick_code_inserter_admin_assets();
+				qot_code_inserter_admin_assets();
 			}
 		}
 	);
 }
-add_action( 'admin_menu', 'quick_code_inserter_add_page' );
+add_action( 'admin_menu', 'qot_code_inserter_add_page' );
 
 /**
  * The page's styles and live preview script, inline, on this page only.
  */
-function quick_code_inserter_admin_assets() {
-	wp_register_style( 'quick-code-inserter-admin', false, array(), '1.0' );
-	wp_enqueue_style( 'quick-code-inserter-admin' );
+function qot_code_inserter_admin_assets() {
+	wp_register_style( 'qot-code-inserter-admin', false, array(), '1.0' );
+	wp_enqueue_style( 'qot-code-inserter-admin' );
 	wp_add_inline_style(
-		'quick-code-inserter-admin',
+		'qot-code-inserter-admin',
 		// Wrap in reverse: side by side, the preview sits on the right; when the screen is too narrow
 		// for both, it moves above the settings instead of below. (flex-end keeps both at the top.)
 		'.qci-wrap{display:flex;flex-wrap:wrap-reverse;gap:32px;align-items:flex-end}' .
@@ -647,37 +647,37 @@ function quick_code_inserter_admin_assets() {
 	);
 
 	$locations = array();
-	foreach ( quick_code_inserter_locations() as $key => $location ) {
+	foreach ( qot_code_inserter_locations() as $key => $location ) {
 		$locations[ $key ] = array(
 			'note'  => $location['note'],
-			'works' => quick_code_inserter_location_works( $key ),
+			'works' => qot_code_inserter_location_works( $key ),
 		);
 	}
 
 	$data = array(
 		'locations' => $locations,
-		'shows'     => quick_code_inserter_show_choices(),
+		'shows'     => qot_code_inserter_show_choices(),
 		'text'      => array(
-			'code'       => __( 'Code', 'quick-code-inserter' ),
-			'on'         => __( 'On', 'quick-code-inserter' ),
-			'off'        => __( 'Off', 'quick-code-inserter' ),
-			'empty'      => __( 'empty', 'quick-code-inserter' ),
-			'loggedOut'  => __( 'not for logged-in users', 'quick-code-inserter' ),
+			'code'       => __( 'Code', 'qot-code-inserter' ),
+			'on'         => __( 'On', 'qot-code-inserter' ),
+			'off'        => __( 'Off', 'qot-code-inserter' ),
+			'empty'      => __( 'empty', 'qot-code-inserter' ),
+			'loggedOut'  => __( 'not for logged-in users', 'qot-code-inserter' ),
 			/* translators: %d: paragraph number. */
-			'afterPara'  => __( 'after paragraph %d', 'quick-code-inserter' ),
-			'confirm'    => __( 'Remove this code? It is deleted when you save.', 'quick-code-inserter' ),
-			'notInTheme' => __( 'not shown in your theme', 'quick-code-inserter' ),
-			'header'     => __( 'Site header', 'quick-code-inserter' ),
-			'comments'   => __( 'Comment form', 'quick-code-inserter' ),
-			'sidebar'    => __( 'Sidebar', 'quick-code-inserter' ),
-			'footer'     => __( 'Site footer', 'quick-code-inserter' ),
+			'afterPara'  => __( 'after paragraph %d', 'qot-code-inserter' ),
+			'confirm'    => __( 'Remove this code? It is deleted when you save.', 'qot-code-inserter' ),
+			'notInTheme' => __( 'not shown in your theme', 'qot-code-inserter' ),
+			'header'     => __( 'Site header', 'qot-code-inserter' ),
+			'comments'   => __( 'Comment form', 'qot-code-inserter' ),
+			'sidebar'    => __( 'Sidebar', 'qot-code-inserter' ),
+			'footer'     => __( 'Site footer', 'qot-code-inserter' ),
 		),
 	);
 
-	wp_register_script( 'quick-code-inserter-admin', false, array(), '1.0', true );
-	wp_enqueue_script( 'quick-code-inserter-admin' );
-	wp_add_inline_script( 'quick-code-inserter-admin', 'window.qciData = ' . wp_json_encode( $data ) . ';' );
-	wp_add_inline_script( 'quick-code-inserter-admin', quick_code_inserter_admin_script() );
+	wp_register_script( 'qot-code-inserter-admin', false, array(), '1.0', true );
+	wp_enqueue_script( 'qot-code-inserter-admin' );
+	wp_add_inline_script( 'qot-code-inserter-admin', 'window.qciData = ' . wp_json_encode( $data ) . ';' );
+	wp_add_inline_script( 'qot-code-inserter-admin', qot_code_inserter_admin_script() );
 }
 
 /**
@@ -686,7 +686,7 @@ function quick_code_inserter_admin_assets() {
  *
  * @return string
  */
-function quick_code_inserter_admin_script() {
+function qot_code_inserter_admin_script() {
 	return <<<'JS'
 ( function () {
 	var data = window.qciData;
@@ -851,10 +851,10 @@ JS;
  * @param array      $slot     The slot's settings.
  * @param int        $position Its number on the page, starting at 1.
  */
-function quick_code_inserter_render_slot( $index, $slot, $position ) {
-	$name      = QUICK_CODE_INSERTER_OPTION . '[slots][' . $index . ']';
+function qot_code_inserter_render_slot( $index, $slot, $position ) {
+	$name      = QOT_CODE_INSERTER_OPTION . '[slots][' . $index . ']';
 	$id        = 'qci-' . $index;
-	$locations = quick_code_inserter_locations();
+	$locations = qot_code_inserter_locations();
 	$colour    = $position % 5 + 1;
 	$groups    = array();
 
@@ -867,22 +867,22 @@ function quick_code_inserter_render_slot( $index, $slot, $position ) {
 			<span class="qci-num">
 				<?php
 				/* translators: %d: number of the code on the settings page. */
-				echo esc_html( sprintf( __( 'Code %d', 'quick-code-inserter' ), $position ) );
+				echo esc_html( sprintf( __( 'Code %d', 'qot-code-inserter' ), $position ) );
 				?>
 			</span>
 			<span class="qci-hname"><?php echo $slot['name'] ? esc_html( '· ' . $slot['name'] ) : ''; ?></span>
-			<span class="qci-state"><?php echo $slot['on'] ? esc_html__( 'On', 'quick-code-inserter' ) : esc_html__( 'Off', 'quick-code-inserter' ); ?></span>
+			<span class="qci-state"><?php echo $slot['on'] ? esc_html__( 'On', 'qot-code-inserter' ) : esc_html__( 'Off', 'qot-code-inserter' ); ?></span>
 		</h2>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><label for="<?php echo esc_attr( $id . '-code' ); ?>"><?php esc_html_e( 'Your code', 'quick-code-inserter' ); ?></label></th>
+				<th scope="row"><label for="<?php echo esc_attr( $id . '-code' ); ?>"><?php esc_html_e( 'Your code', 'qot-code-inserter' ); ?></label></th>
 				<td>
-					<textarea id="<?php echo esc_attr( $id . '-code' ); ?>" data-field="code" name="<?php echo esc_attr( $name . '[code]' ); ?>" rows="7" spellcheck="false" autocomplete="off" placeholder="<?php esc_attr_e( 'Paste HTML, a <script> or a <style> here', 'quick-code-inserter' ); ?>"><?php echo esc_textarea( $slot['code'] ); ?></textarea>
-					<p class="description"><?php esc_html_e( 'HTML, JavaScript in <script> tags, CSS in <style> tags, or a shortcode. Not PHP.', 'quick-code-inserter' ); ?></p>
+					<textarea id="<?php echo esc_attr( $id . '-code' ); ?>" data-field="code" name="<?php echo esc_attr( $name . '[code]' ); ?>" rows="7" spellcheck="false" autocomplete="off" placeholder="<?php esc_attr_e( 'Paste HTML, a <script> or a <style> here', 'qot-code-inserter' ); ?>"><?php echo esc_textarea( $slot['code'] ); ?></textarea>
+					<p class="description"><?php esc_html_e( 'HTML, JavaScript in <script> tags, CSS in <style> tags, or a shortcode. Not PHP.', 'qot-code-inserter' ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="<?php echo esc_attr( $id . '-location' ); ?>"><?php esc_html_e( 'Where it goes', 'quick-code-inserter' ); ?></label></th>
+				<th scope="row"><label for="<?php echo esc_attr( $id . '-location' ); ?>"><?php esc_html_e( 'Where it goes', 'qot-code-inserter' ); ?></label></th>
 				<td>
 					<select id="<?php echo esc_attr( $id . '-location' ); ?>" data-field="location" name="<?php echo esc_attr( $name . '[location]' ); ?>">
 						<?php foreach ( $groups as $group => $places ) : ?>
@@ -891,8 +891,8 @@ function quick_code_inserter_render_slot( $index, $slot, $position ) {
 									<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $slot['location'], $key ); ?>>
 										<?php
 										echo esc_html( $location['label'] );
-										if ( ! quick_code_inserter_location_works( $key ) ) {
-											echo ' ' . esc_html__( '(not in your theme)', 'quick-code-inserter' );
+										if ( ! qot_code_inserter_location_works( $key ) ) {
+											echo ' ' . esc_html__( '(not in your theme)', 'qot-code-inserter' );
 										}
 										?>
 									</option>
@@ -904,51 +904,51 @@ function quick_code_inserter_render_slot( $index, $slot, $position ) {
 				</td>
 			</tr>
 			<tr class="qci-para-row"<?php echo 'after_paragraph' === $slot['location'] ? '' : ' style="display:none"'; ?>>
-				<th scope="row"><label for="<?php echo esc_attr( $id . '-paragraph' ); ?>"><?php esc_html_e( 'After paragraph', 'quick-code-inserter' ); ?></label></th>
+				<th scope="row"><label for="<?php echo esc_attr( $id . '-paragraph' ); ?>"><?php esc_html_e( 'After paragraph', 'qot-code-inserter' ); ?></label></th>
 				<td>
 					<input type="number" class="small-text" min="1" max="50" id="<?php echo esc_attr( $id . '-paragraph' ); ?>" data-field="paragraph" name="<?php echo esc_attr( $name . '[paragraph]' ); ?>" value="<?php echo esc_attr( (string) $slot['paragraph'] ); ?>" />
-					<p class="description"><?php esc_html_e( 'Paragraph 2 or 3 is a good spot: readers have started, and haven\'t left yet.', 'quick-code-inserter' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Paragraph 2 or 3 is a good spot: readers have started, and haven\'t left yet.', 'qot-code-inserter' ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="<?php echo esc_attr( $id . '-show' ); ?>"><?php esc_html_e( 'Show on', 'quick-code-inserter' ); ?></label></th>
+				<th scope="row"><label for="<?php echo esc_attr( $id . '-show' ); ?>"><?php esc_html_e( 'Show on', 'qot-code-inserter' ); ?></label></th>
 				<td>
 					<select id="<?php echo esc_attr( $id . '-show' ); ?>" data-field="show" name="<?php echo esc_attr( $name . '[show]' ); ?>">
-						<?php foreach ( quick_code_inserter_show_choices() as $key => $label ) : ?>
+						<?php foreach ( qot_code_inserter_show_choices() as $key => $label ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $slot['show'], $key ); ?>><?php echo esc_html( $label ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Visitors', 'quick-code-inserter' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Visitors', 'qot-code-inserter' ); ?></th>
 				<td>
 					<label>
 						<input type="checkbox" data-field="guests" name="<?php echo esc_attr( $name . '[guests]' ); ?>" value="1" <?php checked( $slot['guests'] ); ?> />
-						<?php esc_html_e( 'Hide from logged-in users', 'quick-code-inserter' ); ?>
+						<?php esc_html_e( 'Hide from logged-in users', 'qot-code-inserter' ); ?>
 					</label>
-					<p class="description"><?php esc_html_e( 'Handy for analytics, so your own visits aren\'t counted.', 'quick-code-inserter' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Handy for analytics, so your own visits aren\'t counted.', 'qot-code-inserter' ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Switch', 'quick-code-inserter' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Switch', 'qot-code-inserter' ); ?></th>
 				<td>
 					<label>
 						<input type="checkbox" data-field="on" name="<?php echo esc_attr( $name . '[on]' ); ?>" value="1" <?php checked( $slot['on'] ); ?> />
-						<?php esc_html_e( 'Insert this code', 'quick-code-inserter' ); ?>
+						<?php esc_html_e( 'Insert this code', 'qot-code-inserter' ); ?>
 					</label>
-					<p class="description"><?php esc_html_e( 'Untick to pause it without losing the code.', 'quick-code-inserter' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Untick to pause it without losing the code.', 'qot-code-inserter' ); ?></p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="<?php echo esc_attr( $id . '-name' ); ?>"><?php esc_html_e( 'Name', 'quick-code-inserter' ); ?></label></th>
+				<th scope="row"><label for="<?php echo esc_attr( $id . '-name' ); ?>"><?php esc_html_e( 'Name', 'qot-code-inserter' ); ?></label></th>
 				<td>
-					<input type="text" class="regular-text" id="<?php echo esc_attr( $id . '-name' ); ?>" data-field="name" name="<?php echo esc_attr( $name . '[name]' ); ?>" value="<?php echo esc_attr( $slot['name'] ); ?>" placeholder="<?php esc_attr_e( 'For example: Google Analytics', 'quick-code-inserter' ); ?>" />
-					<p class="description"><?php esc_html_e( 'Just for you, to tell your codes apart. Visitors never see it.', 'quick-code-inserter' ); ?></p>
+					<input type="text" class="regular-text" id="<?php echo esc_attr( $id . '-name' ); ?>" data-field="name" name="<?php echo esc_attr( $name . '[name]' ); ?>" value="<?php echo esc_attr( $slot['name'] ); ?>" placeholder="<?php esc_attr_e( 'For example: Google Analytics', 'qot-code-inserter' ); ?>" />
+					<p class="description"><?php esc_html_e( 'Just for you, to tell your codes apart. Visitors never see it.', 'qot-code-inserter' ); ?></p>
 				</td>
 			</tr>
 		</table>
-		<div class="qci-foot"><button type="button" class="qci-remove"><?php esc_html_e( 'Remove this code', 'quick-code-inserter' ); ?></button></div>
+		<div class="qci-foot"><button type="button" class="qci-remove"><?php esc_html_e( 'Remove this code', 'qot-code-inserter' ); ?></button></div>
 	</div>
 	<?php
 }
@@ -956,45 +956,45 @@ function quick_code_inserter_render_slot( $index, $slot, $position ) {
 /**
  * The settings page itself.
  */
-function quick_code_inserter_render_page() {
+function qot_code_inserter_render_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
-	$settings = quick_code_inserter_settings();
-	$slots    = $settings['slots'] ? $settings['slots'] : array( quick_code_inserter_blank_slot() );
+	$settings = qot_code_inserter_settings();
+	$slots    = $settings['slots'] ? $settings['slots'] : array( qot_code_inserter_blank_slot() );
 	$safe_url = add_query_arg( 'qci-off', '1', home_url( '/' ) );
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Quick Code Inserter', 'quick-code-inserter' ); ?></h1>
-		<p><?php esc_html_e( 'Paste any code and choose where it goes on your site. The map shows each spot as you go.', 'quick-code-inserter' ); ?></p>
+		<h1><?php esc_html_e( 'QOT Code Inserter', 'qot-code-inserter' ); ?></h1>
+		<p><?php esc_html_e( 'Paste any code and choose where it goes on your site. The map shows each spot as you go.', 'qot-code-inserter' ); ?></p>
 
 		<div class="qci-wrap">
 			<form method="post" action="options.php" id="qci-form">
-				<?php settings_fields( 'quick_code_inserter' ); ?>
+				<?php settings_fields( 'qot_code_inserter' ); ?>
 
 				<div class="qci-card qci-c1">
-					<h2><?php esc_html_e( 'All your code', 'quick-code-inserter' ); ?></h2>
+					<h2><?php esc_html_e( 'All your code', 'qot-code-inserter' ); ?></h2>
 					<?php if ( ! current_user_can( 'unfiltered_html' ) ) : ?>
-						<p class="qci-notice"><?php esc_html_e( 'Your account is not allowed to add scripts on this site, so only plain HTML is kept when you save. Ask the network admin if you need scripts.', 'quick-code-inserter' ); ?></p>
+						<p class="qci-notice"><?php esc_html_e( 'Your account is not allowed to add scripts on this site, so only plain HTML is kept when you save. Ask the network admin if you need scripts.', 'qot-code-inserter' ); ?></p>
 					<?php endif; ?>
 					<table class="form-table" role="presentation">
 						<tr>
-							<th scope="row"><?php esc_html_e( 'Main switch', 'quick-code-inserter' ); ?></th>
+							<th scope="row"><?php esc_html_e( 'Main switch', 'qot-code-inserter' ); ?></th>
 							<td>
 								<label>
-									<input type="checkbox" id="qci-enabled" name="<?php echo esc_attr( QUICK_CODE_INSERTER_OPTION . '[enabled]' ); ?>" value="1" <?php checked( $settings['enabled'] ); ?> />
-									<?php esc_html_e( 'Insert my code on the site', 'quick-code-inserter' ); ?>
+									<input type="checkbox" id="qci-enabled" name="<?php echo esc_attr( QOT_CODE_INSERTER_OPTION . '[enabled]' ); ?>" value="1" <?php checked( $settings['enabled'] ); ?> />
+									<?php esc_html_e( 'Insert my code on the site', 'qot-code-inserter' ); ?>
 								</label>
-								<p class="description"><?php esc_html_e( 'Untick to pause every code at once, for example while you look for a problem.', 'quick-code-inserter' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Untick to pause every code at once, for example while you look for a problem.', 'qot-code-inserter' ); ?></p>
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><?php esc_html_e( 'Safe view', 'quick-code-inserter' ); ?></th>
+							<th scope="row"><?php esc_html_e( 'Safe view', 'qot-code-inserter' ); ?></th>
 							<td>
 								<p class="description" style="margin-top:0">
-									<?php esc_html_e( 'If some code breaks how your site looks, add ?qci-off to the end of any address. While you are logged in as an admin, the page shows without any of your code, so you can come back here and fix it.', 'quick-code-inserter' ); ?>
-									<a href="<?php echo esc_url( $safe_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Try it on your homepage', 'quick-code-inserter' ); ?></a>
+									<?php esc_html_e( 'If some code breaks how your site looks, add ?qci-off to the end of any address. While you are logged in as an admin, the page shows without any of your code, so you can come back here and fix it.', 'qot-code-inserter' ); ?>
+									<a href="<?php echo esc_url( $safe_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Try it on your homepage', 'qot-code-inserter' ); ?></a>
 								</p>
 							</td>
 						</tr>
@@ -1004,25 +1004,25 @@ function quick_code_inserter_render_page() {
 				<div id="qci-slots">
 					<?php
 					foreach ( $slots as $i => $slot ) {
-						quick_code_inserter_render_slot( $i, $slot, $i + 1 );
+						qot_code_inserter_render_slot( $i, $slot, $i + 1 );
 					}
 					?>
 				</div>
 
-				<button type="button" class="button qci-add" id="qci-add"><span class="dashicons dashicons-plus-alt2"></span><?php esc_html_e( 'Add another code', 'quick-code-inserter' ); ?></button>
+				<button type="button" class="button qci-add" id="qci-add"><span class="dashicons dashicons-plus-alt2"></span><?php esc_html_e( 'Add another code', 'qot-code-inserter' ); ?></button>
 
 				<?php submit_button(); ?>
 			</form>
 
 			<div class="qci-side qci-card qci-preview">
-				<h2><?php esc_html_e( 'Where your code goes', 'quick-code-inserter' ); ?> <span class="qci-live"><?php esc_html_e( 'Live', 'quick-code-inserter' ); ?></span></h2>
+				<h2><?php esc_html_e( 'Where your code goes', 'qot-code-inserter' ); ?> <span class="qci-live"><?php esc_html_e( 'Live', 'qot-code-inserter' ); ?></span></h2>
 				<div id="qci-map" aria-live="polite"></div>
-				<p class="description"><?php esc_html_e( 'A plan of a typical page. Each tag shows where a code goes, in its card\'s colour. Faded tags are switched off, empty, or in a spot your theme doesn\'t have.', 'quick-code-inserter' ); ?></p>
+				<p class="description"><?php esc_html_e( 'A plan of a typical page. Each tag shows where a code goes, in its card\'s colour. Faded tags are switched off, empty, or in a spot your theme doesn\'t have.', 'qot-code-inserter' ); ?></p>
 			</div>
 		</div>
 
 		<template id="qci-slot-template">
-			<?php quick_code_inserter_render_slot( '__i__', quick_code_inserter_blank_slot(), 1 ); ?>
+			<?php qot_code_inserter_render_slot( '__i__', qot_code_inserter_blank_slot(), 1 ); ?>
 		</template>
 	</div>
 	<?php
@@ -1034,17 +1034,17 @@ function quick_code_inserter_render_page() {
  * @param string[] $links Existing links.
  * @return string[]
  */
-function quick_code_inserter_action_links( $links ) {
-	$url = admin_url( 'options-general.php?page=quick-code-inserter' );
-	array_unshift( $links, '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'quick-code-inserter' ) . '</a>' );
+function qot_code_inserter_action_links( $links ) {
+	$url = admin_url( 'options-general.php?page=qot-code-inserter' );
+	array_unshift( $links, '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'qot-code-inserter' ) . '</a>' );
 	return $links;
 }
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'quick_code_inserter_action_links' );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'qot_code_inserter_action_links' );
 
 /**
  * When someone deletes the plugin, remove its saved settings too.
  */
-function quick_code_inserter_uninstall() {
-	delete_option( QUICK_CODE_INSERTER_OPTION );
+function qot_code_inserter_uninstall() {
+	delete_option( QOT_CODE_INSERTER_OPTION );
 }
-register_uninstall_hook( __FILE__, 'quick_code_inserter_uninstall' );
+register_uninstall_hook( __FILE__, 'qot_code_inserter_uninstall' );

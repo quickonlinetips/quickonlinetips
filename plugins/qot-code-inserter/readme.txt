@@ -1,4 +1,4 @@
-=== Quick Code Inserter ===
+=== QOT Code Inserter ===
 Contributors: pchere
 Tags: insert code, header footer, analytics, ads, code snippets
 Requires at least: 6.0
@@ -12,7 +12,7 @@ Paste any code and pick where it goes: the page head, before or after posts, aft
 
 == Description ==
 
-Quick Code Inserter puts your code exactly where you want it, without touching your theme files. Paste the code, pick a spot from one list, and save.
+QOT Code Inserter puts your code exactly where you want it, without touching your theme files. Paste the code, pick a spot from one list, and save.
 
 It is made for the everyday codes every site needs: Google Analytics, site verification tags, ad codes, a notice bar, a newsletter form after each post, a chat widget. Nothing more, so it stays small and easy.
 
@@ -36,16 +36,16 @@ It is made for the everyday codes every site needs: Google Analytics, site verif
 * No PHP code, so a typo can't take your whole site down.
 * Only people allowed to add scripts on your site can save scripts. On a multisite network, other admins can add plain HTML only.
 
-Made by Quick Online Tips, tech help that works since 2004. See the [Quick Code Inserter plugin page](https://www.quickonlinetips.com/archives/quick-code-inserter-wordpress-plugin/) for more.
+Made by Quick Online Tips, tech help that works since 2004. See the [QOT Code Inserter plugin page](https://www.quickonlinetips.com/archives/qot-code-inserter-wordpress-plugin/) for more.
 
 == Installation ==
 
-1. In your WordPress dashboard, go to Plugins > Add New and search for "Quick Code Inserter".
+1. In your WordPress dashboard, go to Plugins > Add New and search for "QOT Code Inserter".
 2. Click Install Now, then Activate.
-3. Go to Settings > Quick Code Inserter.
+3. Go to Settings > QOT Code Inserter.
 4. Paste your code, choose where it goes, and click Save Changes.
 
-To install by hand, upload the `quick-code-inserter` folder to `/wp-content/plugins/` and activate it on the Plugins screen.
+To install by hand, upload the `qot-code-inserter` folder to `/wp-content/plugins/` and activate it on the Plugins screen.
 
 == Frequently Asked Questions ==
 
@@ -59,7 +59,7 @@ Google Tag Manager has two parts. Add the first as one code in the page head, an
 
 = Can I add PHP code? =
 
-No, and that is on purpose. PHP mistakes can stop a whole site from loading. Quick Code Inserter takes HTML, JavaScript in script tags, CSS in style tags and shortcodes.
+No, and that is on purpose. PHP mistakes can stop a whole site from loading. QOT Code Inserter takes HTML, JavaScript in script tags, CSS in style tags and shortcodes.
 
 = A place says "not in your theme". Why? =
 
@@ -67,7 +67,7 @@ Block themes (like Twenty Twenty-Five) and older classic themes are built differ
 
 = My code broke how the site looks. What now? =
 
-While logged in as an admin, open any page with `?qci-off` at the end of the address, for example `https://example.com/?qci-off`. The page shows without your code. Then go to Settings > Quick Code Inserter and fix or switch off the code.
+While logged in as an admin, open any page with `?qci-off` at the end of the address, for example `https://example.com/?qci-off`. The page shows without your code. Then go to Settings > QOT Code Inserter and fix or switch off the code.
 
 = The code doesn't show on my homepage or archive pages. =
 

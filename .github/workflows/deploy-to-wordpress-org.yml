@@ -34,6 +34,18 @@ on:
           - simple-feed-copyright
           - display-wordpress-version
           - qot-code-styler
+          - qot-code-inserter
+          - qot-focus-mode
+          - qot-dark-mode-button
+          - qot-editor-colors
+          - qot-editor-backup
+          - qot-background-rotator
+          - qot-font-changer
+          - qot-css-inserter
+          - qot-widget-areas
+          - qot-html-rotator
+          - qot-all-archives
+          - qot-all-images
       version:
         description: "Version to send, for example 2.0"
         required: true

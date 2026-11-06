@@ -37,8 +37,21 @@ The plugin's zip is also attached to the GitHub release, in case you want a copy
 | Quick WordPress Version | `display-wordpress-version-2.0` |
 | QOT Code Styler | `qot-code-styler-1.0` (only after WordPress.org approves it) |
 | QOT Code Inserter | `qot-code-inserter-1.0` (only after WordPress.org approves it) |
+| QOT Focus Mode | `qot-focus-mode-1.0` (only after WordPress.org approves it) |
+| QOT Dark Mode Button | `qot-dark-mode-button-1.0` (only after WordPress.org approves it) |
+| QOT Editor Colors | `qot-editor-colors-1.0` (only after WordPress.org approves it) |
+| QOT Editor Backup | `qot-editor-backup-1.0` (only after WordPress.org approves it) |
+| QOT Background Rotator | `qot-background-rotator-1.0` (only after WordPress.org approves it) |
+| QOT Font Changer | `qot-font-changer-1.0` (only after WordPress.org approves it) |
+| QOT CSS Inserter | `qot-css-inserter-1.0` (only after WordPress.org approves it) |
+| QOT Widget Areas | `qot-widget-areas-1.0` (only after WordPress.org approves it) |
+| QOT HTML Rotator | `qot-html-rotator-1.0` (only after WordPress.org approves it) |
+| QOT All Archives | `qot-all-archives-1.0` (only after WordPress.org approves it) |
+| QOT All Images | `qot-all-images-1.0` (only after WordPress.org approves it) |
 
 The tag uses the plugin's WordPress.org address, which never changes, even when the plugin's display name does.
+
+Every new plugin's name starts with **QOT** (for example QOT Focus Mode, slug `qot-focus-mode`). WordPress.org doesn't accept names that start with a generic word like "Quick", and QOT brands the family and links it back to Quick Online Tips.
 
 ## What gets sent where
 

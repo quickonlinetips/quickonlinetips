@@ -22,7 +22,7 @@
 
 ### A bit of history
 - Started in 2004 on Blogger, moved to WordPress in 2006
-- Made four free WordPress themes and three plugins, all listed on WordPress.org, and a new plugin is on its way:
+- Made four free WordPress themes and three plugins, all listed on WordPress.org, and a new family of QOT plugins is on its way:
 
 | Theme | Download | About | Code |
 |---|---|---|---|
@@ -37,7 +37,18 @@
 | **Quick META Keywords** | [WordPress.org](https://wordpress.org/plugins/quick-meta-keywords/) | [Plugin page](https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/) | [plugins/quick-meta-keywords](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-meta-keywords) |
 | **Display WordPress Version** | [WordPress.org](https://wordpress.org/plugins/display-wordpress-version/) | [Plugin page](https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/) | [plugins/display-wordpress-version](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/display-wordpress-version) |
 | **QOT Code Styler** 🆕 | Coming soon | Code blocks with syntax colours and a Copy button | [plugins/qot-code-styler](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-code-styler) |
-| **Quick Code Inserter** 🆕 | Coming soon | Paste any code and pick where it goes on your site | [plugins/quick-code-inserter](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-code-inserter) |
+| **QOT Code Inserter** 🆕 | Coming soon | Paste any code and pick where it goes on your site | [plugins/qot-code-inserter](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-code-inserter) |
+| **QOT Focus Mode** 🆕 | Coming soon | A Focus button that leaves just the post to read | [plugins/qot-focus-mode](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-focus-mode) |
+| **QOT Dark Mode Button** 🆕 | Coming soon | A button that switches the post to dark, and back | [plugins/qot-dark-mode-button](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-dark-mode-button) |
+| **QOT Editor Colors** 🆕 | Coming soon | Colour schemes and text size for the code editors | [plugins/qot-editor-colors](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-editor-colors) |
+| **QOT Editor Backup** 🆕 | Coming soon | Copy and Download buttons above the file editors | [plugins/qot-editor-backup](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-editor-backup) |
+| **QOT Background Rotator** 🆕 | Coming soon | A new background colour on every page | [plugins/qot-background-rotator](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-background-rotator) |
+| **QOT Font Changer** 🆕 | Coming soon | See your theme's fonts and swap them for web-safe ones | [plugins/qot-font-changer](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-font-changer) |
+| **QOT CSS Inserter** 🆕 | Coming soon | Your CSS for every theme, or for one theme | [plugins/qot-css-inserter](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-css-inserter) |
+| **QOT Widget Areas** 🆕 | Coming soon | New widget areas before and after posts, under the header and more | [plugins/qot-widget-areas](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-widget-areas) |
+| **QOT HTML Rotator** 🆕 | Coming soon | Rotate ads and banners by weight in one widget | [plugins/qot-html-rotator](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-html-rotator) |
+| **QOT All Archives** 🆕 | Coming soon | An archives page with every category in its own box | [plugins/qot-all-archives](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-all-archives) |
+| **QOT All Images** 🆕 | Coming soon | An image archive of the pictures in your posts | [plugins/qot-all-images](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-all-images) |
 
 🛠️ All of them are being updated for 2026, and their code lives here on GitHub.
 

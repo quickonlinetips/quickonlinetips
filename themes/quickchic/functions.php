@@ -462,8 +462,32 @@ function quickchic_customize_post_lists( $wp_customize ) {
 		'section'     => 'quickchic_post_lists',
 		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
 	) );
+
+	$wp_customize->add_setting( 'quickchic_list_image', array(
+		'default'           => 'thumb',
+		'sanitize_callback' => 'quickchic_sanitize_list_image',
+	) );
+	$wp_customize->add_control( 'quickchic_list_image', array(
+		'type'        => 'radio',
+		'label'       => __( 'Featured images', 'quickchic' ),
+		'description' => __( 'How each post\'s featured image shows in post lists.', 'quickchic' ),
+		'section'     => 'quickchic_post_lists',
+		'choices'     => array(
+			'thumb' => __( 'A small thumbnail on the right', 'quickchic' ),
+			'large' => __( 'A large image above the excerpt', 'quickchic' ),
+		),
+	) );
 }
 add_action( 'customize_register', 'quickchic_customize_post_lists' );
+
+function quickchic_sanitize_list_image( $value ) {
+	return 'large' === $value ? 'large' : 'thumb';
+}
+
+// Large featured images in post lists? (Customize > Post Lists > Featured images.)
+function quickchic_large_list_images() {
+	return 'large' === quickchic_sanitize_list_image( get_theme_mod( 'quickchic_list_image', 'thumb' ) );
+}
 
 function quickchic_sanitize_list_display( $value ) {
 	return 'full' === $value ? 'full' : 'excerpt';

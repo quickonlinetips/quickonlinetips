@@ -500,8 +500,32 @@ function quickpress_customize_post_lists( $wp_customize ) {
 		'section'     => 'quickpress_post_lists',
 		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
 	) );
+
+	$wp_customize->add_setting( 'quickpress_list_image', array(
+		'default'           => 'thumb',
+		'sanitize_callback' => 'quickpress_sanitize_list_image',
+	) );
+	$wp_customize->add_control( 'quickpress_list_image', array(
+		'type'        => 'radio',
+		'label'       => __( 'Featured images', 'quickpress' ),
+		'description' => __( 'How each post\'s featured image shows in post lists.', 'quickpress' ),
+		'section'     => 'quickpress_post_lists',
+		'choices'     => array(
+			'thumb' => __( 'A small thumbnail on the right', 'quickpress' ),
+			'large' => __( 'A large image above the excerpt', 'quickpress' ),
+		),
+	) );
 }
 add_action( 'customize_register', 'quickpress_customize_post_lists' );
+
+function quickpress_sanitize_list_image( $value ) {
+	return 'large' === $value ? 'large' : 'thumb';
+}
+
+// Large featured images in post lists? (Customize > Post Lists > Featured images.)
+function quickpress_large_list_images() {
+	return 'large' === quickpress_sanitize_list_image( get_theme_mod( 'quickpress_list_image', 'thumb' ) );
+}
 
 function quickpress_sanitize_list_display( $value ) {
 	return 'full' === $value ? 'full' : 'excerpt';

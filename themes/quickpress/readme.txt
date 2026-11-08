@@ -20,7 +20,7 @@ QuickPress is for bloggers and growing sites that want room for widgets (recent 
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
 
-Features: header colour and accent colour pickers, dark mode (can be switched off), Full width template for posts and pages, widget areas in the sidebar (full width plus two split columns), below posts and in three footer columns, search box in the header, main menu bar and footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, block styles and patterns, starter content for new sites, Skip to content link, print styles, translation ready.
+Features: header colour and accent colour pickers, small thumbnails or large featured images in post lists, dark mode (can be switched off), Full width template for posts and pages, widget areas in the sidebar (full width plus two split columns), below posts and in three footer columns, search box in the header, main menu bar and footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, block styles and patterns, starter content for new sites, Skip to content link, print styles, translation ready.
 
 To change the blue header or the pink accent, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
@@ -64,6 +64,10 @@ Appearance > Widgets has seven areas: Sidebar Full, Sidebar Split Left, Sidebar 
 
 Yes. Appearance > Customize > Post Lists lets you show a short excerpt with Read More (the default) or the full post, and set the excerpt length in words. With full posts, add a More block in a post to choose where it breaks. Search results always show excerpts.
 
+= Can post lists show bigger featured images? =
+
+Yes. In Appearance > Customize > Post Lists, set Featured images to "A large image above the excerpt". Each post's featured image then shows across the content column in a wide 16:9 frame, so the home page and archives look more like a magazine. The default is the classic small thumbnail on the right.
+
 = How do I add social icons? =
 
 Create a menu in Appearance > Menus with links to your profiles (for example https://www.instagram.com/yourname) and assign it to Footer Menu. Links to well-known networks show as small icons; other links stay as text.
@@ -82,7 +86,7 @@ Yes. Appearance > Customize > Colours, untick "Dark mode for readers who use it"
 * Editor looks like the site; theme colours and text sizes in the block editor
 * Text sizes scale smoothly from phone to desktop
 * Updated date shown on edited posts
-* Customize > Post Lists: excerpts or full posts, and the excerpt length
+* Customize > Post Lists: excerpts or full posts, the excerpt length, and small thumbnails or large images
 * Read More also shows after hand-written excerpts
 * Print styles
 * Social links in the Footer Menu show as small icons (X, Facebook, Instagram, LinkedIn, YouTube, GitHub, Pinterest, TikTok, Threads, Bluesky, Mastodon, Reddit, WhatsApp, Telegram, email, RSS)

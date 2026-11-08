@@ -623,8 +623,32 @@ function quickstrap_customize_post_lists( $wp_customize ) {
 		'section'     => 'quickstrap_post_lists',
 		'input_attrs' => array( 'min' => 10, 'max' => 200, 'step' => 5 ),
 	) );
+
+	$wp_customize->add_setting( 'quickstrap_list_image', array(
+		'default'           => 'thumb',
+		'sanitize_callback' => 'quickstrap_sanitize_list_image',
+	) );
+	$wp_customize->add_control( 'quickstrap_list_image', array(
+		'type'        => 'radio',
+		'label'       => __( 'Featured images', 'quickstrap' ),
+		'description' => __( 'How each post\'s featured image shows in post lists.', 'quickstrap' ),
+		'section'     => 'quickstrap_post_lists',
+		'choices'     => array(
+			'thumb' => __( 'A small thumbnail on the right', 'quickstrap' ),
+			'large' => __( 'A large image above the excerpt', 'quickstrap' ),
+		),
+	) );
 }
 add_action( 'customize_register', 'quickstrap_customize_post_lists' );
+
+function quickstrap_sanitize_list_image( $value ) {
+	return 'large' === $value ? 'large' : 'thumb';
+}
+
+// Large featured images in post lists? (Customize > Post Lists > Featured images.)
+function quickstrap_large_list_images() {
+	return 'large' === quickstrap_sanitize_list_image( get_theme_mod( 'quickstrap_list_image', 'thumb' ) );
+}
 
 function quickstrap_sanitize_list_display( $value ) {
 	return 'full' === $value ? 'full' : 'excerpt';

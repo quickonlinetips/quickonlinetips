@@ -24,7 +24,7 @@ QuickStrap is a Bootstrap 5 WordPress starter theme for developers, freelancers 
 * **Custom-coded.** Every file is hand-written and easy to read if you want to change something in a child theme.
 * **Modern touches.** Automatic dark mode using Bootstrap's own dark colours, text that scales smoothly from phone to desktop, an editor that looks like your site, and clean printouts.
 
-Features: Bootstrap 5.3.8 included, header colour and accent colour pickers, dark mode (can be switched off), light or dark top bar, centred or full-width page, three sidebar layouts, Full width template for posts and pages, widget areas in the right and left sidebars, above and below posts, between posts in lists and in three footer columns, main menu with dropdown sub-menus and a phone menu button, all without JavaScript, footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, Bootstrap block styles (Card, Alerts, outline buttons) and patterns, starter content for new sites, optional Bootstrap JavaScript, Bootstrap Icons and Font Awesome, Skip to content link, print styles, translation ready.
+Features: Bootstrap 5.3.8 included, header colour and accent colour pickers, small thumbnails or large featured images in post lists, dark mode (can be switched off), light or dark top bar, centred or full-width page, three sidebar layouts, Full width template for posts and pages, widget areas in the right and left sidebars, above and below posts, between posts in lists and in three footer columns, main menu with dropdown sub-menus and a phone menu button, all without JavaScript, footer menu with social icons, custom logo, custom background, featured images, Updated date on edited posts, sticky posts, threaded comments, numbered pagination, theme colours and text sizes in the block editor, Bootstrap block styles (Card, Alerts, outline buttons) and patterns, starter content for new sites, optional Bootstrap JavaScript, Bootstrap Icons and Font Awesome, Skip to content link, print styles, translation ready.
 
 To change the dark top bar or the blue accent, go to Appearance > Customize > Colours and pick your own. The same screen lets you turn off dark mode if you want the site to always stay light.
 
@@ -91,6 +91,10 @@ Appearance > Widgets has eight areas: Right Sidebar, Left Sidebar, Above Posts (
 = Can I show full posts on the home page, or shorter excerpts? =
 
 Yes. Appearance > Customize > Post Lists lets you show a short excerpt with Read More (the default) or the full post, and set the excerpt length in words. With full posts, add a More block in a post to choose where it breaks. Search results always show excerpts.
+
+= Can post lists show bigger featured images? =
+
+Yes. In Appearance > Customize > Post Lists, set Featured images to "A large image above the excerpt". Each post's featured image then shows across the content column in a wide 16:9 frame, so the home page and archives look more like a magazine. The default is the classic small thumbnail on the right.
 
 = How do I add social icons? =
 
@@ -166,7 +170,7 @@ Body classes: qs-light-header (light top bar), qs-full-width (Full width templat
 * Editor looks like the site; theme colours and text sizes in the block editor
 * Text sizes scale smoothly from phone to desktop
 * Updated date shown on edited posts
-* Customize > Post Lists: excerpts or full posts, and the excerpt length
+* Customize > Post Lists: excerpts or full posts, the excerpt length, and small thumbnails or large images
 * Read More also shows after hand-written excerpts
 * Print styles
 * Block styles (Accent bar for quotes, Soft box for groups) and two block patterns (newsletter sign-up box, about the author)

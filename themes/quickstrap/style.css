@@ -583,6 +583,27 @@ video {
 	border-radius: var(--bs-border-radius);
 }
 
+/* Large featured images in post lists (Customize > Post Lists > Featured
+   images): across the content column, above the excerpt, cropped to a wide
+   16:9 frame so every post in the list lines up. */
+.post-photo {
+	display: block;
+	margin: 10px 0 12px;
+}
+
+.post-photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: var(--bs-border-radius);
+}
+
+.post-photo:hover img {
+	filter: brightness(1.06);
+}
+
 .post-image {
 	margin: 0 0 1.25em;
 }

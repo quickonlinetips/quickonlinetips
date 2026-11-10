@@ -1,0 +1,11 @@
+@import url("https://www.quickonlinetips.com/archives/wp-content/themes/qotstrap/css/quickbase.css");
+@import url("https://www.quickonlinetips.com/archives/wp-content/themes/qotstrap/style.css");
+
+body#tinymce.wp-editor {
+    margin: 10px;
+}
+
+a {
+	text-decoration: underline !important;
+	color: purple !important;
+}

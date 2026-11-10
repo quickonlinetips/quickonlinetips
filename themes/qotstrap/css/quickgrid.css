@@ -1,0 +1,97 @@
+/* Customized from quickgrid.css v1.0 | quickonlinetips.com/projects/ */
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+    max-width: 120rem;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.row {
+  display: -webkit-flex;
+  display: flex;
+}
+
+.column {
+}
+
+/*
+.column.leftside {
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+.column.rightside {
+   -webkit-flex: 1;
+   -ms-flex: 1;
+   flex: 1;
+}
+*/
+
+
+/* content middle col - single page  */
+.column.middlecol {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+}
+
+
+/* header nav or footer nav */
+.column.singlecol {
+   -webkit-flex: 1;
+   -ms-flex: 1;
+   flex: 1;
+}
+
+.wide2of12 {max-width: 16.66%;}
+.wide4of12 {max-width: 33.33%;}
+.wide6of12 {max-width: 50%;}
+.wide8of12 {max-width: 66.66%;}
+.wide10of12 {max-width: 83.33%;}
+.high70 {max-height: 70px;}
+.high100 {max-height: 100px;}
+.high150 {max-height: 150px;}
+
+/* Responsive */
+
+@media (max-width: 899px) {
+  .row {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+	.column {padding: 10px; max-width: 100%;
+	}
+	.high70 {max-height: 140px;}
+}
+
+
+@media screen and (min-width: 1200px) {
+    .hide-xl {
+        display: none !important;
+    }
+}
+
+
+@media screen and (min-width: 900px) and (max-width: 1199px) {
+    .hide-md {
+        display: none !important;
+    }
+}
+
+
+@media screen and (min-width: 600px) and (max-width: 899px) {
+    .hide-sm {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .hide-xs {
+        display: none !important;
+    }
+}

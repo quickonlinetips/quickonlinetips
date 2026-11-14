@@ -49,6 +49,7 @@
 | **QOT HTML Rotator** 🆕 | Coming soon | Rotate ads and banners by weight in one widget | [plugins/qot-html-rotator](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-html-rotator) |
 | **QOT All Archives** 🆕 | Coming soon | An archives page with every category in its own box | [plugins/qot-all-archives](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-all-archives) |
 | **QOT All Images** 🆕 | Coming soon | An image archive of the pictures in your posts | [plugins/qot-all-images](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-all-images) |
+| **QOT Featured Image Column** 🆕 | Coming soon | Featured images in the Posts list, with missing, small and broken ones flagged | [plugins/qot-featured-image-column](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-featured-image-column) |
 
 🛠️ All of them are being updated for 2026, and their code lives here on GitHub.
 

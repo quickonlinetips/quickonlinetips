@@ -48,6 +48,7 @@ The plugin's zip is also attached to the GitHub release, in case you want a copy
 | QOT HTML Rotator | `qot-html-rotator-1.0` (only after WordPress.org approves it) |
 | QOT All Archives | `qot-all-archives-1.0` (only after WordPress.org approves it) |
 | QOT All Images | `qot-all-images-1.0` (only after WordPress.org approves it) |
+| QOT Featured Image Column | `qot-featured-image-column-1.1.0` (only after WordPress.org approves it) |
 
 The tag uses the plugin's WordPress.org address, which never changes, even when the plugin's display name does.
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       QOT Code Styler
- * Plugin URI:        https://www.quickonlinetips.com/archives/quick-code-styler-wordpress-plugin/
+ * Plugin URI:        https://www.quickonlinetips.com/archives/qot-code-styler-wordpress-plugin/
  * Description:       Code windows with syntax colours and a Copy button, plus clean inline code and keyboard keys. Dark, light or automatic. Tiny, no outside library.
  * Version:           1.0
  * Requires at least: 6.0

@@ -45,6 +45,10 @@ function qot_all_archives_defaults() {
 		'view_all'  => __( 'View all %d posts', 'qot-all-archives' ),
 		'head_bg'   => '#f0f6fc',
 		'head_fg'   => '#1d2327',
+		'box_bg_on' => false,
+		'box_bg'    => '#ffffff',
+		'border_on' => false,
+		'border'    => '#c3c4c7',
 		'cache'     => 12,
 	);
 }
@@ -85,6 +89,10 @@ function qot_all_archives_sanitize( $input ) {
 		'view_all'  => '' === $view ? $d['view_all'] : $view,
 		'head_bg'   => $color( 'head_bg' ),
 		'head_fg'   => $color( 'head_fg' ),
+		'box_bg_on' => ! empty( $input['box_bg_on'] ),
+		'box_bg'    => $color( 'box_bg' ),
+		'border_on' => ! empty( $input['border_on'] ),
+		'border'    => $color( 'border' ),
 		'cache'     => isset( $input['cache'] ) ? min( 168, absint( $input['cache'] ) ) : $d['cache'],
 	);
 }
@@ -245,21 +253,25 @@ function qot_all_archives_style() {
 	$s    = qot_all_archives_settings();
 	wp_register_style( 'qot-all-archives', false, array(), QOT_ALL_ARCHIVES_VERSION );
 	wp_enqueue_style( 'qot-all-archives' );
-	wp_add_inline_style( 'qot-all-archives', qot_all_archives_css( $s['head_bg'], $s['head_fg'] ) );
+	wp_add_inline_style( 'qot-all-archives', qot_all_archives_css( $s['head_bg'], $s['head_fg'], $s['box_bg_on'] ? $s['box_bg'] : '', $s['border_on'] ? $s['border'] : '' ) );
 }
 
 /**
  * The CSS, shared with the settings preview.
  *
- * @param string $bg Heading background.
- * @param string $fg Heading text.
+ * @param string $bg     Heading background.
+ * @param string $fg     Heading text.
+ * @param string $box    Box background, '' for none (the theme's own).
+ * @param string $border Box border, '' for the soft default.
  * @return string
  */
-function qot_all_archives_css( $bg, $fg ) {
+function qot_all_archives_css( $bg, $fg, $box = '', $border = '' ) {
+	$box    = '' === $box ? 'transparent' : $box;
+	$border = '' === $border ? 'rgba(0,0,0,.14)' : $border;
 	return '.qaa{display:grid;gap:20px;align-items:start;margin:1.5em 0;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}' .
 		'.qaa-cols-1{grid-template-columns:1fr}.qaa-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.qaa-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.qaa-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}' .
 		'@media (max-width:900px){.qaa-cols-3,.qaa-cols-4{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:600px){.qaa.qaa{grid-template-columns:1fr}}' .
-		'.qaa-box{border:1px solid rgba(0,0,0,.14);border-radius:6px;overflow:hidden;background:transparent;min-width:0}' .
+		'.qaa-box{border:1px solid ' . $border . ';border-radius:6px;overflow:hidden;background:' . $box . ';min-width:0}' .
 		'.qaa .qaa-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0;padding:10px 14px;font-size:1.05em;line-height:1.3;background:' . $bg . ';color:' . $fg . '}' .
 		'.qaa .qaa-title a{color:inherit;text-decoration:none}.qaa .qaa-title a:hover{text-decoration:underline}' .
 		'.qaa-count{font-size:.75em;font-weight:600;padding:1px 8px;border-radius:10px;background:rgba(0,0,0,.08)}' .
@@ -298,12 +310,15 @@ function qot_all_archives_make_page() {
 		wp_die( esc_html__( 'You are not allowed to add pages.', 'qot-all-archives' ) );
 	}
 	check_admin_referer( 'qot_all_archives_page' );
-	$tags = ! empty( $_GET['tags'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- checked above.
-	$id   = wp_insert_post(
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- checked above.
+	$tags  = ! empty( $_GET['tags'] );
+	$title = isset( $_GET['title'] ) ? sanitize_text_field( wp_unslash( $_GET['title'] ) ) : '';
+	// phpcs:enable
+	$id = wp_insert_post(
 		array(
 			'post_type'    => 'page',
 			'post_status'  => 'draft',
-			'post_title'   => $tags ? __( 'Tags', 'qot-all-archives' ) : __( 'Archives', 'qot-all-archives' ),
+			'post_title'   => '' !== $title ? $title : qot_all_archives_page_title( $tags ),
 			'post_content' => '<!-- wp:paragraph --><p>' . esc_html__( 'Browse every topic on this site, with the latest posts in each.', 'qot-all-archives' ) . '</p><!-- /wp:paragraph -->' . "\n\n" .
 				'<!-- wp:shortcode -->' . ( $tags ? '[qot_tag_archives]' : '[qot_category_archives]' ) . '<!-- /wp:shortcode -->',
 		)
@@ -315,6 +330,42 @@ function qot_all_archives_make_page() {
 	exit;
 }
 add_action( 'admin_post_qot_all_archives_page', 'qot_all_archives_make_page' );
+
+/**
+ * The suggested title for a new archives page.
+ *
+ * @param bool $tags True for a tags page.
+ * @return string
+ */
+function qot_all_archives_page_title( $tags ) {
+	return $tags ? __( 'Tags', 'qot-all-archives' ) : __( 'Archives', 'qot-all-archives' );
+}
+
+/**
+ * Pages that already hold an archives shortcode, so the settings page can list them.
+ *
+ * @return WP_Post[]
+ */
+function qot_all_archives_pages() {
+	$found = array();
+	$pages = get_posts(
+		array(
+			'post_type'   => 'page',
+			'post_status' => array( 'publish', 'draft', 'pending', 'private', 'future' ),
+			's'           => 'qot_',
+			'numberposts' => 20,
+		)
+	);
+	foreach ( $pages as $page ) {
+		foreach ( array( 'qot_category_archives', 'qot_all_archives', 'qot_tag_archives' ) as $code ) {
+			if ( has_shortcode( $page->post_content, $code ) ) {
+				$found[] = $page;
+				break;
+			}
+		}
+	}
+	return $found;
+}
 
 /* ------------------------------------------------------------------ *
  * Settings page
@@ -353,44 +404,54 @@ function qot_all_archives_add_page() {
 add_action( 'admin_menu', 'qot_all_archives_add_page' );
 
 /**
- * A sample of the site's own categories for the preview.
+ * A sample of the site's own categories and tags for the preview.
  *
  * @return array
  */
 function qot_all_archives_sample() {
-	$out   = array();
-	$terms = get_terms(
-		array(
-			'taxonomy'   => 'category',
-			'hide_empty' => true,
-			'orderby'    => 'count',
-			'order'      => 'DESC',
-			'number'     => 6,
-		)
-	);
-	if ( is_wp_error( $terms ) ) {
-		return $out;
-	}
-	foreach ( $terms as $term ) {
-		$posts = get_posts(
+	$out = array();
+	foreach ( array( 'category', 'post_tag' ) as $taxonomy ) {
+		$out[ $taxonomy ] = array();
+		$terms            = get_terms(
 			array(
-				'numberposts' => 12,
-				'cat'         => $term->term_id,
-				'post_status' => 'publish',
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => true,
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+				'number'     => 10,
 			)
 		);
-		$list  = array();
-		foreach ( $posts as $post ) {
-			$list[] = array(
-				't' => get_the_title( $post ),
-				'd' => get_the_date( '', $post ),
+		if ( is_wp_error( $terms ) ) {
+			continue;
+		}
+		foreach ( $terms as $term ) {
+			$posts = get_posts(
+				array(
+					'numberposts' => 12,
+					'post_status' => 'publish',
+					'tax_query'   => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- settings page only.
+						array(
+							'taxonomy'         => $taxonomy,
+							'terms'            => $term->term_id,
+							'include_children' => false,
+						),
+					),
+				)
+			);
+			$list  = array();
+			foreach ( $posts as $post ) {
+				$list[] = array(
+					't' => get_the_title( $post ),
+					'd' => get_the_date( '', $post ),
+				);
+			}
+			$out[ $taxonomy ][] = array(
+				'name'   => $term->name,
+				'count'  => (int) $term->count,
+				'parent' => (int) $term->parent,
+				'posts'  => $list,
 			);
 		}
-		$out[] = array(
-			'name'  => $term->name,
-			'count' => (int) $term->count,
-			'posts' => $list,
-		);
 	}
 	return $out;
 }
@@ -404,8 +465,15 @@ function qot_all_archives_admin_assets() {
 	wp_add_inline_style(
 		'qot-all-archives-admin',
 		qot_all_archives_admin_base_css() .
-		'.qaa-how code{display:inline-block;margin:2px 0}.qaa-how td{padding:6px 10px 6px 0;vertical-align:top}.qaa-make{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}' .
-		'#qaa-demo{max-height:520px;overflow:auto;font-size:13px}#qaa-demo .qaa{margin:0}#qaa-demo .qaa-title a{pointer-events:none}'
+		'.qaa-how code{display:inline-block;margin:2px 0}.qaa-how td{padding:6px 10px 6px 0;vertical-align:top}.qaa-make{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:4px 0 8px}' .
+		'.qaa-pages{margin:4px 0 14px;padding:10px 14px;background:#f6f7f7;border:1px solid #dcdcde;border-radius:4px}.qaa-pages ul{margin:6px 0 0}.qaa-pages li{margin:0 0 4px}.qaa-state{color:#50575e}' .
+		'.qaa-color{display:inline-flex;align-items:center;gap:6px;margin:0 18px 6px 0;white-space:nowrap}.qaa-color input[type=color]{width:44px;height:30px;padding:2px;cursor:pointer}' .
+		'.qaa-reset.button-link{font-size:12px}.qaa-reset:disabled{color:#a7aaad;cursor:default;text-decoration:none}' .
+		'#qaa-demo{max-height:560px;overflow:auto;padding:0}.qaa-page{width:800px;padding:22px 26px;box-sizing:border-box;font-size:15px;line-height:1.5}' .
+		'.qaa-kind{display:inline-block;margin:0 0 8px;padding:2px 10px;border-radius:10px;background:#f0f6fc;border:1px solid #c5d9ed;color:#1d2327;font-size:12px;font-weight:600}' .
+		'.qaa-kind code{background:none;padding:0;font-size:12px}' .
+		'.qaa-page-title{margin:0 0 6px;font-size:30px;line-height:1.2;color:#1d2327}.qaa-page-intro{margin:0 0 4px;color:#50575e}' .
+		'#qaa-demo .qaa{margin:18px 0 0}#qaa-demo a{color:#2271b1}#qaa-demo .qaa-title a{color:inherit;pointer-events:none}'
 	);
 	wp_register_script( 'qot-all-archives-admin', false, array(), QOT_ALL_ARCHIVES_VERSION, true );
 	wp_enqueue_script( 'qot-all-archives-admin' );
@@ -413,16 +481,39 @@ function qot_all_archives_admin_assets() {
 		'qot-all-archives-admin',
 		'window.qaaData=' . wp_json_encode(
 			array(
-				'sample' => qot_all_archives_sample(),
-				'css'    => qot_all_archives_css( '__BG__', '__FG__' ),
-				'none'   => __( 'Your posts have no categories yet. Once they do, the preview shows them here.', 'qot-all-archives' ),
+				'sample'   => qot_all_archives_sample(),
+				'css'      => qot_all_archives_css( '__BG__', '__FG__', '__BOX__', '__BORDER__' ),
+				'noBox'    => 'transparent',
+				'noBorder' => 'rgba(0,0,0,.14)',
+				'titles'   => array(
+					'category' => qot_all_archives_page_title( false ),
+					'post_tag' => qot_all_archives_page_title( true ),
+				),
+				'kinds'    => array(
+					'category' => __( 'Category archives', 'qot-all-archives' ),
+					'post_tag' => __( 'Tag archives', 'qot-all-archives' ),
+				),
+				'codes'    => array(
+					'category' => '[qot_category_archives]',
+					'post_tag' => '[qot_tag_archives]',
+				),
+				'buttons'  => array(
+					'category' => __( 'Make the categories page', 'qot-all-archives' ),
+					'post_tag' => __( 'Make the tags page', 'qot-all-archives' ),
+				),
+				'intro'    => __( 'Browse every topic on this site, with the latest posts in each.', 'qot-all-archives' ),
+				'untitled' => __( '(no title)', 'qot-all-archives' ),
+				'none'     => array(
+					'category' => __( 'Your posts have no categories yet. Once they do, the preview shows them here.', 'qot-all-archives' ),
+					'post_tag' => __( 'Your posts have no tags yet. Once they do, the preview shows them here.', 'qot-all-archives' ),
+				),
 			)
 		) . ';' . qot_all_archives_admin_script()
 	);
 }
 
 /**
- * Preview script: builds the boxes from the site's own categories, like the shortcode.
+ * Preview script: builds the page from the site's own categories or tags, like the shortcode.
  *
  * @return string
  */
@@ -432,6 +523,8 @@ function qot_all_archives_admin_script() {
 	var d = window.qaaData;
 	var form = document.getElementById( 'qaa-form' );
 	var demo = document.getElementById( 'qaa-demo' );
+	var title = document.getElementById( 'qaa-title' );
+	var make = document.getElementById( 'qaa-make' );
 	var style = document.createElement( 'style' );
 	document.head.appendChild( style );
 	if ( ! form || ! demo ) {
@@ -442,22 +535,86 @@ function qot_all_archives_admin_script() {
 			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[ c ];
 		} );
 	}
+	function field( name ) {
+		return form.querySelector( '[name="qot_all_archives[' + name + ']"]:checked' ) || form.querySelector( '[name="qot_all_archives[' + name + ']"]:not([type=radio]):not([type=checkbox])' );
+	}
 	function val( name ) {
-		var el = form.querySelector( '[name="qot_all_archives[' + name + ']"]:checked' ) || form.querySelector( '[name="qot_all_archives[' + name + ']"]:not([type=radio]):not([type=checkbox])' );
+		var el = field( name );
 		return el ? el.value : '';
 	}
 	function on( name ) {
-		return form.querySelector( '[name="qot_all_archives[' + name + ']"]' ).checked;
+		var el = form.querySelector( '[name="qot_all_archives[' + name + ']"]' );
+		return !! ( el && el.checked );
 	}
-	function draw() {
-		style.textContent = d.css.split( '__BG__' ).join( val( 'head_bg' ) ).split( '__FG__' ).join( val( 'head_fg' ) );
-		if ( ! d.sample.length ) {
-			demo.innerHTML = '<p>' + esc( d.none ) + '</p>';
-			return;
+	function kind() {
+		var el = form.querySelector( 'input[name="qaa_preview_type"]:checked' );
+		return el && 'post_tag' === el.value ? 'post_tag' : 'category';
+	}
+
+	// Reset links put a colour back to the plugin's own; they grey out when nothing has changed.
+	var resets = form.querySelectorAll( '.qaa-reset' );
+	function resetStates() {
+		resets.forEach( function ( b ) {
+			var input = document.getElementById( b.getAttribute( 'data-for' ) );
+			var off = b.getAttribute( 'data-off' ) ? document.getElementById( b.getAttribute( 'data-off' ) ) : null;
+			b.disabled = input.value.toLowerCase() === b.getAttribute( 'data-default' ).toLowerCase() && ( ! off || ! off.checked );
+		} );
+	}
+	resets.forEach( function ( b ) {
+		b.addEventListener( 'click', function () {
+			var input = document.getElementById( b.getAttribute( 'data-for' ) );
+			input.value = b.getAttribute( 'data-default' );
+			if ( b.getAttribute( 'data-off' ) ) {
+				document.getElementById( b.getAttribute( 'data-off' ) ).checked = false;
+			}
+			draw();
+			input.focus();
+		} );
+	} );
+	// Picking a box colour switches that colour on.
+	form.querySelectorAll( 'input[type=color][data-on]' ).forEach( function ( input ) {
+		input.addEventListener( 'input', function () {
+			document.getElementById( input.getAttribute( 'data-on' ) ).checked = true;
+		} );
+	} );
+
+	// The page maker: the button follows the chosen kind and title.
+	var lastKind = kind();
+	function maker() {
+		var k = kind();
+		if ( title && k !== lastKind && ( '' === title.value.trim() || title.value === d.titles[ lastKind ] ) ) {
+			title.value = d.titles[ k ];
 		}
+		lastKind = k;
+		if ( make ) {
+			make.textContent = d.buttons[ k ];
+			make.href = make.getAttribute( 'data-href' ) + ( 'post_tag' === k ? '&tags=1' : '' ) + '&title=' + encodeURIComponent( title ? title.value.trim() : '' );
+		}
+	}
+
+	// Show the page at a typical content width, shrunk to fit the preview window.
+	function fit() {
+		var page = demo.querySelector( '.qaa-page' );
+		if ( page ) {
+			page.style.zoom = Math.min( 1, demo.clientWidth / 800 );
+		}
+	}
+
+	function draw() {
+		maker();
+		resetStates();
+		var k = kind();
+		style.textContent = d.css.split( '__BG__' ).join( val( 'head_bg' ) ).split( '__FG__' ).join( val( 'head_fg' ) )
+			.split( '__BOX__' ).join( on( 'box_bg_on' ) ? val( 'box_bg' ) : d.noBox )
+			.split( '__BORDER__' ).join( on( 'border_on' ) ? val( 'border' ) : d.noBorder );
+		var head = '<div class="qaa-kind">' + esc( d.kinds[ k ] ) + ' &middot; <code>' + esc( d.codes[ k ] ) + '</code></div>' +
+			'<h1 class="qaa-page-title">' + esc( title && title.value.trim() ? title.value.trim() : d.untitled ) + '</h1>' +
+			'<p class="qaa-page-intro">' + esc( d.intro ) + '</p>';
 		var n = Math.max( 1, Math.min( 50, parseInt( val( 'posts' ), 10 ) || 10 ) );
 		var min = Math.max( 1, parseInt( val( 'min_posts' ), 10 ) || 1 );
-		var terms = d.sample.slice();
+		var terms = d.sample[ k ].filter( function ( t ) {
+			return t.count >= min && ! ( 'category' === k && on( 'top_only' ) && t.parent );
+		} ).slice( 0, 6 );
 		if ( 'name' === val( 'order' ) ) {
 			terms.sort( function ( a, b ) {
 				return a.name.localeCompare( b.name );
@@ -465,9 +622,6 @@ function qot_all_archives_admin_script() {
 		}
 		var html = '';
 		terms.forEach( function ( t ) {
-			if ( t.count < min ) {
-				return;
-			}
 			var list = t.posts.slice( 0, n ).map( function ( p ) {
 				return '<li><a href="#">' + esc( p.t ) + '</a>' + ( on( 'dates' ) ? ' <time>' + esc( p.d ) + '</time>' : '' ) + '</li>';
 			} ).join( '' );
@@ -475,16 +629,43 @@ function qot_all_archives_admin_script() {
 				'<ul class="qaa-list">' + list + '</ul>' + ( t.count > Math.min( n, t.posts.length ) ? '<a class="qaa-all" href="#">' + esc( val( 'view_all' ).replace( '%d', t.count ) ) + ' &rarr;</a>' : '' ) + '</section>';
 		} );
 		var cols = val( 'columns' );
-		demo.innerHTML = '<div class="qaa qaa-cols-' + esc( 'auto' === cols ? 'auto' : Math.min( 2, parseInt( cols, 10 ) ) ) + '">' + html + '</div>';
+		var body = html ? '<div class="qaa qaa-cols-' + esc( /^[1-4]$/.test( cols ) ? cols : 'auto' ) + '">' + html + '</div>' : '<p>' + esc( d.none[ k ] ) + '</p>';
+		demo.innerHTML = '<div class="qaa-page">' + head + body + '</div>';
+		fit();
 	}
 	demo.addEventListener( 'click', function ( e ) {
 		e.preventDefault();
 	} );
 	form.addEventListener( 'input', draw );
 	form.addEventListener( 'change', draw );
+	window.addEventListener( 'resize', fit );
 	draw();
 }() );
 JS;
+}
+
+/**
+ * One colour picker with its Reset link.
+ *
+ * @param string $key   Setting name.
+ * @param string $label Label beside the picker.
+ * @param string $off   Id of the checkbox that Reset switches off, if any.
+ */
+function qot_all_archives_color_field( $key, $label, $off = '' ) {
+	$s  = qot_all_archives_settings();
+	$d  = qot_all_archives_defaults();
+	$id = 'qaa-' . str_replace( '_', '-', $key );
+	printf(
+		'<span class="qaa-color"><input type="color" id="%1$s" name="%2$s" value="%3$s"%4$s /> <label for="%1$s">%5$s</label> <button type="button" class="button-link qaa-reset" data-for="%1$s" data-default="%6$s"%7$s>%8$s</button></span>',
+		esc_attr( $id ),
+		esc_attr( QOT_ALL_ARCHIVES_OPTION . '[' . $key . ']' ),
+		esc_attr( $s[ $key ] ),
+		$off ? ' data-on="' . esc_attr( $off ) . '"' : '',
+		esc_html( $label ),
+		esc_attr( $d[ $key ] ),
+		$off ? ' data-off="' . esc_attr( $off ) . '"' : '',
+		esc_html__( 'Reset', 'qot-all-archives' )
+	);
 }
 
 /**
@@ -494,26 +675,58 @@ function qot_all_archives_render_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	$s    = qot_all_archives_settings();
-	$n    = QOT_ALL_ARCHIVES_OPTION;
-	$make = function ( $tags ) {
-		return wp_nonce_url( admin_url( 'admin-post.php?action=qot_all_archives_page' . ( $tags ? '&tags=1' : '' ) ), 'qot_all_archives_page' );
-	};
+	$s     = qot_all_archives_settings();
+	$n     = QOT_ALL_ARCHIVES_OPTION;
+	$base  = wp_nonce_url( admin_url( 'admin-post.php?action=qot_all_archives_page' ), 'qot_all_archives_page' );
+	$pages = qot_all_archives_pages();
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'QOT All Archives', 'qot-all-archives' ); ?></h1>
-		<p><?php esc_html_e( 'Build an archives page where every category (or tag) has its own box with its latest posts. These settings are the starting point for every archives shortcode; the preview uses your own categories.', 'qot-all-archives' ); ?></p>
+		<p><?php esc_html_e( 'Build an archives page where every category (or tag) has its own box with its latest posts. These settings are the starting point for every archives shortcode. The preview uses your own categories and tags, and updates as you go.', 'qot-all-archives' ); ?></p>
 		<div class="qaa-wrap">
 			<form method="post" action="options.php" id="qaa-form">
 				<?php settings_fields( 'qot_all_archives' ); ?>
 				<div class="qaa-card qaa-c1">
 					<h2><?php esc_html_e( 'Make your archives page', 'qot-all-archives' ); ?></h2>
-					<p style="margin-top:14px"><?php esc_html_e( 'One click makes a draft page with the shortcode in it. Look at it, add a few words if you like, and publish.', 'qot-all-archives' ); ?></p>
+					<?php if ( $pages ) : ?>
+						<div class="qaa-pages" style="margin-top:14px">
+							<strong><?php esc_html_e( 'Your archives pages so far:', 'qot-all-archives' ); ?></strong>
+							<ul>
+								<?php
+								foreach ( $pages as $page ) {
+									$state = get_post_status_object( get_post_status( $page ) );
+									$kind  = has_shortcode( $page->post_content, 'qot_tag_archives' ) ? __( 'tags', 'qot-all-archives' ) : __( 'categories', 'qot-all-archives' );
+									printf(
+										'<li><strong>%1$s</strong> <span class="qaa-state">(%2$s, %3$s)</span> &middot; <a href="%4$s">%5$s</a> &middot; <a href="%6$s" target="_blank">%7$s</a></li>',
+										esc_html( get_the_title( $page ) ? get_the_title( $page ) : __( '(no title)', 'qot-all-archives' ) ),
+										esc_html( $kind ),
+										esc_html( $state ? $state->label : get_post_status( $page ) ),
+										esc_url( get_edit_post_link( $page ) ),
+										esc_html__( 'Edit', 'qot-all-archives' ),
+										esc_url( get_permalink( $page ) ),
+										'publish' === get_post_status( $page ) ? esc_html__( 'View', 'qot-all-archives' ) : esc_html__( 'Preview', 'qot-all-archives' )
+									);
+								}
+								?>
+							</ul>
+						</div>
+					<?php endif; ?>
+					<table class="form-table" role="presentation">
+						<tr><th scope="row"><?php esc_html_e( 'The page shows', 'qot-all-archives' ); ?></th><td>
+							<label style="margin-right:14px"><input type="radio" name="qaa_preview_type" value="category" checked /> <?php esc_html_e( 'Categories', 'qot-all-archives' ); ?></label>
+							<label><input type="radio" name="qaa_preview_type" value="post_tag" /> <?php esc_html_e( 'Tags', 'qot-all-archives' ); ?></label>
+							<p class="description"><?php esc_html_e( 'The preview switches too, so you can see either kind before you make the page.', 'qot-all-archives' ); ?></p>
+						</td></tr>
+						<tr><th scope="row"><label for="qaa-title"><?php esc_html_e( 'Page title', 'qot-all-archives' ); ?></label></th><td>
+							<input type="text" id="qaa-title" class="regular-text" value="<?php echo esc_attr( qot_all_archives_page_title( false ) ); ?>" />
+							<p class="description"><?php esc_html_e( 'Shown at the top of the page and used for its address (a page titled Archives lives at yoursite.com/archives/). You can change it later in the editor.', 'qot-all-archives' ); ?></p>
+						</td></tr>
+					</table>
 					<div class="qaa-make">
-						<a class="button button-primary" href="<?php echo esc_url( $make( false ) ); ?>"><?php esc_html_e( 'Make a categories page', 'qot-all-archives' ); ?></a>
-						<a class="button" href="<?php echo esc_url( $make( true ) ); ?>"><?php esc_html_e( 'Make a tags page', 'qot-all-archives' ); ?></a>
+						<a class="button button-primary" id="qaa-make" href="<?php echo esc_url( $base ); ?>" data-href="<?php echo esc_url( $base ); ?>"><?php esc_html_e( 'Make the categories page', 'qot-all-archives' ); ?></a>
 					</div>
-					<p><?php esc_html_e( 'Or put a shortcode in any page or post (in a Shortcode block):', 'qot-all-archives' ); ?></p>
+					<p class="description"><?php esc_html_e( 'This makes a draft page with the shortcode in it and opens it in the editor. Nothing shows on your site until you publish it there.', 'qot-all-archives' ); ?></p>
+					<p style="margin-top:16px"><?php esc_html_e( 'Or put a shortcode in any page or post (in a Shortcode block):', 'qot-all-archives' ); ?></p>
 					<table class="qaa-how">
 						<tr><td><code>[qot_category_archives]</code></td><td><?php esc_html_e( 'every category', 'qot-all-archives' ); ?></td></tr>
 						<tr><td><code>[qot_tag_archives]</code></td><td><?php esc_html_e( 'every tag', 'qot-all-archives' ); ?></td></tr>
@@ -532,7 +745,7 @@ function qot_all_archives_render_page() {
 								printf( '<label style="margin-right:14px"><input type="radio" name="%1$s" value="%2$s" %3$s /> %4$s</label>', esc_attr( $n . '[columns]' ), esc_attr( $value ), checked( $s['columns'], $value, false ), esc_html( $label ) );
 							}
 							?>
-							<p class="description"><?php esc_html_e( '"Fit the page" puts as many boxes side by side as your content area has room for. Phones always get one column. For a wider page, use your theme\'s full-width template.', 'qot-all-archives' ); ?></p>
+							<p class="description"><?php esc_html_e( '"Fit the page" puts as many boxes side by side as your content area has room for. Phones always get one column, and small tablets at most two. For a wider page, use your theme\'s full-width template.', 'qot-all-archives' ); ?></p>
 						</td></tr>
 						<tr><th scope="row"><label for="qaa-posts"><?php esc_html_e( 'Posts in each box', 'qot-all-archives' ); ?></label></th><td>
 							<input type="number" id="qaa-posts" min="1" max="50" class="small-text" name="<?php echo esc_attr( $n . '[posts]' ); ?>" value="<?php echo esc_attr( $s['posts'] ); ?>" />
@@ -558,15 +771,33 @@ function qot_all_archives_render_page() {
 					</table>
 				</div>
 				<div class="qaa-card qaa-c3">
-					<h2><?php esc_html_e( 'Colours and speed', 'qot-all-archives' ); ?></h2>
+					<h2><?php esc_html_e( 'Colours', 'qot-all-archives' ); ?></h2>
 					<table class="form-table" role="presentation">
 						<tr><th scope="row"><?php esc_html_e( 'Box headings', 'qot-all-archives' ); ?></th><td>
-							<label><input type="color" name="<?php echo esc_attr( $n . '[head_bg]' ); ?>" value="<?php echo esc_attr( $s['head_bg'] ); ?>" /> <?php esc_html_e( 'Background', 'qot-all-archives' ); ?></label>
-							<label style="margin-left:16px"><input type="color" name="<?php echo esc_attr( $n . '[head_fg]' ); ?>" value="<?php echo esc_attr( $s['head_fg'] ); ?>" /> <?php esc_html_e( 'Text', 'qot-all-archives' ); ?></label>
+							<?php
+							qot_all_archives_color_field( 'head_bg', __( 'Background', 'qot-all-archives' ) );
+							qot_all_archives_color_field( 'head_fg', __( 'Text', 'qot-all-archives' ) );
+							?>
+							<p class="description"><?php esc_html_e( 'Reset puts a colour back to the plugin\'s own. Save to keep it.', 'qot-all-archives' ); ?></p>
 						</td></tr>
-						<tr><th scope="row"><label for="qaa-cache"><?php esc_html_e( 'Keep ready for', 'qot-all-archives' ); ?></label></th><td>
+						<tr><th scope="row"><?php esc_html_e( 'Box background', 'qot-all-archives' ); ?></th><td>
+							<label style="margin-right:12px"><input type="checkbox" id="qaa-box-bg-on" name="<?php echo esc_attr( $n . '[box_bg_on]' ); ?>" value="1" <?php checked( $s['box_bg_on'] ); ?> /> <?php esc_html_e( 'Use a colour', 'qot-all-archives' ); ?></label>
+							<?php qot_all_archives_color_field( 'box_bg', __( 'Colour', 'qot-all-archives' ), 'qaa-box-bg-on' ); ?>
+							<p class="description"><?php esc_html_e( 'Off: the boxes show your theme\'s own background. Picking a colour switches this on.', 'qot-all-archives' ); ?></p>
+						</td></tr>
+						<tr><th scope="row"><?php esc_html_e( 'Box border', 'qot-all-archives' ); ?></th><td>
+							<label style="margin-right:12px"><input type="checkbox" id="qaa-border-on" name="<?php echo esc_attr( $n . '[border_on]' ); ?>" value="1" <?php checked( $s['border_on'] ); ?> /> <?php esc_html_e( 'Use a colour', 'qot-all-archives' ); ?></label>
+							<?php qot_all_archives_color_field( 'border', __( 'Colour', 'qot-all-archives' ), 'qaa-border-on' ); ?>
+							<p class="description"><?php esc_html_e( 'Off: a soft see-through line that suits light and dark themes.', 'qot-all-archives' ); ?></p>
+						</td></tr>
+					</table>
+				</div>
+				<div class="qaa-card qaa-c4">
+					<h2><?php esc_html_e( 'Speed', 'qot-all-archives' ); ?></h2>
+					<table class="form-table" role="presentation">
+						<tr><th scope="row"><label for="qaa-cache"><?php esc_html_e( 'Refresh every', 'qot-all-archives' ); ?></label></th><td>
 							<input type="number" id="qaa-cache" min="0" max="168" class="small-text" name="<?php echo esc_attr( $n . '[cache]' ); ?>" value="<?php echo esc_attr( $s['cache'] ); ?>" /> <?php esc_html_e( 'hours', 'qot-all-archives' ); ?>
-							<p class="description"><?php esc_html_e( 'The archives are built once and kept, so the page stays fast even with hundreds of categories. Publishing or editing a post starts afresh straight away. 0 builds them on every visit.', 'qot-all-archives' ); ?></p>
+							<p class="description"><?php esc_html_e( 'The archives are built once and saved, so the page loads fast even with hundreds of categories. They are built afresh after this many hours, and straight away when you publish or edit a post or save this page. 0 builds them on every visit (slower).', 'qot-all-archives' ); ?></p>
 						</td></tr>
 					</table>
 				</div>
@@ -576,7 +807,7 @@ function qot_all_archives_render_page() {
 			<div class="qaa-side qaa-card qaa-preview">
 				<h2><?php esc_html_e( 'Preview', 'qot-all-archives' ); ?> <span class="qaa-live"><?php esc_html_e( 'Live', 'qot-all-archives' ); ?></span></h2>
 				<div class="qaa-screen" id="qaa-demo"></div>
-				<p class="description"><?php esc_html_e( 'Your six biggest categories as they will look. The preview shows at most two columns; your page shows the columns you choose.', 'qot-all-archives' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Your page with its six biggest categories (or tags), in the columns you chose, at a typical content width of 800 pixels and shrunk to fit. Your theme\'s fonts and link colours will show on the real page.', 'qot-all-archives' ); ?></p>
 			</div>
 		</div>
 	</div>

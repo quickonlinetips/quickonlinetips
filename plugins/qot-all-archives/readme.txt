@@ -17,13 +17,13 @@ A good archives page helps readers find your older posts, and helps search engin
 **What you get**
 
 * **Every category, or every tag,** each in its own box: name, number of posts, the latest posts and a "View all 57 posts" link.
-* **One click** makes a draft archives page (or tags page) with everything in place.
+* **One click** makes a draft archives page (or tags page) with the title you choose, and lists the archives pages you already have.
 * **Two shortcodes:** `[qot_category_archives]` and `[qot_tag_archives]`.
 * **Columns that fit:** as many boxes side by side as your page has room for, or exactly 2, 3 or 4. Phones always get one column.
-* **Your choices:** posts per box, A to Z or biggest first, leave out small categories or tags, post counts, dates, top-level categories only, your own "View all" words and heading colours.
+* **Your choices:** posts per box, A to Z or biggest first, leave out small categories or tags, post counts, dates, top-level categories only, your own "View all" words, heading colours and box background and border colours, each with a Reset link.
 * **Pick and mix per page** with shortcode settings: `include`, `exclude`, `columns`, `posts`, `order`, `min_posts`, `top_only`, `counts`, `dates`.
 * **Fast, even on big sites:** the archives are built once and kept ready. Publishing or editing a post refreshes them straight away.
-* **A live preview** made from your own categories.
+* **A live preview** of the whole page, made from your own categories or tags, in the columns you choose.
 
 **Light by design**
 
@@ -35,7 +35,7 @@ Made by Quick Online Tips, tech help that works since 2004. See all our [free Wo
 
 1. In your WordPress admin, go to Plugins > Add New Plugin and search for "QOT All Archives".
 2. Click Install Now, then Activate.
-3. Go to Settings > QOT All Archives and click "Make a categories page". Publish the draft that opens.
+3. Go to Settings > QOT All Archives, choose categories or tags and a page title, and click "Make the categories page". Publish the draft that opens.
 
 == Frequently Asked Questions ==
 

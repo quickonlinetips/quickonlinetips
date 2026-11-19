@@ -22,7 +22,7 @@
 
 ### A bit of history
 - Started in 2004 on Blogger, moved to WordPress in 2006
-- Made four free WordPress themes and three plugins, all listed on WordPress.org:
+- Made four free WordPress themes and four plugins, all listed on WordPress.org:
 
 | Theme | Download | About | Code |
 |---|---|---|---|
@@ -36,6 +36,7 @@
 | **Quick Feed Copyright** | [WordPress.org](https://wordpress.org/plugins/simple-feed-copyright/) | [Plugin page](https://www.quickonlinetips.com/archives/simple-feed-copyright-wordpress-plugin/) | [plugins/simple-feed-copyright](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/simple-feed-copyright) |
 | **Quick META Keywords** | [WordPress.org](https://wordpress.org/plugins/quick-meta-keywords/) | [Plugin page](https://www.quickonlinetips.com/archives/quick-meta-keywords-wordpress-plugin/) | [plugins/quick-meta-keywords](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/quick-meta-keywords) |
 | **Display WordPress Version** | [WordPress.org](https://wordpress.org/plugins/display-wordpress-version/) | [Plugin page](https://www.quickonlinetips.com/archives/display-wordpress-version-plugin/) | [plugins/display-wordpress-version](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/display-wordpress-version) |
+| **QOT Code Styler** | [WordPress.org](https://wordpress.org/plugins/qot-code-styler/) | [Plugin page](https://www.quickonlinetips.com/archives/qot-code-styler-wordpress-plugin/) | [plugins/qot-code-styler](https://github.com/quickonlinetips/quickonlinetips/tree/main/plugins/qot-code-styler) |
 
 🛠️ All of them are being updated for 2026, and their code lives here on GitHub.
 

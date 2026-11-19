@@ -35,7 +35,7 @@ The plugin's zip is also attached to the GitHub release, in case you want a copy
 | Quick META Keywords | `quick-meta-keywords-2.0` |
 | Quick Feed Copyright | `simple-feed-copyright-2.0` |
 | Quick WordPress Version | `display-wordpress-version-2.0` |
-| QOT Code Styler | `qot-code-styler-1.0` (only after WordPress.org approves it) |
+| QOT Code Styler | `qot-code-styler-1.0` |
 | QOT Code Inserter | `qot-code-inserter-1.0` (only after WordPress.org approves it) |
 | QOT Focus Mode | `qot-focus-mode-1.0` (only after WordPress.org approves it) |
 | QOT Dark Mode Button | `qot-dark-mode-button-1.0` (only after WordPress.org approves it) |
